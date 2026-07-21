@@ -38,6 +38,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID> {
     
     List<Complaint> findByStatus(ComplaintStatus status);
 
+    @EntityGraph(attributePaths = {"category"})
+    org.springframework.data.domain.Page<Complaint> findAll(org.springframework.data.domain.Pageable pageable);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT c FROM Complaint c WHERE c.id = :id")
     Optional<Complaint> findByIdForUpdate(@Param("id") UUID id);
