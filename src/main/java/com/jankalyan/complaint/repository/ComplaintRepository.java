@@ -26,6 +26,16 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID> {
     
     boolean existsByIdAndIsDeletedFalse(UUID id);
     
+    @Query("SELECT new com.jankalyan.admin.dto.response.AdminDashboardResponse(" +
+           "COUNT(c), " +
+           "COALESCE(SUM(CASE WHEN c.status = 'SUBMITTED' THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = 'UNDER_REVIEW' THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = 'APPROVED' THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = 'REJECTED' THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = 'RESOLVED' THEN 1L ELSE 0L END), 0L)) " +
+           "FROM Complaint c WHERE c.isDeleted = false")
+    com.jankalyan.admin.dto.response.AdminDashboardResponse getDashboardStatistics();
+    
     List<Complaint> findByStatus(ComplaintStatus status);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
