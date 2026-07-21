@@ -1,0 +1,282 @@
+# DATABASE_SCHEMA.md
+
+# Jankalyan Database Schema
+
+**Version:** 1.1  
+**Status:** 🔒 FROZEN  
+**Database:** MySQL
+
+---
+
+# Overview
+
+This document defines the official database schema for the Jankalyan project.
+
+This schema is **FROZEN** and must not be modified without explicit approval.
+
+If any change is required, provide:
+
+1. Problem
+2. Reason
+3. Impact
+4. Recommendation
+
+Wait for approval before making any modification.
+
+---
+
+# Table 1: users
+
+| Column | Type | Constraints |
+|---------|------|------------|
+| id | UUID | Primary Key |
+| full_name | VARCHAR(100) | NOT NULL |
+| email | VARCHAR(255) | UNIQUE, NOT NULL |
+| phone | VARCHAR(15) | UNIQUE |
+| password_hash | VARCHAR(255) | NOT NULL |
+| role | ENUM(USER, ADMIN) | NOT NULL |
+| profile_image | VARCHAR(500) | NULL |
+| created_at | TIMESTAMP | NOT NULL |
+| updated_at | TIMESTAMP | NOT NULL |
+
+### Notes
+
+- Passwords must never be stored in plain text.
+- Passwords must always be stored as BCrypt hashes.
+- `password_hash` replaces the previous `password` field.
+
+---
+
+# Table 2: categories
+
+| Column | Type | Constraints |
+|---------|------|------------|
+| id | UUID | Primary Key |
+| name | VARCHAR(100) | UNIQUE |
+| department | VARCHAR(100) | NOT NULL |
+| description | TEXT | NULL |
+
+## Initial Seed Data
+
+| Category | Department |
+|-----------|------------|
+| Roads | Public Works Department |
+| Garbage | Sanitation Department |
+| Water Supply | Water Supply Department |
+| Electricity | Electricity Board |
+| Street Lights | Electrical Maintenance |
+| Drainage | Drainage Department |
+| Public Safety | Police Department |
+| Others | Municipal Corporation |
+
+---
+
+# Table 3: complaints
+
+| Column | Type |
+|---------|------|
+| id | UUID |
+| user_id | UUID (FK → users.id) |
+| category_id | UUID (FK → categories.id) |
+| title | VARCHAR(150) |
+| description | TEXT |
+| latitude | DECIMAL(10,8) |
+| longitude | DECIMAL(11,8) |
+| address | TEXT |
+| city | VARCHAR(100) |
+| state | VARCHAR(100) |
+| ward | VARCHAR(100) |
+| pincode | VARCHAR(10) |
+| status | ENUM |
+| created_at | TIMESTAMP |
+| updated_at | TIMESTAMP |
+
+## Complaint Status
+
+- SUBMITTED
+- UNDER_REVIEW
+- APPROVED
+- REJECTED
+- RESOLVED
+
+---
+
+# Table 4: complaint_media
+
+| Column | Type |
+|---------|------|
+| id | UUID |
+| complaint_id | UUID (FK → complaints.id) |
+| media_url | VARCHAR(500) |
+| media_type | ENUM(IMAGE) |
+| uploaded_at | TIMESTAMP |
+
+### Notes
+
+Current Version:
+
+- IMAGE uploads only
+
+Future Version (v2.0):
+
+- VIDEO support will be added without renaming the table.
+
+---
+
+# Table 5: votes
+
+| Column | Type |
+|---------|------|
+| id | UUID |
+| user_id | UUID (FK → users.id) |
+| complaint_id | UUID (FK → complaints.id) |
+| created_at | TIMESTAMP |
+
+## Constraints
+
+UNIQUE(user_id, complaint_id)
+
+This prevents duplicate voting by the same user.
+
+---
+
+# Table 6: complaint_status_history
+
+| Column | Type |
+|---------|------|
+| id | UUID |
+| complaint_id | UUID (FK → complaints.id) |
+| old_status | ENUM |
+| new_status | ENUM |
+| changed_by | UUID (FK → users.id) |
+| changed_at | TIMESTAMP |
+
+---
+
+# Table 7: refresh_tokens
+
+| Column | Type | Constraints |
+|---------|------|------------|
+| id | UUID | Primary Key |
+| user_id | UUID | FK → users.id |
+| token | VARCHAR(500) | UNIQUE, NOT NULL |
+| expires_at | TIMESTAMP | NOT NULL |
+| created_at | TIMESTAMP | NOT NULL |
+
+## Notes
+
+- One active refresh token per user.
+- Deleted during logout.
+- Expired tokens are rejected.
+- Used only for issuing new access tokens.
+
+---
+
+# Index Strategy
+
+```
+INDEX complaints(user_id)
+
+INDEX complaints(category_id)
+
+INDEX complaints(status)
+
+INDEX votes(complaint_id)
+
+INDEX complaint_media(complaint_id)
+
+INDEX complaint_status_history(complaint_id)
+```
+
+---
+
+# Deferred Features (Database v2.0)
+
+The following tables/features are intentionally excluded from MVP:
+
+- generated_letters
+- duplicate_detection
+- ai_priority_score
+- comments
+- notifications
+- video_uploads
+- email_logs
+- government_department_workflow
+
+Reason:
+
+MVP Scope Freeze.
+
+---
+
+# Entity Relationships
+
+```
+Users (1)
+   │
+   ├──────────────< Complaints (Many)
+   │
+   └──────────────< Votes (Many)
+
+Categories (1)
+   │
+   └──────────────< Complaints (Many)
+
+Complaints (1)
+   ├──────────────< ComplaintMedia (Many)
+   ├──────────────< Votes (Many)
+   └──────────────< ComplaintStatusHistory (Many)
+```
+
+---
+
+# Official Complaint Status Flow
+
+```
+SUBMITTED
+      │
+      ▼
+UNDER_REVIEW
+      │
+ ┌────┴────┐
+ ▼         ▼
+APPROVED  REJECTED
+    │
+    ▼
+RESOLVED
+```
+
+---
+
+# Freeze Status
+
+## Version
+
+v1.1
+
+## Status
+
+🔒 FROZEN
+
+No modifications are allowed without explicit approval.
+
+## 7️⃣ Refresh Tokens
+
+| Column | Type | Constraints |
+|---------|------|-------------|
+| id | UUID | PK |
+| user_id | UUID | FK → Users(id) |
+| token | VARCHAR(500) | UNIQUE, NOT NULL |
+| expires_at | TIMESTAMP | NOT NULL |
+| created_at | TIMESTAMP | NOT NULL |
+
+### Purpose
+
+Stores long-lived refresh tokens used for issuing new JWT access tokens.
+
+### Rules
+
+- One active refresh token per user.
+- Deleted during logout.
+- Expired tokens are rejected.
+- Token value must never be returned in API responses except through HttpOnly Cookie.

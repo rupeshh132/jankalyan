@@ -1,0 +1,442 @@
+# PAGE_FLOW.md
+
+# Jankalyan Page Flow
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines the complete page structure, navigation flow, permissions, and user journey for the Jankalyan platform.
+
+All frontend and backend development must follow this page flow.
+
+No page structure may be modified without explicit approval.
+
+---
+
+# Public Module
+
+Accessible without login.
+
+---
+
+## 1. Home / Landing Page
+
+Purpose
+
+Introduce the platform and encourage citizens to report civic issues.
+
+Sections
+
+- Hero Banner
+- Search Bar
+- Complaint Statistics
+  - Total Complaints
+  - Resolved
+  - Pending
+- Recent Complaints
+- OpenStreetMap Preview
+- Categories
+- Report Complaint CTA
+
+Navigation
+
+Home →
+- Login
+- Register
+- Public Complaints
+- Complaint Details
+
+---
+
+## 2. Login Page
+
+Features
+
+- Email
+- Password
+- Remember Me
+- Login Button
+- Register Link
+
+Successful Login
+
+Redirect based on role
+
+- USER → Citizen Dashboard
+- ADMIN → Admin Dashboard
+
+---
+
+## 3. Register Page
+
+Features
+
+- Full Name
+- Email
+- Mobile Number
+- Password
+- Confirm Password
+- Register Button
+
+Successful Registration
+
+Redirect to Login Page
+
+---
+
+## 4. Public Complaints
+
+Features
+
+- List View
+- Map View
+- Search
+- Filter by Category
+- Filter by Status
+- Sort
+  - Newest
+  - Most Upvoted
+
+Only APPROVED complaints are visible.
+
+---
+
+## 5. Complaint Details
+
+Features
+
+- Complaint Images
+- Title
+- Description
+- Category
+- Location
+- Status
+- Vote Count
+- Upvote Button
+- Reported Date
+
+Privacy
+
+Reporter information is hidden from the public.
+
+---
+
+# Citizen Module
+
+Authentication Required
+
+Role = USER
+
+---
+
+## 6. Citizen Dashboard
+
+Features
+
+- Total Complaints
+- Pending
+- Resolved
+- Rejected
+- Recent Activity
+- Quick Action
+  - Report Complaint
+
+---
+
+## 7. Report Complaint
+
+(Create & Edit)
+
+Features
+
+- Title
+- Description
+- Category
+- Upload Images
+- Select Location on Map
+- Submit
+
+Rules
+
+Edit allowed only when status is SUBMITTED.
+
+---
+
+## 8. My Complaints
+
+Features
+
+- Complaint List
+- Search
+- Status Filter
+- Edit
+- Delete
+
+Rules
+
+Edit/Delete allowed only when status is SUBMITTED.
+
+---
+
+## 9. Profile
+
+Features
+
+- Update Name
+- Update Mobile Number
+- Change Password
+- Profile Picture (Optional)
+
+Rules
+
+Email cannot be changed.
+
+---
+
+# Admin Module
+
+Authentication Required
+
+Role = ADMIN
+
+---
+
+## 10. Admin Dashboard
+
+Features
+
+- Total Complaints
+- Submitted
+- Under Review
+- Approved
+- Rejected
+- Resolved
+- Recent Complaint Queue
+
+V1 does NOT include
+
+- Charts
+- AI Analytics
+- Heatmaps
+
+---
+
+## 11. Manage Complaints
+
+Features
+
+- Search
+- Filters
+- View Complaint
+- Approve
+- Reject
+- Update Status
+- Delete Spam Complaint
+
+---
+
+## 12. Admin Complaint Details
+
+Features
+
+- Complete Complaint
+- Citizen Details
+- Complaint Images
+- Location
+- Status Timeline
+- Internal Notes (Optional)
+- Update Status
+
+---
+
+# System Pages
+
+---
+
+## 13. 404
+
+Page Not Found
+
+---
+
+## 14. 403
+
+Unauthorized / Access Denied
+
+---
+
+# Navigation Flow
+
+Guest
+
+Home
+
+↓
+
+Login/Register
+
+↓
+
+Public Complaints
+
+↓
+
+Complaint Details
+
+---
+
+Citizen
+
+Login
+
+↓
+
+Dashboard
+
+↓
+
+Report Complaint
+
+↓
+
+My Complaints
+
+↓
+
+Profile
+
+---
+
+Admin
+
+Login
+
+↓
+
+Dashboard
+
+↓
+
+Manage Complaints
+
+↓
+
+Complaint Details
+
+↓
+
+Update Status
+
+---
+
+# Future Pages (V2)
+
+Not included in Version 1
+
+- Forgot Password
+- Email Verification
+- AI Letter Generation
+- Generated Letters
+- AI Categorization
+- Duplicate Detection
+- Video Upload
+- Email Notifications
+- Push Notifications
+- Comments
+- Government API Integration
+- Analytics Dashboard
+- Heat Map
+
+---
+
+# Page Count
+
+| Module | Pages |
+|---------|------:|
+| Public | 5 |
+| Citizen | 4 |
+| Admin | 3 |
+| System | 2 |
+
+Total Pages = **14**
+
+---
+
+# Compliance
+
+Compatible with
+
+- React
+- React Router
+- Spring Boot
+- JWT Authentication
+- Role-Based Authorization
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+This page flow is officially approved for Version 1.0.
+
+# User Journey
+
+## Citizen Journey
+
+Visitor
+↓
+Home Page
+↓
+Register
+↓
+Login
+↓
+Dashboard
+↓
+Create Complaint
+↓
+Select Category
+↓
+Write Description
+↓
+Upload Image
+↓
+Select Location
+↓
+Submit Complaint
+↓
+Track Complaint Status
+↓
+Logout
+
+---
+
+## Admin Journey
+
+Admin Login
+↓
+Admin Dashboard
+↓
+View All Complaints
+↓
+Search / Filter Complaints
+↓
+Open Complaint Details
+↓
+Verify Complaint
+↓
+Approve / Reject Complaint
+↓
+Update Complaint Status
+↓
+Delete Spam Complaint (if required)
+↓
+Logout

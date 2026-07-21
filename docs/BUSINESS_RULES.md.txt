@@ -1,0 +1,348 @@
+# BUSINESS_RULES.md
+
+# Jankalyan Business Rules
+
+**Version:** 1.0
+
+**Status:** 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines the official business rules of the Jankalyan platform.
+
+Every backend API, frontend screen, validation, and future feature must strictly follow these rules.
+
+No business rule may be modified without explicit approval.
+
+---
+
+# User Rules
+
+## Registration
+
+A citizen can register using:
+
+- Full Name
+- Email
+- Phone Number
+- Password
+
+Rules
+
+- Email must be unique.
+- Phone number must be unique.
+- Password must be stored as password_hash.
+- Password must never be stored in plain text.
+
+---
+
+## Login
+
+Users can login using
+
+- Email
+- Password
+
+After successful login
+
+- Access Token is issued.
+- Refresh Token is stored in HttpOnly Cookie.
+
+---
+
+## User Roles
+
+Supported Roles
+
+- USER
+- ADMIN
+
+Only administrators can access admin APIs.
+
+---
+
+# Complaint Rules
+
+A complaint must contain
+
+- Category
+- Title
+- Description
+- Location
+- Minimum one Image
+
+Complaint cannot be created without an image.
+
+---
+
+## Complaint Ownership
+
+Every complaint belongs to exactly one user.
+
+Only the complaint owner may modify or delete the complaint (subject to status restrictions).
+
+---
+
+# Complaint Status Rules
+
+Allowed Status
+
+- SUBMITTED
+- UNDER_REVIEW
+- APPROVED
+- REJECTED
+- RESOLVED
+
+No other status is allowed.
+
+---
+
+# Official Status Flow
+
+```
+SUBMITTED
+      │
+      ▼
+UNDER_REVIEW
+      │
+ ┌────┴────┐
+ ▼         ▼
+APPROVED  REJECTED
+    │
+    ▼
+RESOLVED
+```
+
+Reverse transitions are not allowed.
+
+Status transitions outside this flow are prohibited.
+
+---
+
+# Complaint Visibility Rules
+
+## Public Users
+
+Can view only
+
+- APPROVED complaints
+- Not Soft Deleted
+
+---
+
+## Complaint Owner
+
+Can view
+
+- SUBMITTED
+- UNDER_REVIEW
+- APPROVED
+- REJECTED
+- RESOLVED
+- Soft Deleted
+
+Only their own complaints.
+
+---
+
+## Administrator
+
+Can view every complaint.
+
+Including
+
+- Soft Deleted
+- Rejected
+- Under Review
+
+---
+
+# Edit Rules
+
+Citizen can edit only if
+
+Status = SUBMITTED
+
+Allowed fields
+
+- Title
+- Description
+- Category
+
+Images cannot be edited in Version 1.
+
+---
+
+# Delete Rules
+
+Deletion Type
+
+Soft Delete
+
+Citizen can delete only if
+
+Status = SUBMITTED
+
+Deleted complaints remain in the database.
+
+---
+
+# Voting Rules
+
+One user can vote only once per complaint.
+
+Rules
+
+- Duplicate voting is prohibited.
+- Vote may be removed.
+- Complaint owner can also vote.
+
+---
+
+# Category Rules
+
+Categories are managed only by administrators.
+
+Citizens cannot
+
+- Create categories
+- Update categories
+- Delete categories
+
+---
+
+# Media Rules
+
+Version 1
+
+Supported
+
+- Images
+
+Not Supported
+
+- Videos
+
+Images cannot be modified after complaint submission.
+
+---
+
+# Status History Rules
+
+Every complaint status change must create a new record inside
+
+ComplaintStatusHistory
+
+History records cannot be edited or deleted.
+
+---
+
+# Security Rules
+
+Passwords
+
+- Stored only as password_hash
+- BCrypt encryption required
+
+Authentication
+
+- JWT Access Token
+- Refresh Token in HttpOnly Cookie
+
+Authorization
+
+Role Based Access Control
+
+Roles
+
+- USER
+- ADMIN
+
+---
+
+# Rate Limiting Rules
+
+Register
+
+3 Requests / Hour / IP
+
+Login
+
+5 Requests / Minute / IP
+
+Create Complaint
+
+10 Requests / Day / User
+
+---
+
+# Validation Rules
+
+User
+
+- Email must be unique.
+- Phone must be unique.
+- Password must satisfy complexity policy.
+
+Complaint
+
+- Title required
+- Description required
+- Category required
+- Latitude required
+- Longitude required
+- At least one image required
+
+---
+
+# Audit Rules
+
+Every important operation must be logged.
+
+Examples
+
+- Registration
+- Login
+- Complaint Creation
+- Complaint Status Change
+- Complaint Deletion
+
+---
+
+# Deferred Features (Version 2)
+
+The following are intentionally excluded from MVP
+
+- AI Letter Generation
+- Duplicate Detection
+- Notifications
+- Email Verification
+- Forgot Password Email
+- Video Upload
+- Government Workflow
+- Analytics
+- Comments
+
+---
+
+# Compliance
+
+This document is fully aligned with
+
+- Database Schema
+- ER Diagram
+- API Specification
+
+No conflicts exist.
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+No business rule may be modified without explicit approval.

@@ -1,0 +1,514 @@
+# API_SPECIFICATION.md
+
+# Jankalyan API Specification
+
+**Version:** 1.0  
+**Status:** 🔒 FROZEN  
+**Base URL:** `/api/v1`
+
+---
+
+# Overview
+
+This document defines the official REST API specification for the Jankalyan platform.
+
+All backend APIs must strictly follow this specification.
+
+No endpoint, request structure, response structure, authentication flow, validation rule, or business rule may be modified without explicit approval.
+
+If any change is required, provide:
+
+1. Problem
+2. Reason
+3. Impact
+4. Recommendation
+
+Wait for approval before making any modification.
+
+---
+
+# Authentication Module
+
+| Method | Endpoint | Authentication | Purpose |
+|---------|----------|---------------|----------|
+| POST | /auth/register | ❌ Public | Register a new user |
+| POST | /auth/login | ❌ Public | Login and issue Access Token |
+| POST | /auth/refresh | Refresh Cookie | Generate new Access Token |
+| POST | /auth/logout | ✅ Required | Logout and invalidate Refresh Token |
+| GET | /users/me | ✅ Required | Get current user profile |
+| PATCH | /users/me | ✅ Required | Update user profile |
+| PATCH | /users/me/password | ✅ Required | Change password |
+
+---
+
+## Register Request
+
+```json
+{
+  "fullName": "Rupesh Vishwakarma",
+  "email": "rupesh@gmail.com",
+  "phone": "9876543210",
+  "password": "Password@123"
+}
+```
+
+### Response
+
+```json
+{
+  "message": "Registration successful"
+}
+```
+
+### HTTP Status
+
+```
+201 Created
+```
+
+---
+
+## Login Response
+
+```json
+{
+  "accessToken": "jwt-token",
+  "tokenType": "Bearer",
+  "expiresIn": 900,
+  "role": "USER"
+}
+```
+
+---
+
+## Refresh Token Policy
+
+- Stored as HttpOnly Cookie
+- Secure Cookie
+- SameSite=Strict
+- Expiry = 7 Days
+
+---
+
+## Access Token Policy
+
+- JWT Bearer Token
+- Expiry = 15 Minutes
+
+---
+
+# Categories Module
+
+| Method | Endpoint | Authentication |
+|---------|----------|---------------|
+| GET | /categories | ❌ Public |
+
+### Response
+
+```json
+[
+  {
+    "id": "uuid",
+    "name": "Roads",
+    "department": "Public Works Department"
+  }
+]
+```
+
+---
+
+# Complaint Module
+
+| Method | Endpoint | Authentication | Purpose |
+|---------|----------|---------------|----------|
+| POST | /complaints | ✅ Required | Create Complaint |
+| GET | /complaints | ❌ Public | Public Complaint Listing |
+| GET | /complaints/{id} | Optional* | Complaint Details |
+| GET | /users/me/complaints | ✅ Required | Current User Complaints |
+| PATCH | /complaints/{id} | ✅ Required | Update Complaint |
+| DELETE | /complaints/{id} | ✅ Required | Soft Delete Complaint |
+| POST | /complaints/{id}/vote | ✅ Required | Add Vote |
+| DELETE | /complaints/{id}/vote | ✅ Required | Remove Vote |
+
+---
+
+## Complaint Details Access Rules
+
+Authentication is optional.
+
+- If Complaint Status = **APPROVED**
+  - Accessible publicly.
+
+- Otherwise
+  - Accessible only to:
+    - Complaint Owner
+    - Administrator
+
+---
+
+## Create Complaint
+
+Content Type
+
+```
+multipart/form-data
+```
+
+Fields
+
+```
+title
+description
+categoryId
+latitude
+longitude
+address
+city
+state
+ward
+pincode
+images[]
+```
+
+### Response
+
+```
+201 Created
+```
+
+---
+
+## Public Complaint Listing
+
+```
+GET /complaints
+```
+
+Supports
+
+```
+?page=1
+&size=10
+&category=
+&status=APPROVED
+&search=
+&sort=newest
+```
+
+---
+
+## Update Complaint
+
+```
+PATCH /complaints/{id}
+```
+
+Allowed Fields
+
+- title
+- description
+- categoryId
+
+Restrictions
+
+- Images cannot be modified in Version 1.
+- Only Complaint Owner may update.
+- Complaint Status must be SUBMITTED.
+
+---
+
+## Delete Complaint
+
+```
+DELETE /complaints/{id}
+```
+
+Behavior
+
+- Soft Delete
+- Owner Only
+- Status must be SUBMITTED
+
+---
+
+## Voting
+
+```
+POST /complaints/{id}/vote
+```
+
+Rules
+
+- One user can vote only once.
+- Vote can be removed.
+
+---
+
+# Admin Module
+
+| Method | Endpoint | Purpose |
+|---------|----------|----------|
+| GET | /admin/dashboard | Dashboard Statistics |
+| GET | /admin/complaints | Complaint Queue |
+| PATCH | /admin/complaints/{id}/status | Update Complaint Status |
+| DELETE | /admin/complaints/{id} | Soft Delete Spam Complaint |
+
+---
+
+## Dashboard Response
+
+- Total Complaints
+- Submitted
+- Under Review
+- Approved
+- Rejected
+- Resolved
+
+---
+
+## Update Status
+
+```json
+{
+  "status": "UNDER_REVIEW"
+}
+```
+
+Allowed Status Values
+
+- SUBMITTED
+- UNDER_REVIEW
+- APPROVED
+- REJECTED
+- RESOLVED
+
+---
+
+# System Module
+
+| Method | Endpoint |
+|---------|----------|
+| GET | /health |
+
+---
+
+# Standard Error Response
+
+```json
+{
+  "timestamp": "2026-07-17T12:30:00Z",
+  "status": 400,
+  "error": "Validation Failed",
+  "message": "Email already exists",
+  "path": "/api/v1/auth/register"
+}
+```
+
+---
+
+# Standard Pagination Response
+
+```json
+{
+  "content": [],
+  "page": 1,
+  "size": 10,
+  "totalElements": 120,
+  "totalPages": 12,
+  "hasNext": true
+}
+```
+
+---
+
+# Validation Rules
+
+## User Registration
+
+- Full Name → Required, Maximum 100 Characters
+- Email → Required, Valid, Unique
+- Phone → Required, Unique, Regex: `^[6-9]\d{9}$`
+- Password → Minimum 8 Characters with:
+  - Uppercase Letter
+  - Lowercase Letter
+  - Number
+  - Special Character
+
+---
+
+## Complaint
+
+- Title → Required, Maximum 150 Characters
+- Description → Required
+- Category → Required
+- Latitude → Required
+- Longitude → Required
+- At least one image is required
+
+---
+
+# Business Rules
+
+## Authentication
+
+- JWT Access Token
+- Refresh Token stored in HttpOnly Cookie
+- Role-Based Authorization
+
+---
+
+## Complaint Lifecycle
+
+```
+SUBMITTED
+      │
+      ▼
+UNDER_REVIEW
+      │
+ ┌────┴────┐
+ ▼         ▼
+APPROVED  REJECTED
+    │
+    ▼
+RESOLVED
+```
+
+---
+
+## Visibility Rules
+
+### Public Users
+
+Can view only:
+
+- APPROVED Complaints
+- Not Soft Deleted
+
+---
+
+### Citizens
+
+Can view their own:
+
+- SUBMITTED
+- UNDER_REVIEW
+- APPROVED
+- REJECTED
+- RESOLVED
+- Soft Deleted
+
+---
+
+### Administrators
+
+Can access all complaints.
+
+---
+
+## Edit Rules
+
+Citizen can edit only if:
+
+- Status = SUBMITTED
+
+---
+
+## Delete Rules
+
+Citizen can delete only if:
+
+- Status = SUBMITTED
+
+Deletion type:
+
+- Soft Delete
+
+---
+
+## Status History
+
+Every complaint status update must create a new record in:
+
+```
+ComplaintStatusHistory
+```
+
+---
+
+## Media Rules
+
+### Version 1
+
+- Images Only
+- Images cannot be edited after complaint submission
+
+### Version 2
+
+- Video Upload Support
+
+---
+
+# Rate Limiting
+
+| API | Limit |
+|------|-------|
+| Register | 3 Requests / Hour / IP |
+| Login | 5 Requests / Minute / IP |
+| Create Complaint | 10 Requests / Day / User |
+
+---
+
+# API Summary
+
+| Module | APIs |
+|---------|------|
+| Authentication | 7 |
+| Categories | 1 |
+| Complaints | 8 |
+| Admin | 4 |
+| System | 1 |
+
+**Total APIs: 21**
+
+---
+
+# Deferred APIs (Version 2)
+
+The following APIs are intentionally excluded from MVP:
+
+- Forgot Password
+- Email Verification
+- AI Letter Generation
+- AI Duplicate Detection
+- Notifications
+- Government Integration
+- Advanced Analytics
+
+Reason:
+
+MVP Scope Freeze.
+
+---
+
+# Architecture Review
+
+This API specification is:
+
+- ✅ Consistent with the Frozen Database Schema
+- ✅ Consistent with the ER Diagram
+- ✅ Fully compatible with the approved Business Rules
+- ✅ JWT + Refresh Token Ready
+- ✅ Pagination Ready
+- ✅ Swagger / OpenAPI Ready
+- ✅ Spring Boot + React + MySQL Compatible
+- ✅ Production Ready
+
+---
+
+# Freeze Status
+
+**Version:** 1.0
+
+**Status:** 🔒 FROZEN
+
+No endpoint, request, response, validation rule, authentication flow, or business rule may be modified without explicit approval.

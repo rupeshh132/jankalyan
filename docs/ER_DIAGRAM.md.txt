@@ -1,0 +1,305 @@
+# ER_DIAGRAM.md
+
+# Jankalyan Entity Relationship Diagram
+
+**Version:** 1.1  
+**Status:** 🔒 FROZEN
+
+---
+
+# Overview
+
+This document defines the official Entity Relationship (ER) Diagram for the Jankalyan project.
+
+It is based entirely on the frozen database schema.
+
+No relationships may be modified without explicit approval.
+
+---
+
+# Entities
+
+1. Users
+2. Categories
+3. Complaints
+4. Complaint Media
+5. Votes
+6. Complaint Status History
+7. Refresh Tokens
+
+---
+
+# Entity Relationships
+
+## Users → Complaints
+
+Relationship:
+
+One User can create many Complaints.
+
+```
+Users (1)
+      │
+      └──────────────< Complaints (Many)
+```
+
+Foreign Key
+
+```
+complaints.user_id
+→ users.id
+```
+
+---
+
+## Categories → Complaints
+
+Relationship:
+
+One Category can contain many Complaints.
+
+```
+Categories (1)
+        │
+        └──────────────< Complaints (Many)
+```
+
+Foreign Key
+
+```
+complaints.category_id
+→ categories.id
+```
+
+---
+
+## Complaints → Complaint Media
+
+Relationship:
+
+One Complaint can have multiple uploaded images.
+
+```
+Complaints (1)
+       │
+       └──────────────< Complaint Media (Many)
+```
+
+Foreign Key
+
+```
+complaint_media.complaint_id
+→ complaints.id
+```
+
+Current Version
+
+- IMAGE only
+
+Future Version
+
+- VIDEO support (Database v2.0)
+
+---
+
+## Users → Votes
+
+Relationship
+
+One User can vote on multiple Complaints.
+
+```
+Users (1)
+      │
+      └──────────────< Votes (Many)
+```
+
+Foreign Key
+
+```
+votes.user_id
+→ users.id
+```
+
+---
+
+## Complaints → Votes
+
+Relationship
+
+One Complaint can receive votes from many Users.
+
+```
+Complaints (1)
+        │
+        └──────────────< Votes (Many)
+```
+
+Foreign Key
+
+```
+votes.complaint_id
+→ complaints.id
+```
+
+Constraint
+
+```
+UNIQUE(user_id, complaint_id)
+```
+
+Purpose
+
+A user can vote only once on the same complaint.
+
+---
+
+## Complaints → Complaint Status History
+
+Relationship
+
+One Complaint can have multiple status updates.
+
+```
+Complaints (1)
+        │
+        └──────────────< Complaint Status History (Many)
+```
+
+Foreign Key
+
+```
+complaint_status_history.complaint_id
+→ complaints.id
+```
+
+---
+
+## Users → Complaint Status History
+
+Relationship
+
+One Admin/User can update the status of multiple complaints.
+
+```
+Users (1)
+      │
+      └──────────────< Complaint Status History (Many)
+```
+
+Foreign Key
+
+```
+complaint_status_history.changed_by
+→ users.id
+```
+
+---
+
+## Users → Refresh Tokens
+
+Relationship
+
+One User can have multiple Refresh Tokens.
+
+```
+Users (1)
+      │
+      └──────────────< Refresh Tokens (Many)
+```
+
+Foreign Key
+
+```
+refresh_tokens.user_id
+→ users.id
+```
+
+---
+
+# Complete ER Diagram
+
+```text
+                   +----------------------+
+                   |        USERS         |
+                   +----------------------+
+                   | id (PK)              |
+                   | full_name            |
+                   | email                |
+                   | phone                |
+                   | password_hash        |
+                   | role                 |
+                   | profile_image        |
+                   +----------+-----------+
+                              |
+                +-------------+--------------+
+                |                            |
+                |                            |
+                ▼                            ▼
+        +---------------+             +--------------+
+        | COMPLAINTS    |             |    VOTES     |
+        +---------------+             +--------------+
+        | id            |             | id           |
+        | user_id (FK)  |             | user_id (FK) |
+        | category_id   |             | complaint_id |
+        | status        |             +--------------+
+        +-------+-------+
+                |
+      +---------+---------+
+      |                   |
+      ▼                   ▼
++---------------+   +---------------------------+
+|COMPLAINT_MEDIA|   | COMPLAINT_STATUS_HISTORY |
++---------------+   +---------------------------+
+| complaint_id  |   | complaint_id              |
+| media_url     |   | old_status                |
+| media_type    |   | new_status                |
++---------------+   | changed_by (FK)           |
+                    +---------------------------+
+
+                ▲
+                |
+        +---------------+
+        |  CATEGORIES   |
+        +---------------+
+        | id            |
+        | name          |
+        | department    |
+        +---------------+
+```
+
+---
+
+# Cardinality Summary
+
+| Parent | Child | Relationship |
+|----------|-------|--------------|
+| Users | Complaints | 1 : Many |
+| Users | Votes | 1 : Many |
+| Users | Complaint Status History | 1 : Many |
+| Users | Refresh Tokens | 1 : Many |
+| Categories | Complaints | 1 : Many |
+| Complaints | Complaint Media | 1 : Many |
+| Complaints | Votes | 1 : Many |
+| Complaints | Complaint Status History | 1 : Many |
+
+---
+
+# Notes
+
+- Every Complaint belongs to exactly one User.
+- Every Complaint belongs to exactly one Category.
+- Every Vote belongs to exactly one User and one Complaint.
+- A User cannot vote twice for the same Complaint.
+- Complaint status changes are fully auditable through the Complaint Status History table.
+- Complaint Media currently supports IMAGE uploads only.
+
+---
+
+# Freeze Status
+
+**Version:** 1.1
+
+**Status:** 🔒 FROZEN
+
+No relationship may be changed without explicit approval.

@@ -1,0 +1,448 @@
+# AUTHENTICATION_FLOW.md
+
+# Jankalyan Authentication Flow
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines the complete authentication and authorization workflow for the Jankalyan project.
+
+All authentication-related implementation must strictly follow this document.
+
+No authentication logic may be changed without explicit approval.
+
+---
+
+# Authentication Strategy
+
+Authentication Type
+
+JWT (Access Token)
+
++
+
+Refresh Token (HttpOnly Cookie)
+
+Authorization
+
+Role-Based Authorization
+
+Roles
+
+- USER
+- ADMIN
+
+---
+
+# Authentication Lifecycle
+
+Citizen
+
+↓
+
+Register
+
+↓
+
+Login
+
+↓
+
+Access Token Issued
+
+↓
+
+Refresh Token Stored (HttpOnly Cookie)
+
+↓
+
+Authenticated Requests
+
+↓
+
+Access Token Expires
+
+↓
+
+Refresh Token Used
+
+↓
+
+New Access Token
+
+↓
+
+Logout
+
+↓
+
+Refresh Token Invalidated
+
+---
+
+# Registration Flow
+
+Endpoint
+
+POST
+
+/api/v1/auth/register
+
+Validation
+
+- Full Name Required
+- Email Required
+- Unique Email
+- Phone Required
+- Unique Phone
+- Password Policy
+
+Process
+
+1. Validate request
+2. Check duplicate email
+3. Check duplicate phone
+4. Encrypt password using BCrypt
+5. Save user
+6. Return success response
+
+Response
+
+201 Created
+
+---
+
+# Login Flow
+
+Endpoint
+
+POST
+
+/api/v1/auth/login
+
+Validation
+
+- Email Required
+- Password Required
+
+Process
+
+1. Validate credentials
+2. Load user
+3. Verify password
+4. Generate Access Token
+5. Generate Refresh Token
+6. Save Refresh Token
+7. Return JWT
+8. Set Refresh Token as HttpOnly Cookie
+
+Response
+
+200 OK
+
+---
+
+# JWT Strategy
+
+Algorithm
+
+HS256
+
+Token Type
+
+Bearer
+
+Contains
+
+- User ID
+- Email
+- Role
+
+Expiration
+
+15 Minutes
+
+Header
+
+Authorization
+
+Bearer <token>
+
+---
+
+# Refresh Token Strategy
+
+Storage
+
+Database
+
++
+
+HttpOnly Cookie
+
+Cookie Settings
+
+HttpOnly = true
+
+Secure = true
+
+SameSite = Strict
+
+Expiration
+
+7 Days
+
+---
+
+# Refresh Flow
+
+Endpoint
+
+POST
+
+/api/v1/auth/refresh
+
+Process
+
+1. Read Refresh Cookie
+2. Validate Token
+3. Check Expiry
+4. Verify Database Record
+5. Generate New Access Token
+6. Return New JWT
+
+No new Refresh Token issued unless rotation is enabled in future versions.
+
+---
+
+# Logout Flow
+
+Endpoint
+
+POST
+
+/api/v1/auth/logout
+
+Process
+
+1. Authenticate User
+2. Delete Refresh Token
+3. Clear Cookie
+4. Return Success
+
+---
+
+# Password Encryption
+
+Algorithm
+
+BCryptPasswordEncoder
+
+Rules
+
+- Never store plain password
+- Never log password
+- Never expose password
+
+---
+
+# Authorization Rules
+
+USER
+
+Can
+
+- Manage own profile
+- Create complaints
+- Edit own complaint
+- Delete own complaint
+- Vote
+
+Cannot
+
+- Access Admin APIs
+
+---
+
+ADMIN
+
+Can
+
+- View all complaints
+- Update complaint status
+- Manage categories
+- View dashboard
+
+---
+
+# Security Filter Flow
+
+Incoming Request
+
+↓
+
+JWT Filter
+
+↓
+
+Extract Bearer Token
+
+↓
+
+Validate Signature
+
+↓
+
+Validate Expiry
+
+↓
+
+Load User Details
+
+↓
+
+Create Authentication Object
+
+↓
+
+Security Context
+
+↓
+
+Controller
+
+---
+
+# Public Endpoints
+
+Accessible Without Login
+
+POST /auth/register
+
+POST /auth/login
+
+POST /auth/refresh
+
+GET /categories
+
+GET /complaints
+
+GET /complaints/{id}
+
+GET /health
+
+Swagger APIs
+
+---
+
+# Protected Endpoints
+
+Require Authentication
+
+/users/**
+
+/complaints/create
+
+/complaints/edit
+
+/complaints/delete
+
+/vote
+
+/admin/**
+
+---
+
+# Token Expiration
+
+Access Token
+
+15 Minutes
+
+Refresh Token
+
+7 Days
+
+---
+
+# Error Responses
+
+Unauthorized
+
+401
+
+Invalid Credentials
+
+401
+
+Invalid JWT
+
+401
+
+Expired JWT
+
+401
+
+Access Denied
+
+403
+
+User Not Found
+
+404
+
+---
+
+# Security Rules
+
+Never
+
+- Store JWT in Local Storage
+- Store password in plain text
+- Return refresh token in JSON response
+- Hardcode JWT secret
+
+Always
+
+- Use BCrypt
+- Use HttpOnly Cookie
+- Validate every request
+- Verify user role
+
+---
+
+# Future Enhancements (V2)
+
+- Email Verification
+- Forgot Password Email
+- MFA / OTP Login
+- Refresh Token Rotation
+- Device Management
+- Session Management
+
+---
+
+# Compliance
+
+Compatible With
+
+- Spring Boot 3.x
+- Spring Security 6
+- Java 21
+- JWT Authentication
+- React Frontend
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+This authentication flow is officially approved for Version 1.0.

@@ -1,0 +1,351 @@
+# REPOSITORY_STRUCTURE.md
+
+# Jankalyan Repository Structure
+
+**Version:** 1.0
+
+**Status:** 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines the official GitHub repository structure, branching strategy, commit conventions, versioning policy, and collaboration workflow for the Jankalyan project.
+
+All contributors and AI assistants must follow these rules.
+
+---
+
+# Repository Structure
+
+Official Repository
+
+```
+jankalyan/
+```
+
+Project Layout
+
+```
+jankalyan/
+
+├── backend/
+├── frontend/
+├── docs/
+├── .gitignore
+├── LICENSE
+└── README.md
+```
+
+---
+
+# Branch Strategy
+
+The project follows **Git Flow (Simplified)**.
+
+Permanent Branches
+
+```
+main
+develop
+```
+
+Working Branches
+
+```
+feature/*
+bugfix/*
+hotfix/*
+release/*
+```
+
+Examples
+
+```
+feature/authentication
+
+feature/user-module
+
+feature/complaint-module
+
+feature/admin-dashboard
+
+bugfix/login-error
+
+hotfix/security-patch
+
+release/v1.0.0
+```
+
+---
+
+# Branch Rules
+
+## main
+
+- Production-ready code only
+- Protected branch
+- No direct commits
+- Merge only through Pull Request
+
+---
+
+## develop
+
+- Integration branch
+- All completed features merge here first
+- Must remain buildable
+
+---
+
+## feature/*
+
+- One feature per branch
+- Created from develop
+- Merged back into develop
+
+---
+
+## bugfix/*
+
+Used only for fixing development bugs.
+
+---
+
+## hotfix/*
+
+Used only for urgent production fixes.
+
+Created from main.
+
+Merged into both
+
+- main
+- develop
+
+---
+
+# Commit Message Convention
+
+Format
+
+```
+type(scope): message
+```
+
+Examples
+
+```
+feat(auth): add user registration
+
+feat(complaint): create complaint API
+
+fix(auth): resolve JWT validation issue
+
+refactor(common): improve ApiResponse
+
+docs(api): update authentication endpoints
+
+test(auth): add login service tests
+
+style(frontend): improve navbar layout
+
+chore(config): update application.yml
+```
+
+---
+
+# Allowed Commit Types
+
+- feat
+- fix
+- refactor
+- docs
+- style
+- test
+- chore
+
+---
+
+# Pull Request Rules
+
+Every Pull Request must include
+
+- Objective
+- Summary of changes
+- Files modified
+- Build status
+- Testing status
+
+Checklist
+
+- Build Successful
+- No Compile Errors
+- No Warnings
+- Tests Passed
+- Documentation Updated
+
+---
+
+# Merge Rules
+
+Never merge code that
+
+- Fails to compile
+- Breaks tests
+- Violates architecture
+- Changes frozen documents without approval
+
+---
+
+# Release Strategy
+
+Version Format
+
+```
+MAJOR.MINOR.PATCH
+```
+
+Examples
+
+```
+1.0.0
+
+1.1.0
+
+1.1.1
+
+2.0.0
+```
+
+---
+
+# Tagging
+
+Every production release must have a Git tag.
+
+Examples
+
+```
+v1.0.0
+
+v1.1.0
+
+v2.0.0
+```
+
+---
+
+# Documentation Rules
+
+Whenever a feature is completed
+
+Update
+
+- README.md
+- API Specification (if applicable)
+- Development Roadmap
+- Sprint Review
+
+---
+
+# Code Review Rules
+
+Every feature must be reviewed before merge.
+
+Review Checklist
+
+- Architecture followed
+- SOLID principles followed
+- Naming conventions followed
+- Validation implemented
+- Exception handling implemented
+- Logging added
+- Security verified
+
+---
+
+# AI Assistant Rules
+
+AI assistants must
+
+- Never commit directly to main
+- Never rename packages
+- Never redesign architecture
+- Never modify frozen documents
+- Always explain changes before implementation
+
+---
+
+# Repository Protection Rules
+
+Protect
+
+- main
+- develop
+
+Require
+
+- Pull Request
+- Passing Build
+- Code Review
+
+---
+
+# Git Ignore
+
+The repository must ignore
+
+```
+target/
+
+node_modules/
+
+.idea/
+
+.vscode/
+
+*.log
+
+.env
+
+*.class
+```
+
+---
+
+# README Requirements
+
+README.md must contain
+
+- Project Overview
+- Tech Stack
+- Installation
+- Environment Variables
+- Running Backend
+- Running Frontend
+- API Documentation
+- Contribution Guide
+- License
+
+---
+
+# Compliance
+
+This repository structure is fully compatible with
+
+- GitHub
+- Git Flow
+- Spring Boot
+- React
+- Maven
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+No repository workflow or branch strategy may be modified without explicit approval.

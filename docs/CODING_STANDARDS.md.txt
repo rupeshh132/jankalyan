@@ -1,0 +1,542 @@
+# CODING_STANDARDS.md
+
+# Jankalyan Coding Standards
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines the official coding standards for the Jankalyan project.
+
+Every contributor, developer, or AI coding assistant (Antigravity, Gemini, Cursor, Claude, ChatGPT, etc.) must follow these standards.
+
+The goal is to maintain a clean, scalable, and production-quality codebase with consistent coding practices.
+
+---
+
+# General Principles
+
+Always follow:
+
+- SOLID Principles
+- Clean Code
+- DRY (Don't Repeat Yourself)
+- KISS (Keep It Simple, Stupid)
+- Separation of Concerns
+- Feature-Based Architecture
+
+Never compromise code readability for shorter code.
+
+---
+
+# Java Version
+
+Java 21
+
+---
+
+# Spring Boot Version
+
+Spring Boot 3.x
+
+---
+
+# Package Naming
+
+Use lowercase only.
+
+Correct
+
+```
+com.jankalyan.auth
+com.jankalyan.user
+com.jankalyan.complaint
+```
+
+Wrong
+
+```
+com.Jankalyan.Auth
+com.jankalyan.Auth
+```
+
+---
+
+# Feature-Based Structure
+
+Each module must contain its own:
+
+- controller
+- service
+- service.impl
+- repository
+- entity
+- dto
+- mapper
+- validator
+- exception
+
+Example
+
+```
+auth/
+
+controller/
+
+service/
+
+repository/
+
+entity/
+
+dto/
+
+mapper/
+
+exception/
+```
+
+---
+
+# Class Naming
+
+Entities
+
+```
+User
+Complaint
+Category
+Vote
+```
+
+Controllers
+
+```
+AuthController
+ComplaintController
+AdminController
+```
+
+Services
+
+```
+AuthService
+ComplaintService
+```
+
+Service Implementations
+
+```
+AuthServiceImpl
+ComplaintServiceImpl
+```
+
+Repositories
+
+```
+UserRepository
+ComplaintRepository
+```
+
+DTOs
+
+```
+RegisterRequest
+LoginRequest
+
+ComplaintResponse
+```
+
+Enums
+
+```
+RoleType
+ComplaintStatus
+```
+
+Exceptions
+
+```
+ResourceNotFoundException
+
+BadRequestException
+
+UserAlreadyExistsException
+```
+
+---
+
+# Method Naming
+
+Use meaningful verbs.
+
+Correct
+
+```
+registerUser()
+
+loginUser()
+
+createComplaint()
+
+updateComplaint()
+
+deleteComplaint()
+
+getComplaintById()
+```
+
+Wrong
+
+```
+save()
+
+doStuff()
+
+execute()
+
+work()
+
+run()
+```
+
+---
+
+# Variable Naming
+
+Correct
+
+```
+userRepository
+
+complaintService
+
+currentUser
+
+createdAt
+```
+
+Wrong
+
+```
+x
+
+obj
+
+temp
+
+data1
+```
+
+---
+
+# Constants
+
+Store in
+
+```
+AppConstants.java
+```
+
+Constant format
+
+```
+MAX_FILE_SIZE
+
+DEFAULT_PAGE_SIZE
+
+JWT_EXPIRATION
+```
+
+Never use magic numbers inside business logic.
+
+---
+
+# DTO Rules
+
+Controllers must never expose Entity objects.
+
+Always use DTOs.
+
+Request DTO
+
+```
+RegisterRequest
+```
+
+Response DTO
+
+```
+UserResponse
+```
+
+---
+
+# Entity Rules
+
+Entities represent database tables only.
+
+Never place business logic inside entities.
+
+---
+
+# Service Rules
+
+Business logic belongs only in Service layer.
+
+Controllers must remain thin.
+
+---
+
+# Repository Rules
+
+Repositories must only perform database operations.
+
+No business logic.
+
+---
+
+# Controller Rules
+
+Controllers should:
+
+- Validate request
+- Call service
+- Return response
+
+Controllers should NOT:
+
+- Perform calculations
+- Write SQL
+- Contain business logic
+
+---
+
+# Exception Handling
+
+All exceptions must be handled using
+
+```
+GlobalExceptionHandler
+```
+
+Never expose stack traces.
+
+Always return standard ErrorResponse.
+
+---
+
+# API Response Format
+
+Successful Response
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "message": "Success",
+  "data": {},
+  "timestamp": "2026-07-21T12:00:00Z"
+}
+```
+
+Error Response
+
+```json
+{
+  "timestamp": "2026-07-21T12:00:00Z",
+  "status": 400,
+  "error": "Validation Failed",
+  "message": "Email already exists",
+  "path": "/api/v1/auth/register"
+}
+```
+
+---
+
+# Validation
+
+Always use
+
+- Jakarta Bean Validation
+- Hibernate Validator
+
+Never rely only on frontend validation.
+
+---
+
+# Logging
+
+Use SLF4J.
+
+Correct
+
+```java
+log.info("User registered successfully");
+log.error("Registration failed", exception);
+```
+
+Never use
+
+```java
+System.out.println();
+```
+
+---
+
+# Security Rules
+
+Never hardcode:
+
+- JWT Secret
+- Passwords
+- API Keys
+- Database Credentials
+
+Use environment variables or application configuration.
+
+Passwords must always be stored using BCrypt.
+
+---
+
+# Database Rules
+
+Never write native SQL unless absolutely required.
+
+Prefer Spring Data JPA.
+
+Always use UUID as primary key.
+
+Use soft delete where defined.
+
+---
+
+# API Rules
+
+REST conventions:
+
+GET
+
+POST
+
+PATCH
+
+DELETE
+
+Never create inconsistent endpoints.
+
+Correct
+
+```
+/api/v1/complaints
+/api/v1/users/me
+```
+
+---
+
+# Git Branch Naming
+
+Correct
+
+```
+feature/authentication
+
+feature/complaints
+
+bugfix/login
+
+hotfix/token-expiry
+```
+
+Never commit directly to
+
+```
+main
+```
+
+---
+
+# Commit Message Convention
+
+Format
+
+```
+type(scope): description
+```
+
+Examples
+
+```
+feat(auth): implement JWT authentication
+
+fix(complaints): resolve image upload bug
+
+docs(api): update API specification
+
+refactor(user): simplify profile service
+```
+
+---
+
+# Code Review Checklist
+
+Before every commit verify:
+
+- Builds successfully
+- No compile errors
+- No warnings
+- No unused imports
+- No dead code
+- No duplicated code
+- API specification followed
+- Database schema followed
+- Validation rules followed
+- Business rules followed
+
+---
+
+# Documentation Rules
+
+Whenever a feature is completed, update:
+
+- Files Created
+- Files Modified
+- Database Tables Affected
+- API Endpoints Added
+- Build Status
+
+---
+
+# AI Assistant Rules
+
+AI assistants must:
+
+- Follow frozen architecture
+- Never redesign the project
+- Never rename packages
+- Never modify database schema
+- Never change API specification
+- Ask for approval before architectural changes
+
+If a change is required, provide:
+
+1. Problem
+2. Reason
+3. Impact
+4. Recommendation
+
+Wait for approval before implementation.
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+This document defines the official coding standards for the Jankalyan project and must be followed throughout development.

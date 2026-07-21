@@ -10,3 +10,9 @@ logging:
     com.jankalyan: DEBUG
   file:
     name: logs/jankalyan.log
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:8H9p4wYtL7Xk3jR2qM5vE1zF0aC6bN8rV7uK4mP2sJ5hW3gD9fB6xY1tL0qZ3vN7}
+    expiration-ms: ${JWT_EXPIRATION_MS:900000}
+    refresh-expiration-days: ${JWT_REFRESH_EXPIRATION_DAYS:7}

@@ -1,0 +1,407 @@
+# PROJECT_OVERVIEW.md
+
+# Jankalyan
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+---
+
+# Project Vision
+
+Jankalyan is a civic issue reporting platform designed to bridge the communication gap between citizens and government authorities.
+
+The platform empowers citizens to report public infrastructure problems such as potholes, garbage accumulation, water leakage, streetlight failures, drainage issues, and other civic concerns in a structured, transparent, and trackable manner.
+
+The long-term vision is to build a scalable digital civic engagement platform capable of integrating Artificial Intelligence, analytics, and government workflow automation.
+
+---
+
+# Mission
+
+Enable citizens to:
+
+- Report civic issues easily
+- Track complaint progress
+- Increase public participation
+- Improve transparency
+- Encourage faster resolution of public issues
+
+---
+
+# Problem Statement
+
+Many civic issues remain unresolved because:
+
+- Citizens do not know where to report.
+- Reporting systems are complicated.
+- Complaint tracking is poor.
+- Duplicate reporting exists.
+- Communication with authorities lacks transparency.
+
+Jankalyan addresses these challenges through a centralized reporting platform.
+
+---
+
+# Project Goals
+
+Primary Goals
+
+- Secure user authentication
+- Complaint reporting system
+- Complaint tracking
+- Complaint voting
+- Admin moderation
+- Transparent complaint lifecycle
+
+Secondary Goals
+
+- Scalable architecture
+- Clean codebase
+- Production-ready design
+- Future AI integration
+
+---
+
+# Target Users
+
+## Citizens
+
+Can:
+
+- Register
+- Login
+- Report complaints
+- Upload images
+- Track complaint status
+- Vote on complaints
+- Manage profile
+
+---
+
+## Administrators
+
+Can:
+
+- Review complaints
+- Approve or reject complaints
+- Update complaint status
+- Manage categories
+- View dashboard
+- Moderate platform content
+
+---
+
+# Technology Stack
+
+## Backend
+
+- Java 21
+- Spring Boot 3.x
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- Maven
+- JWT Authentication
+- MySQL
+- Swagger / OpenAPI
+
+---
+
+## Frontend
+
+- React
+- React Router
+- Axios
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+
+---
+
+## Tools
+
+- Git
+- GitHub
+- IntelliJ IDEA
+- VS Code
+- Postman
+- Maven
+
+---
+
+# Architecture
+
+Architecture Pattern
+
+Modular Monolith
+
+Project Structure
+
+Feature-Based Architecture
+
+Design Principles
+
+- SOLID Principles
+- Clean Code
+- Separation of Concerns
+- DTO Pattern
+- Repository Pattern
+- Service Layer
+- Global Exception Handling
+
+---
+
+# Core Features (Version 1)
+
+Authentication
+
+- User Registration
+- Login
+- JWT Authentication
+- Refresh Token
+- Logout
+
+Complaint Management
+
+- Create Complaint
+- View Complaint
+- Edit Complaint
+- Delete Complaint
+- Upload Images
+
+Categories
+
+- Public Categories
+- Department Mapping
+
+Voting
+
+- One Vote Per User
+- Vote Removal
+
+Admin
+
+- Dashboard
+- Complaint Moderation
+- Status Updates
+- Spam Removal
+
+User
+
+- Profile Management
+- Password Change
+- Complaint Tracking
+
+---
+
+# Complaint Lifecycle
+
+SUBMITTED
+
+↓
+
+UNDER_REVIEW
+
+↓
+
+APPROVED
+
+↓
+
+RESOLVED
+
+OR
+
+SUBMITTED
+
+↓
+
+UNDER_REVIEW
+
+↓
+
+REJECTED
+
+---
+
+# Security Features
+
+- JWT Authentication
+- Refresh Token
+- BCrypt Password Hashing
+- Role-Based Authorization
+- Bean Validation
+- Global Exception Handling
+- Secure Cookies
+- Input Validation
+- XSS Protection
+- SQL Injection Prevention
+
+---
+
+# Project Modules
+
+- Authentication
+- User
+- Categories
+- Complaints
+- Votes
+- Admin
+- Common
+- Configuration
+
+---
+
+# Coding Standards
+
+Follow
+
+- SOLID Principles
+- Clean Code
+- Feature-Based Structure
+- DTO Pattern
+- Mapper Pattern
+- Response Wrapper
+- Logging Standards
+
+Avoid
+
+- Hardcoded Secrets
+- Duplicate Code
+- Deprecated APIs
+- Business Logic in Controllers
+
+---
+
+# Documentation
+
+Project documentation includes:
+
+- Database Schema
+- ER Diagram
+- API Specification
+- Business Rules
+- Folder Structure
+- Repository Structure
+- Development Roadmap
+- Authentication Flow
+- Page Flow
+- Validation Rules
+
+All documents are version controlled and frozen.
+
+---
+
+# Future Roadmap (Version 2)
+
+Planned Features
+
+- AI Letter Generation
+- Duplicate Complaint Detection
+- Email Verification
+- Forgot Password
+- Notifications
+- Government Workflow
+- Heat Maps
+- Analytics Dashboard
+- Video Uploads
+- Comments
+- Department Workflow
+- AI Categorization
+
+---
+
+# Development Workflow
+
+Sprint-Based Development
+
+Sprint 1
+
+Backend Foundation
+
+Sprint 2
+
+Authentication Module
+
+Sprint 3
+
+Category Module
+
+Sprint 4
+
+Complaint Module
+
+Sprint 5
+
+Voting Module
+
+Sprint 6
+
+Admin Module
+
+Sprint 7
+
+Frontend Integration
+
+Sprint 8
+
+Testing & Deployment
+
+---
+
+# Version History
+
+Version 1.0
+
+- Backend Foundation
+- Authentication
+- Complaint Management
+- Voting
+- Admin Panel
+- Documentation Freeze
+
+Future versions will extend functionality without breaking Version 1 architecture.
+
+---
+
+# Project Principles
+
+The following project artifacts are frozen and cannot be modified without approval:
+
+- Database Schema
+- ER Diagram
+- API Specification
+- Business Rules
+- Folder Structure
+- Repository Structure
+- Development Roadmap
+- Authentication Flow
+- Validation Rules
+- Page Flow
+
+If a modification is required, the developer must provide:
+
+1. Problem
+2. Reason
+3. Impact
+4. Recommendation
+
+Approval is mandatory before implementation.
+
+---
+
+# License
+
+This project is developed for educational, portfolio, and production learning purposes.
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+This document serves as the official master overview of the Jankalyan project.

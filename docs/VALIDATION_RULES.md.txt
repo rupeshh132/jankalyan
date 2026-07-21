@@ -1,0 +1,512 @@
+# VALIDATION_RULES.md
+
+# Jankalyan Validation Rules
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines all validation rules used throughout the application.
+
+Frontend and Backend validations must remain consistent.
+
+Server-side validation is mandatory.
+
+Client-side validation is only for better user experience.
+
+---
+
+# General Rules
+
+Always
+
+- Trim leading/trailing spaces
+- Reject null values for required fields
+- Reject empty strings
+- Validate before saving to database
+
+Never
+
+- Trust client-side validation
+- Accept malformed data
+
+---
+
+# User Registration Validation
+
+## Full Name
+
+Required
+
+Minimum Length
+
+2 Characters
+
+Maximum Length
+
+100 Characters
+
+Allowed
+
+- Alphabets
+- Spaces
+
+Not Allowed
+
+- Numbers
+- Special Characters
+
+Example
+
+✅ Rupesh Vishwakarma
+
+❌ Rupesh123
+
+---
+
+## Email
+
+Required
+
+Maximum Length
+
+255 Characters
+
+Rules
+
+- Valid email format
+- Unique
+- Converted to lowercase before saving
+
+Example
+
+✅ user@example.com
+
+❌ user@
+
+---
+
+## Mobile Number
+
+Required
+
+Regex
+
+```
+^[6-9]\d{9}$
+```
+
+Length
+
+10 Digits
+
+Unique
+
+Yes
+
+Example
+
+✅ 9876543210
+
+❌ 1234567890
+
+---
+
+## Password
+
+Required
+
+Minimum Length
+
+8 Characters
+
+Maximum Length
+
+20 Characters
+
+Must Contain
+
+- One Uppercase Letter
+- One Lowercase Letter
+- One Number
+- One Special Character
+
+Regex
+
+```
+^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,20}$
+```
+
+Example
+
+✅ Password@123
+
+❌ password
+
+---
+
+## Confirm Password
+
+Required
+
+Must exactly match Password
+
+---
+
+# Login Validation
+
+Email
+
+Required
+
+Password
+
+Required
+
+No additional validation during login.
+
+---
+
+# User Profile
+
+Full Name
+
+Same as Registration
+
+Mobile Number
+
+Same as Registration
+
+Email
+
+Not Editable
+
+Password Change
+
+Current Password Required
+
+New Password must satisfy Password Policy
+
+---
+
+# Complaint Validation
+
+## Title
+
+Required
+
+Minimum Length
+
+5 Characters
+
+Maximum Length
+
+150 Characters
+
+---
+
+## Description
+
+Required
+
+Minimum Length
+
+20 Characters
+
+Maximum Length
+
+2000 Characters
+
+---
+
+## Category
+
+Required
+
+Must exist in Categories table
+
+---
+
+## Images
+
+Required
+
+Minimum
+
+1 Image
+
+Maximum
+
+5 Images
+
+Allowed Formats
+
+- JPG
+- JPEG
+- PNG
+- WEBP
+
+Maximum Size
+
+5 MB per image
+
+---
+
+## Location
+
+Latitude
+
+Required
+
+Range
+
+-90 to +90
+
+Longitude
+
+Required
+
+Range
+
+-180 to +180
+
+---
+
+## Address
+
+Required
+
+Maximum Length
+
+500 Characters
+
+---
+
+## City
+
+Required
+
+Maximum Length
+
+100 Characters
+
+---
+
+## State
+
+Required
+
+Maximum Length
+
+100 Characters
+
+---
+
+## Ward
+
+Optional
+
+Maximum Length
+
+100 Characters
+
+---
+
+## Pincode
+
+Required
+
+Regex
+
+```
+^\d{6}$
+```
+
+---
+
+# Voting Validation
+
+User
+
+Must be logged in
+
+Rules
+
+One vote per complaint
+
+Duplicate votes not allowed
+
+---
+
+# Category Validation
+
+Name
+
+Required
+
+Maximum Length
+
+100 Characters
+
+Unique
+
+Department
+
+Required
+
+Maximum Length
+
+100 Characters
+
+---
+
+# Admin Status Validation
+
+Allowed Status
+
+- SUBMITTED
+- UNDER_REVIEW
+- APPROVED
+- REJECTED
+- RESOLVED
+
+Any other value
+
+Rejected
+
+---
+
+# Search Validation
+
+Maximum Length
+
+100 Characters
+
+Remove leading/trailing spaces
+
+Prevent SQL Injection
+
+---
+
+# Pagination Validation
+
+Minimum Page
+
+1
+
+Minimum Size
+
+1
+
+Maximum Size
+
+50
+
+Default Size
+
+10
+
+---
+
+# File Upload Validation
+
+Allowed Types
+
+- image/jpeg
+- image/png
+- image/webp
+
+Rejected
+
+- PDF
+- ZIP
+- EXE
+- MP4
+- MOV
+
+---
+
+# API Validation
+
+Content-Type
+
+Must match endpoint
+
+Multipart endpoint
+
+multipart/form-data
+
+JSON endpoint
+
+application/json
+
+---
+
+# Security Validation
+
+Always
+
+- Bean Validation
+- Server Validation
+- Escape HTML
+- Prevent XSS
+- Prevent SQL Injection
+
+Never
+
+- Accept raw HTML
+- Accept executable files
+
+---
+
+# Validation Framework
+
+Backend
+
+- Jakarta Bean Validation
+- Hibernate Validator
+
+Frontend
+
+- React Form Validation
+
+---
+
+# Error Response Format
+
+Example
+
+```json
+{
+  "timestamp":"2026-07-21T12:00:00Z",
+  "status":400,
+  "error":"Validation Failed",
+  "message":"Email already exists",
+  "path":"/api/v1/auth/register"
+}
+```
+
+---
+
+# Compliance
+
+Compatible With
+
+- Spring Boot 3.x
+- Hibernate Validator
+- React
+- MySQL
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+This validation specification is officially approved for Version 1.0.

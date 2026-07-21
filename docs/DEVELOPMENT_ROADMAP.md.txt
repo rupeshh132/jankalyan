@@ -1,0 +1,420 @@
+# DEVELOPMENT_ROADMAP.md
+
+# Jankalyan Development Roadmap
+
+**Version:** 1.0
+
+**Status:** 🔒 FROZEN
+
+---
+
+# Purpose
+
+This document defines the official implementation roadmap for the Jankalyan project.
+
+All development must follow the sequence defined in this document.
+
+No sprint order may be changed without explicit approval.
+
+---
+
+# Project Phases
+
+Phase 0 → Planning & Architecture
+
+Phase 1 → Backend Development
+
+Phase 2 → Frontend Development
+
+Phase 3 → Testing & Optimization
+
+Phase 4 → Deployment
+
+---
+
+# Phase 0 — Planning & Architecture
+
+Status: ✅ Completed
+
+Documents
+
+- Database Schema
+- ER Diagram
+- API Specification
+- Business Rules
+- Folder Structure
+- Repository Structure
+- Development Roadmap
+- Authentication Flow
+- Page Flow
+- Status Flow
+- Validation Rules
+- Project Overview
+
+Deliverable
+
+Project Architecture Freeze
+
+---
+
+# Phase 1 — Backend Development
+
+---
+
+## Sprint 1
+
+### Backend Foundation
+
+Status
+
+✅ Completed
+
+Features
+
+- Common DTOs
+- ApiResponse
+- ErrorResponse
+- Global Exception Handler
+- Constants
+- Utility Classes
+- Logging
+- CORS Configuration
+
+Deliverable
+
+Backend Infrastructure Ready
+
+---
+
+## Sprint 2
+
+### Authentication Module
+
+Estimated Time
+
+3–4 Days
+
+Features
+
+- User Registration
+- Login
+- JWT Authentication
+- Refresh Token
+- Logout
+- Password Encryption
+- Spring Security
+- Role Based Authorization
+
+Deliverable
+
+Secure Authentication System
+
+---
+
+## Sprint 3
+
+### User Module
+
+Estimated Time
+
+2 Days
+
+Features
+
+- Current User Profile
+- Update Profile
+- Change Password
+- Profile Image
+
+Deliverable
+
+User Management Complete
+
+---
+
+## Sprint 4
+
+### Category Module
+
+Estimated Time
+
+1 Day
+
+Features
+
+- Category Listing
+- Category CRUD (Admin)
+- Department Mapping
+
+Deliverable
+
+Complaint Categories Ready
+
+---
+
+## Sprint 5
+
+### Complaint Module
+
+Estimated Time
+
+5 Days
+
+Features
+
+- Create Complaint
+- Upload Images
+- Complaint Details
+- Public Complaint Listing
+- Edit Complaint
+- Soft Delete
+- Pagination
+- Search
+- Filter
+- Sorting
+
+Deliverable
+
+Complaint System Complete
+
+---
+
+## Sprint 6
+
+### Voting Module
+
+Estimated Time
+
+1 Day
+
+Features
+
+- Vote Complaint
+- Remove Vote
+- Prevent Duplicate Votes
+
+Deliverable
+
+Voting System Ready
+
+---
+
+## Sprint 7
+
+### Admin Module
+
+Estimated Time
+
+4 Days
+
+Features
+
+- Dashboard
+- Complaint Queue
+- Status Update
+- Statistics
+- Complaint Moderation
+
+Deliverable
+
+Admin Panel Complete
+
+---
+
+# Phase 2 — Frontend Development
+
+---
+
+## Sprint 8
+
+### React Frontend
+
+Estimated Time
+
+7 Days
+
+Pages
+
+Public
+
+- Home
+- Login
+- Register
+- Complaint Feed
+- Complaint Details
+
+Citizen
+
+- Dashboard
+- Report Complaint
+- My Complaints
+- Profile
+
+Admin
+
+- Dashboard
+- Complaint Management
+- Categories
+
+Deliverable
+
+Complete React Frontend
+
+---
+
+# Phase 3 — Testing
+
+---
+
+## Sprint 9
+
+Estimated Time
+
+3 Days
+
+Tasks
+
+- Unit Testing
+- Integration Testing
+- API Testing
+- Validation Testing
+- Security Testing
+- UI Testing
+- Bug Fixing
+
+Deliverable
+
+Production Ready Build
+
+---
+
+# Phase 4 — Deployment
+
+---
+
+## Sprint 10
+
+Estimated Time
+
+2 Days
+
+Backend
+
+- Render / Railway / VPS
+
+Frontend
+
+- Vercel
+
+Database
+
+- PostgreSQL
+
+Deliverables
+
+- Live Backend
+- Live Frontend
+- Production Database
+
+---
+
+# Version 2 Roadmap
+
+The following features are intentionally deferred
+
+- AI Letter Generation
+- Duplicate Complaint Detection
+- Email Verification
+- Forgot Password Email
+- Notifications
+- Government Department Workflow
+- Video Upload
+- Analytics Dashboard
+- Comments
+- Complaint Sharing
+
+---
+
+# Milestones
+
+Milestone 1
+
+Backend Complete
+
+Milestone 2
+
+Frontend Complete
+
+Milestone 3
+
+Testing Complete
+
+Milestone 4
+
+Production Deployment
+
+---
+
+# Quality Checklist
+
+Every Sprint must satisfy
+
+- Build Successful
+- No Compile Errors
+- No Warnings
+- API Documentation Updated
+- Code Reviewed
+- Follows Architecture
+- Documentation Updated
+
+---
+
+# Rules
+
+Do NOT
+
+- Skip Sprints
+- Change Sprint Order
+- Implement V2 Features
+- Modify Frozen Documents
+
+---
+
+# Estimated Timeline
+
+| Phase | Duration |
+|--------|----------|
+| Planning | Completed |
+| Backend | 16–18 Days |
+| Frontend | 7 Days |
+| Testing | 3 Days |
+| Deployment | 2 Days |
+
+Total Estimated Duration
+
+**28–30 Days**
+
+---
+
+# Success Criteria
+
+The project will be considered Version 1.0 Ready only if
+
+- All planned sprints are completed
+- All APIs are functional
+- Frontend is integrated
+- Authentication is secure
+- Documentation is complete
+- Deployment is successful
+
+---
+
+# Freeze Status
+
+Version: 1.0
+
+Status: 🔒 FROZEN
+
+This roadmap is the official execution plan for the Jankalyan project.
+
+No sprint sequence or implementation order may be modified without explicit approval.
