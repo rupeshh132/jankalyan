@@ -24,6 +24,8 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID> {
     
     Optional<Complaint> findByIdAndIsDeletedFalse(UUID id);
     
+    boolean existsByIdAndIsDeletedFalse(UUID id);
+    
     List<Complaint> findByStatus(ComplaintStatus status);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
