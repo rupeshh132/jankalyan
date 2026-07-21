@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
+import LoginPage from '../pages/public/LoginPage';
+import RegisterPage from '../pages/public/RegisterPage';
 
 const AppRoutes = () => {
   return (
@@ -8,8 +10,8 @@ const AppRoutes = () => {
       <Route path="/" element={<AppLayout />}>
         {/* Public Routes */}
         <Route index element={<div>Home Page Placeholder</div>} />
-        <Route path="login" element={<div>Login Page Placeholder</div>} />
-        <Route path="register" element={<div>Register Page Placeholder</div>} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
 
         {/* Citizen Routes */}
         <Route path="dashboard" element={<div>Citizen Dashboard Placeholder</div>} />
