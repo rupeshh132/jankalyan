@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: jankalyan
+
+logging:
+  level:
+    root: INFO
+    com.jankalyan: DEBUG
+  file:
+    name: logs/jankalyan.log
