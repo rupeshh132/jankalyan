@@ -88,6 +88,7 @@ Wait for approval before making any modification.
 | ward | VARCHAR(100) |
 | pincode | VARCHAR(10) |
 | status | ENUM |
+| is_deleted | BOOLEAN (DEFAULT FALSE) |
 | created_at | TIMESTAMP |
 | updated_at | TIMESTAMP |
 
