@@ -28,3 +28,8 @@ Status: IN PROGRESS ⏳
 - Phase 6.1 ✅ COMPLETED
 - Phase 6.2 ✅ COMPLETED
 - Phase 6.3 ✅ COMPLETED
+
+## Sprint 7
+Status: IN PROGRESS ⏳
+
+- Phase 7.1 ✅ COMPLETED
