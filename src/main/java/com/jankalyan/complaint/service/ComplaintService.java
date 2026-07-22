@@ -10,5 +10,6 @@ public interface ComplaintService {
     ComplaintResponse createComplaint(CreateComplaintRequest request);
     ComplaintResponse getComplaintById(UUID id);
     List<ComplaintResponse> getMyComplaints();
+    org.springframework.data.domain.Page<ComplaintResponse> getPublicComplaints(String search, UUID categoryId, com.jankalyan.complaint.entity.ComplaintStatus status, org.springframework.data.domain.Pageable pageable);
     void deleteComplaint(UUID id);
 }

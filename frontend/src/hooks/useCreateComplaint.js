@@ -1,18 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { complaintService } from '../services/complaintService';
-import { useNavigate } from 'react-router-dom';
+import { complaintApi } from '../api/complaintApi';
+import toast from 'react-hot-toast';
 
 export const useCreateComplaint = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: complaintService.createComplaint,
+    mutationFn: (data) => complaintApi.createComplaint(data),
     onSuccess: () => {
+      toast.success('Complaint created successfully!');
       queryClient.invalidateQueries({ queryKey: ['myComplaints'] });
       queryClient.invalidateQueries({ queryKey: ['publicComplaints'] });
-      
-      navigate('/dashboard/complaints');
     },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to create complaint');
+    }
   });
 };

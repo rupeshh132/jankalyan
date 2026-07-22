@@ -12,6 +12,7 @@ import com.jankalyan.complaint.entity.ComplaintStatus;
 import com.jankalyan.complaint.mapper.ComplaintMapper;
 import com.jankalyan.complaint.repository.ComplaintRepository;
 import com.jankalyan.complaint.service.ComplaintService;
+import com.jankalyan.complaint.specification.ComplaintSpecification;
 import com.jankalyan.user.entity.User;
 import com.jankalyan.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +76,14 @@ public class ComplaintServiceImpl implements ComplaintService {
         return complaints.stream()
                 .map(complaintMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public org.springframework.data.domain.Page<ComplaintResponse> getPublicComplaints(String search, UUID categoryId, ComplaintStatus status, org.springframework.data.domain.Pageable pageable) {
+        return complaintRepository.findAll(
+                ComplaintSpecification.getPublicComplaints(search, categoryId, status), 
+                pageable
+        ).map(complaintMapper::toResponse);
     }
 
     @Override

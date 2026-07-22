@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { complaintService } from '../services/complaintService';
+import { complaintApi } from '../api/complaintApi';
 
 export const useComplaintDetails = (id) => {
   return useQuery({
     queryKey: ['complaint', id],
-    queryFn: () => complaintService.getComplaintDetails(id),
+    queryFn: () => complaintApi.getComplaintById(id),
     enabled: !!id,
   });
 };

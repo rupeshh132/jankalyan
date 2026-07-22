@@ -4,6 +4,7 @@ import com.jankalyan.complaint.entity.Complaint;
 import com.jankalyan.complaint.entity.ComplaintStatus;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.Lock;
@@ -16,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ComplaintRepository extends JpaRepository<Complaint, UUID> {
+public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, JpaSpecificationExecutor<Complaint> {
     List<Complaint> findByUserId(UUID userId);
     
     @EntityGraph(attributePaths = {"category"})
@@ -40,6 +41,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID> {
 
     @EntityGraph(attributePaths = {"category"})
     org.springframework.data.domain.Page<Complaint> findAll(org.springframework.data.domain.Pageable pageable);
+
+    @EntityGraph(attributePaths = {"category"})
+    org.springframework.data.domain.Page<Complaint> findByIsDeletedFalse(org.springframework.data.domain.Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT c FROM Complaint c WHERE c.id = :id")

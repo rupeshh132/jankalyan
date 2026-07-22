@@ -1,11 +1,12 @@
 import React from 'react';
+import SkeletonCard from './SkeletonCard';
 import './complaint.css';
 
 const LoadingSkeleton = ({ count = 3 }) => {
   return (
-    <div className="loading-skeleton">
+    <div className="complaint-list-container">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="skeleton-card"></div>
+        <SkeletonCard key={i} />
       ))}
     </div>
   );

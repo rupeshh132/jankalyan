@@ -1,0 +1,391 @@
+# Jankalyan – Future Features Roadmap
+
+> This document contains features intentionally postponed after the v1.0 release.
+> These are NOT bugs. They are planned enhancements for future versions.
+
+---
+
+# Version 1.0 (Current Release)
+
+## Status
+
+- Production Ready
+- Authentication Complete
+- Complaint Module
+- Admin Module
+- Docker Deployment
+- CI/CD
+- Security
+- Documentation
+
+---
+
+# Version 1.1 – Core Enhancements
+
+## Complaint Module
+
+### Edit Complaint
+Status: Planned
+
+Reason:
+The current backend does not expose an Update Complaint endpoint.
+
+Future Work:
+- Add PUT/PATCH /api/v1/complaints/{id}
+- Allow owner to edit complaint
+- Replace images
+- Update location
+- Update category
+- Update description
+- Maintain audit history
+
+---
+
+### Bookmark Complaint
+
+Users can save complaints for later.
+
+Features:
+- Bookmark
+- Remove Bookmark
+- My Bookmarks page
+
+---
+
+### Share Complaint
+
+Allow sharing complaints.
+
+Support:
+
+- Copy Link
+- WhatsApp
+- Facebook
+- X (Twitter)
+- Telegram
+- LinkedIn
+
+---
+
+### Complaint Map
+
+Interactive map showing all complaints.
+
+Possible integrations:
+
+- Leaflet
+- OpenStreetMap
+- Google Maps
+
+Features:
+
+- Marker clustering
+- Filter by category
+- Filter by status
+- Nearby complaints
+
+---
+
+# Version 1.2 – Authentication Improvements
+
+## Email Verification OTP
+
+Features:
+
+- OTP during registration
+- 6-digit OTP
+- 5-minute expiry
+- Resend OTP
+- Rate limiting
+
+---
+
+## Forgot Password OTP
+
+Features:
+
+- Email verification
+- OTP verification
+- Secure password reset
+
+---
+
+## Two-Factor Authentication (2FA)
+
+Optional security layer.
+
+Flow:
+
+Email
+↓
+
+Password
+↓
+
+OTP
+↓
+
+Dashboard
+
+---
+
+## Google Login
+
+OAuth2 Authentication
+
+---
+
+## GitHub Login
+
+OAuth2 Authentication
+
+Useful for developers.
+
+---
+
+## Remember Me
+
+Persistent login.
+
+---
+
+## Session Management
+
+Users can:
+
+- View active sessions
+- Logout from other devices
+
+---
+
+## Login History
+
+Store:
+
+- Device
+- Browser
+- IP
+- Login Time
+
+---
+
+## Account Lock
+
+Security Features:
+
+- Lock after multiple failed attempts
+- Temporary suspension
+- Unlock via email
+
+---
+
+# Version 1.3 – Notifications
+
+## Email Notifications
+
+Notify users when:
+
+- Complaint approved
+- Complaint rejected
+- Complaint resolved
+- Admin updates status
+
+---
+
+## Push Notifications
+
+Future:
+
+- Firebase Cloud Messaging
+
+---
+
+## In-App Notifications
+
+Notification center inside dashboard.
+
+---
+
+# Version 1.4 – Community Features
+
+## Comments
+
+Users can discuss complaints.
+
+---
+
+## Replies
+
+Nested comments.
+
+---
+
+## Mentions
+
+@username support.
+
+---
+
+## Complaint Following
+
+Users receive updates for selected complaints.
+
+---
+
+## Reputation System
+
+Gamification.
+
+Examples:
+
+- Top Contributor
+- Civic Hero
+- Active Citizen
+
+---
+
+# Version 1.5 – Analytics
+
+## Personal Dashboard
+
+Statistics:
+
+- Complaints submitted
+- Resolved
+- Pending
+- Votes received
+
+---
+
+## City Analytics
+
+Charts:
+
+- Category distribution
+- Monthly complaints
+- Resolution rate
+- Heatmap
+
+---
+
+# Version 1.6 – Admin Improvements
+
+## Bulk Operations
+
+- Bulk approve
+- Bulk reject
+- Bulk assign
+
+---
+
+## Export
+
+- CSV
+- Excel
+- PDF
+
+---
+
+## Advanced Search
+
+Filters:
+
+- Category
+- Status
+- Date
+- Area
+- User
+
+---
+
+# Version 1.7 – AI Features
+
+## AI Complaint Categorization
+
+Automatically classify complaint category.
+
+---
+
+## AI Duplicate Detection
+
+Warn if similar complaint already exists.
+
+---
+
+## AI Complaint Summary
+
+Generate concise summaries.
+
+---
+
+## AI Priority Prediction
+
+Estimate complaint urgency.
+
+---
+
+# Version 2.0 – Enterprise Features
+
+## Multi-City Support
+
+Single platform for multiple cities.
+
+---
+
+## Government Department Dashboard
+
+Separate dashboards for:
+
+- PWD
+- Electricity
+- Water
+- Police
+- Municipality
+
+---
+
+## SLA Tracking
+
+Track response deadlines.
+
+---
+
+## Escalation Engine
+
+Automatically escalate overdue complaints.
+
+---
+
+## Public Transparency Dashboard
+
+Display:
+
+- Resolution rates
+- Department performance
+- Monthly reports
+
+---
+
+# Deferred Features (Not Included in v1.0)
+
+- Edit Complaint
+- Email OTP
+- Forgot Password OTP
+- Google Login
+- GitHub Login
+- Two-Factor Authentication
+- Interactive Maps
+- Bookmarks
+- Sharing
+- Comments
+- Notifications
+- Analytics
+- AI Features
+
+---
+
+# Notes
+
+These features are intentionally deferred to keep Jankalyan v1.0 stable, production-ready, and focused on the core civic complaint workflow.
+
+Future implementations must preserve the existing architecture and follow the project's frozen API and coding standards unless a new major version explicitly requires architectural changes.

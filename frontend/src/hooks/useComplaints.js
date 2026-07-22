@@ -1,16 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { complaintService } from '../services/complaintService';
+import { complaintApi } from '../api/complaintApi';
 
 export const useMyComplaints = (page = 0, size = 10) => {
   return useQuery({
     queryKey: ['myComplaints', page, size],
-    queryFn: () => complaintService.getComplaints(page, size),
+    queryFn: () => complaintApi.getMyComplaints(page, size),
   });
 };
 
-export const usePublicComplaints = (page = 0, size = 10) => {
+export const usePublicComplaints = (params = {}) => {
   return useQuery({
-    queryKey: ['publicComplaints', page, size],
-    queryFn: () => complaintService.getPublicComplaints(page, size),
+    queryKey: ['publicComplaints', params],
+    queryFn: () => complaintApi.getAllComplaints(params),
+    keepPreviousData: true,
   });
 };

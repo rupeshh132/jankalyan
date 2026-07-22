@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/jankalyan_dev?createDatabaseIfNotExist=true
-    username: root
-    password: password # Replace with secure environment variable in actual environment
+    url: ${DB_URL:jdbc:mysql://localhost:3306/jankalyan_dev?createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,3 +14,8 @@ spring:
 
 server:
   port: 8080
+
+spring.jpa.show-sql: true
+spring.jpa.properties.hibernate.format_sql: true
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.orm.jdbc.bind: TRACE

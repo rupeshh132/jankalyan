@@ -3,8 +3,10 @@ package com.jankalyan.complaint.controller;
 import com.jankalyan.common.dto.ApiResponse;
 import com.jankalyan.complaint.dto.request.CreateComplaintRequest;
 import com.jankalyan.complaint.dto.response.ComplaintResponse;
+import com.jankalyan.complaint.entity.ComplaintStatus;
 import com.jankalyan.complaint.service.ComplaintService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,26 @@ public class ComplaintController {
                 .build();
                 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @Operation(summary = "Get public complaints", description = "Fetch a paginated list of all publicly visible complaints with optional filtering")
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<ComplaintResponse>>> getComplaints(
+            @Parameter(description = "Search across title, description, address, and category name") @RequestParam(required = false) String search,
+            @Parameter(description = "Filter by specific Category UUID") @RequestParam(required = false) UUID categoryId,
+            @Parameter(description = "Filter by complaint status (e.g., SUBMITTED, IN_PROGRESS, RESOLVED, REJECTED)") @RequestParam(required = false) ComplaintStatus status,
+            org.springframework.data.domain.Pageable pageable) {
+            
+        org.springframework.data.domain.Page<ComplaintResponse> data = complaintService.getPublicComplaints(search, categoryId, status, pageable);
+        
+        ApiResponse<org.springframework.data.domain.Page<ComplaintResponse>> response = ApiResponse.<org.springframework.data.domain.Page<ComplaintResponse>>builder()
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("Complaints retrieved successfully")
+                .data(data)
+                .build();
+                
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

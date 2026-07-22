@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { adminService } from '../services/adminService';
+import { adminApi } from '../api/adminApi';
 
-export const useAdminComplaints = (page = 0, size = 10) => {
+export const useAdminComplaints = (page = 0, size = 10, status = null) => {
   return useQuery({
-    queryKey: ['adminComplaints', page, size],
-    queryFn: () => adminService.getComplaints(page, size),
+    queryKey: ['adminComplaints', page, size, status],
+    queryFn: () => adminApi.getAllComplaints(page, size, status),
   });
 };

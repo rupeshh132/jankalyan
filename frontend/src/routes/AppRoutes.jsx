@@ -1,9 +1,9 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import LoginPage from '../pages/public/LoginPage';
 import RegisterPage from '../pages/public/RegisterPage';
 import HomePage from '../pages/public/HomePage';
+import PublicComplaintsPage from '../pages/public/PublicComplaintsPage';
 import PublicComplaintDetailsPage from '../pages/public/PublicComplaintDetailsPage';
 import DashboardPage from '../pages/citizen/DashboardPage';
 import MyComplaintsPage from '../pages/citizen/MyComplaintsPage';
@@ -12,6 +12,7 @@ import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
 import ComplaintManagementPage from '../pages/admin/ComplaintManagementPage';
 import AdminRoute from './AdminRoute';
 import ProtectedRoute from './ProtectedRoute';
+import GuestRoute from './GuestRoute';
 
 const AppRoutes = () => {
   return (
@@ -19,9 +20,12 @@ const AppRoutes = () => {
       <Route path="/" element={<AppLayout />}>
         {/* Public Routes */}
         <Route index element={<HomePage />} />
+        <Route path="complaints" element={<PublicComplaintsPage />} />
         <Route path="complaints/:complaintId" element={<PublicComplaintDetailsPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
+        <Route element={<GuestRoute />}>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+        </Route>
 
         {/* Citizen Routes */}
         <Route path="dashboard" element={<ProtectedRoute />}>

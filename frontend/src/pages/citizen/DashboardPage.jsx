@@ -7,7 +7,7 @@ import '../../components/auth/auth.css';
 
 const DashboardPage = () => {
   const [page, setPage] = useState(0);
-  const { data, isLoading, isError, error } = usePublicComplaints(page, 10);
+  const { data, isLoading, isError, error, refetch } = usePublicComplaints(page, 10);
 
   return (
     <div className="page-container">
@@ -23,6 +23,7 @@ const DashboardPage = () => {
         isError={isError} 
         error={error} 
         onPageChange={setPage} 
+        refetch={refetch}
       />
     </div>
   );
