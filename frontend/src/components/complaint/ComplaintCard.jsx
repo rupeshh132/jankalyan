@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ComplaintStatusBadge from './ComplaintStatusBadge';
 import { MapPin, Calendar } from 'lucide-react';
 import './complaint.css';
@@ -14,27 +15,29 @@ const ComplaintCard = ({ complaint }) => {
   };
 
   return (
-    <div className="complaint-card">
-      <div className="complaint-header">
-        <h3 className="complaint-title">{complaint.title || 'Untitled'}</h3>
-        <ComplaintStatusBadge status={complaint.status} />
-      </div>
-      
-      <div className="complaint-description">
-        {complaint.description}
-      </div>
-      
-      <div className="complaint-footer">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <MapPin size={14} />
-          <span>{complaint.city || 'Unknown City'}</span>
+    <Link to={`/complaints/${complaint.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+      <div className="complaint-card">
+        <div className="complaint-header">
+          <h3 className="complaint-title">{complaint.title || 'Untitled'}</h3>
+          <ComplaintStatusBadge status={complaint.status} />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Calendar size={14} />
-          <span>{formatDate(complaint.createdAt)}</span>
+        
+        <div className="complaint-description">
+          {complaint.description}
+        </div>
+        
+        <div className="complaint-footer">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <MapPin size={14} />
+            <span>{complaint.city || 'Unknown City'}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Calendar size={14} />
+            <span>{formatDate(complaint.createdAt)}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

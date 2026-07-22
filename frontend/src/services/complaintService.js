@@ -16,5 +16,9 @@ export const complaintService = {
   getCategories: async () => {
     const response = await api.get('/categories');
     return response.data;
+  },
+  getComplaintDetails: async (id) => {
+    const response = await api.get(`/complaints/${id}`);
+    return response.data;
   }
 };
