@@ -3,6 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import LoginPage from '../pages/public/LoginPage';
 import RegisterPage from '../pages/public/RegisterPage';
+import DashboardPage from '../pages/citizen/DashboardPage';
+import MyComplaintsPage from '../pages/citizen/MyComplaintsPage';
+import ReportComplaintPage from '../pages/citizen/ReportComplaintPage';
 
 const AppRoutes = () => {
   return (
@@ -14,7 +17,11 @@ const AppRoutes = () => {
         <Route path="register" element={<RegisterPage />} />
 
         {/* Citizen Routes */}
-        <Route path="dashboard" element={<div>Citizen Dashboard Placeholder</div>} />
+        <Route path="dashboard">
+          <Route index element={<DashboardPage />} />
+          <Route path="complaints" element={<MyComplaintsPage />} />
+          <Route path="report" element={<ReportComplaintPage />} />
+        </Route>
 
         {/* Admin Routes */}
         <Route path="admin">
