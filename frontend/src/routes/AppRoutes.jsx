@@ -6,6 +6,9 @@ import RegisterPage from '../pages/public/RegisterPage';
 import DashboardPage from '../pages/citizen/DashboardPage';
 import MyComplaintsPage from '../pages/citizen/MyComplaintsPage';
 import ReportComplaintPage from '../pages/citizen/ReportComplaintPage';
+import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
+import ComplaintManagementPage from '../pages/admin/ComplaintManagementPage';
+import AdminRoute from './AdminRoute';
 
 const AppRoutes = () => {
   return (
@@ -24,8 +27,9 @@ const AppRoutes = () => {
         </Route>
 
         {/* Admin Routes */}
-        <Route path="admin">
-          <Route index element={<div>Admin Dashboard Placeholder</div>} />
+        <Route path="admin" element={<AdminRoute />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="complaints" element={<ComplaintManagementPage />} />
         </Route>
       </Route>
     </Routes>
