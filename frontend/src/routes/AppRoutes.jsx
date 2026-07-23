@@ -4,6 +4,10 @@ import LoginPage from '../pages/public/LoginPage';
 import RegisterPage from '../pages/public/RegisterPage';
 import HomePage from '../pages/public/HomePage';
 import HowItWorksPage from '../pages/public/HowItWorksPage';
+import FeaturesPage from '../pages/public/FeaturesPage';
+import AboutPage from '../pages/public/AboutPage';
+import ContactPage from '../pages/public/ContactPage';
+import HelpCenterPage from '../pages/public/HelpCenterPage';
 import PublicComplaintsPage from '../pages/public/PublicComplaintsPage';
 import PublicComplaintDetailsPage from '../pages/public/PublicComplaintDetailsPage';
 import DashboardPage from '../pages/citizen/DashboardPage';
@@ -29,6 +33,10 @@ const AppRoutes = () => {
         <Route path="complaints" element={<PublicComplaintsPage />} />
         <Route path="complaints/:complaintId" element={<PublicComplaintDetailsPage />} />
         <Route path="how-it-works" element={<HowItWorksPage />} />
+        <Route path="features" element={<FeaturesPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="help" element={<HelpCenterPage />} />
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />

@@ -103,15 +103,15 @@ const ComplaintStatusModal = ({ complaint, onClose }) => {
         {error && <div className="auth-error">{error.message}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div className="auth-form-group">
-            <label className="auth-label">Status</label>
+          <div className="modal-form-group">
+            <label className="modal-label">Status</label>
             {validStatuses.length === 0 ? (
-              <div className="auth-input" style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)' }}>
+              <div className="modal-input" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
                 Terminal Status
               </div>
             ) : (
               <select
-                className="auth-input"
+                className="modal-input"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
                 disabled={isPending}
@@ -123,11 +123,11 @@ const ComplaintStatusModal = ({ complaint, onClose }) => {
             )}
           </div>
 
-          <div className="auth-form-group">
-            <label className="auth-label">Admin Comments (Optional)</label>
+          <div className="modal-form-group">
+            <label className="modal-label">Admin Comments (Optional)</label>
             <textarea
-              className="auth-input"
-              style={{ minHeight: '80px', resize: 'vertical' }}
+              className="modal-input"
+              style={{ minHeight: '100px', resize: 'vertical' }}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               placeholder="Reason for status change..."
@@ -136,10 +136,10 @@ const ComplaintStatusModal = ({ complaint, onClose }) => {
           </div>
 
           <div className="modal-footer">
-            <button type="button" className="btn-secondary" onClick={onClose} disabled={isPending}>
+            <button type="button" className="modal-btn-secondary" onClick={onClose} disabled={isPending}>
               Cancel
             </button>
-            <button type="submit" className="auth-button" style={{ width: 'auto', margin: 0 }} disabled={isPending || validStatuses.length === 0}>
+            <button type="submit" className="modal-btn-primary" disabled={isPending || validStatuses.length === 0}>
               {isPending ? <Loader2 className="animate-spin" size={18} /> : 'Save Changes'}
             </button>
           </div>

@@ -19,7 +19,7 @@ const ComplaintManagementPage = () => {
         <AdminLoadingSkeleton type="table" />
       ) : isError ? (
         <div className="auth-error">Error loading complaints: {error.message}</div>
-      ) : !data?.data?.content?.length ? (
+      ) : !data?.content?.length ? (
         <AdminEmptyState message="No complaints found in the system." />
       ) : (
         <ComplaintTable data={data} onPageChange={setPage} />

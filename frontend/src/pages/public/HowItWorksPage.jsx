@@ -1,6 +1,7 @@
 import React from 'react';
 import { UserPlus, FileEdit, Activity, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const HowItWorksPage = () => {
   const steps = [
@@ -34,6 +35,23 @@ const HowItWorksPage = () => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.15 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { type: "tween", ease: "easeOut", duration: 0.5 }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -48,21 +66,36 @@ const HowItWorksPage = () => {
           />
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl">
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl"
+          >
             How to use <span className="text-primary">JanKalyan</span>
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+            className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto"
+          >
             Your voice matters. Learn how to report issues in your community and get them resolved quickly through our transparent and secure platform.
-          </p>
+          </motion.p>
         </div>
       </div>
 
       {/* Steps Section */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
         <div className="mx-auto max-w-2xl lg:max-w-4xl">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+          <motion.dl 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2"
+          >
             {steps.map((step) => (
-              <div key={step.id} className="flex flex-col bg-card border border-border p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+              <motion.div variants={itemVariants} key={step.id} className="flex flex-col bg-card border border-border p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                   <step.icon className="w-32 h-32" />
                 </div>
@@ -75,13 +108,18 @@ const HowItWorksPage = () => {
                 <dd className="mt-6 flex flex-auto flex-col text-base leading-7 text-muted-foreground">
                   <p className="flex-auto relative z-10">{step.description}</p>
                 </dd>
-              </div>
+              </motion.div>
             ))}
-          </dl>
+          </motion.dl>
         </div>
 
         {/* CTA Section */}
-        <div className="mt-24 text-center bg-primary/5 rounded-3xl p-10 border border-primary/10">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+          className="mt-24 text-center bg-primary/5 rounded-3xl p-10 border border-primary/10"
+        >
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-6">
             Ready to make a difference?
           </h2>
@@ -100,7 +138,7 @@ const HowItWorksPage = () => {
               View Public Board <span aria-hidden="true">→</span>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

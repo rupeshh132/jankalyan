@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ComplaintImageServiceImpl implements ComplaintImageService {
 
     private final ComplaintImageRepository complaintImageRepository;
@@ -119,6 +118,7 @@ public class ComplaintImageServiceImpl implements ComplaintImageService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ComplaintImageResponse> getImages(UUID complaintId) {
         List<ComplaintImage> images = complaintImageRepository.findByComplaintIdOrderByCreatedAtAsc(complaintId);
         return images.stream()

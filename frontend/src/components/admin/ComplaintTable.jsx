@@ -10,7 +10,7 @@ const ComplaintTable = ({ data, onPageChange }) => {
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const { mutate: deleteComplaint, isPending: isDeleting } = useDeleteComplaint();
 
-  const pageData = data?.data;
+  const pageData = data;
   const content = pageData?.content || [];
 
   const handleDelete = (id) => {

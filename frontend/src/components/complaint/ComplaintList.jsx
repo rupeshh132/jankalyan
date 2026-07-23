@@ -21,12 +21,9 @@ const ComplaintList = ({ isLoading, isError, error, data, onPageChange, refetch 
     );
   }
 
-  // Handle ApiResponse standard format
-  const responseData = data?.data;
-  
-  // Distinguish between List response (/my) and Page response (public)
-  const isPage = responseData && responseData.content !== undefined;
-  const content = isPage ? responseData.content : (Array.isArray(responseData) ? responseData : []);
+  // data is already the payload (Page object or Array) because complaintApi extracts response.data.data
+  const isPage = data && data.content !== undefined;
+  const content = isPage ? data.content : (Array.isArray(data) ? data : []);
 
   if (!content.length) return <EmptyState />;
 
@@ -39,10 +36,10 @@ const ComplaintList = ({ isLoading, isError, error, data, onPageChange, refetch 
       </div>
       
       {/* Pagination controls */}
-      {isPage && responseData.totalPages > 1 && (
+      {isPage && data.totalPages > 1 && (
         <Pagination 
-          currentPage={responseData.pageable?.pageNumber || 0}
-          totalPages={responseData.totalPages}
+          currentPage={data.pageable?.pageNumber || 0}
+          totalPages={data.totalPages}
           onPageChange={onPageChange}
         />
       )}

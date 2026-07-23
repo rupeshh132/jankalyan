@@ -123,7 +123,7 @@
 }
 
 .modal-content {
-  background: var(--surface);
+  background: var(--bg-card);
   border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: var(--radius);
   padding: 2rem;
@@ -182,3 +182,74 @@
 .admin-filters .filter-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none; } 
 .admin-filters .filter-select { appearance: none; padding: 0.75rem 2.5rem 0.75rem 2.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius); color: var(--text-primary); font-size: 0.95rem; min-width: 150px; cursor: pointer; } 
 .admin-filters .filter-select option { background: var(--surface, #1e1e1e); color: var(--text-primary); }
+
+/* Modal Form Styles */
+.modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.modal-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.modal-btn-primary {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.modal-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.modal-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-btn-secondary {
+  background: rgba(128, 128, 128, 0.1);
+  color: var(--text-primary);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.modal-btn-secondary:hover:not(:disabled) {
+  background: rgba(128, 128, 128, 0.2);
+}
