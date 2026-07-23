@@ -31,4 +31,5 @@ public class ComplaintResponse {
     private ComplaintStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isAnonymous;
 }

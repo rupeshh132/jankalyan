@@ -5,7 +5,10 @@ import com.jankalyan.admin.dto.response.AdminDashboardResponse;
 import com.jankalyan.admin.service.AdminService;
 import com.jankalyan.common.dto.ApiResponse;
 import com.jankalyan.complaint.dto.response.ComplaintResponse;
+import com.jankalyan.admin.dto.response.AdminComplaintDetailResponse;
+import com.jankalyan.complaint.entity.ComplaintStatus;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,14 +44,31 @@ public class AdminController {
 
     @GetMapping("/complaints")
     @Operation(summary = "Get all complaints", description = "Retrieves a paginated list of all complaints, including soft-deleted ones")
-    public ResponseEntity<ApiResponse<Page<ComplaintResponse>>> getComplaints(Pageable pageable) {
-        Page<ComplaintResponse> complaints = adminService.getComplaints(pageable);
+    public ResponseEntity<ApiResponse<Page<ComplaintResponse>>> getComplaints(
+            @Parameter(description = "Search across title, description, address, category, and user info") @RequestParam(required = false) String search,
+            @Parameter(description = "Filter by specific Category UUID") @RequestParam(required = false) UUID categoryId,
+            @Parameter(description = "Filter by complaint status") @RequestParam(required = false) ComplaintStatus status,
+            Pageable pageable) {
+        Page<ComplaintResponse> complaints = adminService.getComplaints(search, categoryId, status, pageable);
         
         return ResponseEntity.ok(ApiResponse.<Page<ComplaintResponse>>builder()
                 .success(true)
                 .status(200)
                 .message("Complaints retrieved successfully")
                 .data(complaints)
+                .build());
+    }
+
+    @GetMapping("/complaints/{complaintId}")
+    @Operation(summary = "Get complaint details for admin", description = "Retrieves complaint details including full status history and remarks")
+    public ResponseEntity<ApiResponse<AdminComplaintDetailResponse>> getComplaintDetails(@PathVariable UUID complaintId) {
+        AdminComplaintDetailResponse details = adminService.getComplaintDetailsForAdmin(complaintId);
+        
+        return ResponseEntity.ok(ApiResponse.<AdminComplaintDetailResponse>builder()
+                .success(true)
+                .status(200)
+                .message("Complaint details retrieved successfully")
+                .data(details)
                 .build());
     }
 

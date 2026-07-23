@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loader2, AlertTriangle, X } from 'lucide-react';
 import './complaint.css';
-import '../../components/auth/auth.css';
+
 
 const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, isPending, title }) => {
   if (!isOpen) return null;

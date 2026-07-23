@@ -10,7 +10,7 @@ import {
 import { usePublicComplaints } from '../../hooks/useComplaints';
 import ComplaintList from '../../components/complaint/ComplaintList';
 import '../../components/complaint/complaint.css';
-import '../../components/auth/auth.css';
+
 import './Hero.css';
 
 const HomePage = () => {

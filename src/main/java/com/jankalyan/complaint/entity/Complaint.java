@@ -68,6 +68,10 @@ public class Complaint {
     @Builder.Default
     private boolean isDeleted = false;
 
+    @Column(name = "is_anonymous", nullable = false)
+    @Builder.Default
+    private boolean isAnonymous = false;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

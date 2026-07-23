@@ -7,10 +7,12 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: jankalyan_db
-      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}
-      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       # If root password isn't provided via env, we generate a random one to secure the db
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:

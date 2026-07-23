@@ -9,7 +9,6 @@ import LoadingSkeleton from '../../components/complaint/LoadingSkeleton';
 import DeleteConfirmModal from '../../components/complaint/DeleteConfirmModal';
 import { ArrowLeft, MapPin, Calendar, Hash, FolderOpen, ThumbsUp, Trash2 } from 'lucide-react';
 import '../../components/complaint/complaint.css';
-import '../../components/auth/auth.css';
 
 const PublicComplaintDetailsPage = () => {
   const { complaintId } = useParams();
@@ -64,13 +63,22 @@ const PublicComplaintDetailsPage = () => {
         </Link>
 
         {isOwner && (
-          <button 
-            className="auth-button" 
-            style={{ width: 'auto', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid #ef4444' }} 
-            onClick={() => setIsDeleteModalOpen(true)}
-          >
-            <Trash2 size={16} style={{ marginRight: '8px' }} /> Delete
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <Link 
+              to={`/dashboard/complaints/${complaint.id}/edit`}
+              className="auth-button" 
+              style={{ width: 'auto', background: 'rgba(255, 255, 255, 0.1)', color: 'var(--text-primary)', border: '1px solid rgba(255, 255, 255, 0.2)', textDecoration: 'none' }} 
+            >
+              Edit
+            </Link>
+            <button 
+              className="auth-button" 
+              style={{ width: 'auto', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid #ef4444' }} 
+              onClick={() => setIsDeleteModalOpen(true)}
+            >
+              <Trash2 size={16} style={{ marginRight: '8px' }} /> Delete
+            </button>
+          </div>
         )}
       </div>
 

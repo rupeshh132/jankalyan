@@ -54,4 +54,46 @@ public class ComplaintSpecification {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
+
+    public static Specification<Complaint> getAdminComplaints(String search, UUID categoryId, ComplaintStatus status) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            // Search filter
+            if (StringUtils.hasText(search)) {
+                String searchPattern = "%" + search.toLowerCase() + "%";
+                
+                // Join category to search by category name
+                Join<Object, Object> categoryJoin = root.join("category", JoinType.LEFT);
+                Join<Object, Object> userJoin = root.join("user", JoinType.LEFT);
+
+                Predicate titleMatch = criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), searchPattern);
+                Predicate descMatch = criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), searchPattern);
+                Predicate addressMatch = criteriaBuilder.like(criteriaBuilder.lower(root.get("address")), searchPattern);
+                Predicate categoryNameMatch = criteriaBuilder.like(criteriaBuilder.lower(categoryJoin.get("name")), searchPattern);
+                Predicate userEmailMatch = criteriaBuilder.like(criteriaBuilder.lower(userJoin.get("email")), searchPattern);
+                Predicate userNameMatch = criteriaBuilder.like(criteriaBuilder.lower(userJoin.get("fullName")), searchPattern);
+
+                predicates.add(criteriaBuilder.or(titleMatch, descMatch, addressMatch, categoryNameMatch, userEmailMatch, userNameMatch));
+            }
+
+            // Category ID filter
+            if (categoryId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("category").get("id"), categoryId));
+            }
+
+            // Status filter
+            if (status != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), status));
+            }
+
+            // Optimization for N+1 when retrieving Page content
+            if (query.getResultType() != Long.class && query.getResultType() != long.class) {
+                root.fetch("category", JoinType.LEFT);
+                root.fetch("user", JoinType.LEFT);
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
 }

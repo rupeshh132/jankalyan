@@ -44,4 +44,6 @@ public class CreateComplaintRequest {
     
     @Size(max = 10, message = "Pincode cannot exceed 10 characters")
     private String pincode;
+    
+    private boolean isAnonymous;
 }

@@ -8,4 +8,5 @@ public interface RefreshTokenService {
     RefreshToken createRefreshToken(User user);
     RefreshToken verifyExpiration(RefreshToken token);
     void deleteByUserId(UUID userId);
+    void delete(RefreshToken token);
 }

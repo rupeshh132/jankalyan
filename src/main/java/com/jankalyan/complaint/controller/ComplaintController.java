@@ -76,6 +76,24 @@ public class ComplaintController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Update an existing complaint", description = "Update a complaint by its UUID (Owner only)")
+    public ResponseEntity<ApiResponse<ComplaintResponse>> updateComplaint(
+            @PathVariable UUID id,
+            @Valid @RequestBody com.jankalyan.complaint.dto.request.UpdateComplaintRequest request) {
+        
+        ComplaintResponse data = complaintService.updateComplaint(id, request);
+        
+        ApiResponse<ComplaintResponse> response = ApiResponse.<ComplaintResponse>builder()
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("Complaint updated successfully")
+                .data(data)
+                .build();
+                
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/my")
     @Operation(summary = "Get my complaints", description = "Fetch all complaints created by the authenticated user")
     public ResponseEntity<ApiResponse<List<ComplaintResponse>>> getMyComplaints() {

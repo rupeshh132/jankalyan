@@ -24,6 +24,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Transactional
     public RefreshToken createRefreshToken(User user) {
         refreshTokenRepository.deleteByUserId(user.getId());
+        refreshTokenRepository.flush();
         
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
@@ -47,5 +48,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Transactional
     public void deleteByUserId(UUID userId) {
         refreshTokenRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    @Transactional
+    public void delete(RefreshToken token) {
+        refreshTokenRepository.delete(token);
     }
 }

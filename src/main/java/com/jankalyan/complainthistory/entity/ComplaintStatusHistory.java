@@ -41,4 +41,7 @@ public class ComplaintStatusHistory {
     @CreationTimestamp
     @Column(name = "changed_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "remarks", columnDefinition = "TEXT")
+    private String remarks;
 }

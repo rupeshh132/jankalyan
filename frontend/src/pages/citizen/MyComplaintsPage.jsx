@@ -3,7 +3,7 @@ import { useMyComplaints } from '../../hooks/useComplaints';
 import ComplaintList from '../../components/complaint/ComplaintList';
 import { Link } from 'react-router-dom';
 import '../../components/complaint/complaint.css';
-import '../../components/auth/auth.css';
+
 
 const MyComplaintsPage = () => {
   const [page, setPage] = useState(0);

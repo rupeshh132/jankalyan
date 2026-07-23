@@ -172,3 +172,13 @@
 .btn-secondary:hover {
   background: rgba(128, 128, 128, 0.3);
 }
+
+.filters-container.admin-filters { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; justify-content: space-between; } 
+.admin-filters .search-box { flex: 1; min-width: 250px; position: relative; } 
+.admin-filters .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); } 
+.admin-filters .search-input { width: 100%; padding: 0.75rem 1rem 0.75rem 3rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius); color: var(--text-primary); font-size: 0.95rem; } 
+.admin-filters .filter-dropdowns { display: flex; gap: 1rem; flex-wrap: wrap; } 
+.admin-filters .filter-group { position: relative; } 
+.admin-filters .filter-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none; } 
+.admin-filters .filter-select { appearance: none; padding: 0.75rem 2.5rem 0.75rem 2.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius); color: var(--text-primary); font-size: 0.95rem; min-width: 150px; cursor: pointer; } 
+.admin-filters .filter-select option { background: var(--surface, #1e1e1e); color: var(--text-primary); }

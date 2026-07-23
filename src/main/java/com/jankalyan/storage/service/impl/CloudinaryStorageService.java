@@ -44,7 +44,7 @@ public class CloudinaryStorageService implements StorageService {
                     .publicId(publicId)
                     .build();
                     
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Failed to upload file to Cloudinary", e);
             throw new BadRequestException("File upload failed");
         }

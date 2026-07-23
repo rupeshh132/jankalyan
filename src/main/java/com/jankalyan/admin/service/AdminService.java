@@ -12,7 +12,9 @@ public interface AdminService {
     
     AdminDashboardResponse getDashboard();
     
-    Page<ComplaintResponse> getComplaints(Pageable pageable);
+    Page<ComplaintResponse> getComplaints(String search, UUID categoryId, com.jankalyan.complaint.entity.ComplaintStatus status, Pageable pageable);
+
+    com.jankalyan.admin.dto.response.AdminComplaintDetailResponse getComplaintDetailsForAdmin(UUID complaintId);
     
     void updateComplaintStatus(UUID complaintId, UpdateComplaintStatusRequest request);
     

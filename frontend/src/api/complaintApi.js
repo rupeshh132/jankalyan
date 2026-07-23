@@ -12,28 +12,33 @@ export const complaintApi = {
     if (sort) params.append('sort', sort);
     
     const response = await api.get(`/complaints?${params.toString()}`);
-    return response.data;
+    return response.data.data;
   },
   
   getMyComplaints: async (page = 0, size = 10) => {
     const params = new URLSearchParams({ page, size });
     const response = await api.get(`/complaints/my?${params.toString()}`);
-    return response.data;
+    return response.data.data;
   },
   
   getComplaintById: async (id) => {
     const response = await api.get(`/complaints/${id}`);
-    return response.data;
+    return response.data.data;
   },
   
   createComplaint: async (complaintData) => {
     const response = await api.post('/complaints', complaintData);
-    return response.data;
+    return response.data.data;
   },
   
   deleteComplaint: async (id) => {
     const response = await api.delete(`/complaints/${id}`);
-    return response.data;
+    return response.data.data;
+  },
+
+  updateComplaint: async (id, complaintData) => {
+    const response = await api.put(`/complaints/${id}`, complaintData);
+    return response.data.data;
   },
   
   uploadImages: async (complaintId, imageFiles) => {
@@ -47,11 +52,11 @@ export const complaintApi = {
         'Content-Type': 'multipart/form-data'
       }
     });
-    return response.data;
+    return response.data.data;
   },
   
   deleteImage: async (imageId) => {
     const response = await api.delete(`/complaints/images/${imageId}`);
-    return response.data;
+    return response.data.data;
   }
 };

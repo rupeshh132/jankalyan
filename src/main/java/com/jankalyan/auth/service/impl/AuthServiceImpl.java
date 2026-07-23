@@ -87,8 +87,9 @@ public class AuthServiceImpl implements AuthService {
     public AuthResult refresh(String token) {
         return refreshTokenRepository.findByToken(token)
                 .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
-                .map(user -> {
+                .map(oldToken -> {
+                    User user = oldToken.getUser();
+                    // refreshTokenService.delete(oldToken); // Removed: createRefreshToken already deletes all old tokens for this user via JPQL
                     RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
                     String jwt = jwtTokenProvider.generateTokenForUser(user);
                     JwtAuthResponse response = JwtAuthResponse.builder()

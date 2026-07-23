@@ -25,6 +25,10 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, Jpa
     
     Optional<Complaint> findByIdAndIsDeletedFalse(UUID id);
     
+    @EntityGraph(attributePaths = {"user", "category"})
+    @Query("SELECT c FROM Complaint c WHERE c.id = :id")
+    Optional<Complaint> findByIdWithDetails(@Param("id") UUID id);
+    
     boolean existsByIdAndIsDeletedFalse(UUID id);
     
     @Query("SELECT new com.jankalyan.admin.dto.response.AdminDashboardResponse(" +
@@ -36,6 +40,29 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, Jpa
            "COALESCE(SUM(CASE WHEN c.status = 'RESOLVED' THEN 1L ELSE 0L END), 0L)) " +
            "FROM Complaint c WHERE c.isDeleted = false")
     com.jankalyan.admin.dto.response.AdminDashboardResponse getDashboardStatistics();
+    
+    @Query("SELECT cat.name, COUNT(c.id) FROM Category cat LEFT JOIN Complaint c ON c.category = cat AND c.isDeleted = false GROUP BY cat.name")
+    List<Object[]> countComplaintsByCategory();
+
+    @Query(value = "WITH RECURSIVE months AS ( " +
+                   "    SELECT DATE_FORMAT(CURDATE() - INTERVAL 11 MONTH, '%Y-%m') AS month, CURDATE() - INTERVAL 11 MONTH AS dt " +
+                   "    UNION ALL " +
+                   "    SELECT DATE_FORMAT(dt + INTERVAL 1 MONTH, '%Y-%m'), dt + INTERVAL 1 MONTH " +
+                   "    FROM months " +
+                   "    WHERE dt + INTERVAL 1 MONTH <= CURDATE() " +
+                   ") " +
+                   "SELECT m.month, COUNT(c.id) " +
+                   "FROM months m " +
+                   "LEFT JOIN complaints c ON DATE_FORMAT(c.created_at, '%Y-%m') = m.month AND c.is_deleted = false " +
+                   "GROUP BY m.month " +
+                   "ORDER BY m.month DESC", nativeQuery = true)
+    List<Object[]> countComplaintsByMonth();
+
+    @Query(value = "SELECT AVG(TIMESTAMPDIFF(HOUR, created_at, updated_at)) FROM complaints WHERE status = 'RESOLVED' AND is_deleted = false", nativeQuery = true)
+    Double getAverageResolutionTimeInHours();
+
+    @Query(value = "SELECT COUNT(*) FROM complaints WHERE (status = 'RESOLVED' OR status = 'REJECTED') AND is_deleted = false AND DATE(updated_at) = CURDATE()", nativeQuery = true)
+    Long countClosedToday();
     
     List<Complaint> findByStatus(ComplaintStatus status);
 

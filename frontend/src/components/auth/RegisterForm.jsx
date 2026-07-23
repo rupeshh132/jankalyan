@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useRegister } from '../../hooks/useRegister';
 import { Link } from 'react-router-dom';
 import { UserPlus, Loader2 } from 'lucide-react';
-import './auth.css';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Card, CardContent, CardFooter } from '../ui/card';
+import { Alert, AlertDescription } from '../ui/alert';
 
 const RegisterForm = () => {
   const [userData, setUserData] = useState({
@@ -55,78 +59,102 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="glass-card">
-      <h2 className="auth-title">Create Account</h2>
-      
-      {error && <div className="auth-error">{getErrorMessage()}</div>}
+    <Card className="w-full backdrop-blur-xl bg-card/60 shadow-2xl border-white/10">
+      <CardContent className="pt-6">
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertDescription>{getErrorMessage()}</AlertDescription>
+          </Alert>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="auth-form-group">
-          <label className="auth-label">Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            className="auth-input"
-            placeholder="John Doe"
-            value={userData.fullName}
-            onChange={handleChange}
-            disabled={isPending}
-          />
-          {validationErrors.fullName && <span className="validation-error">{validationErrors.fullName}</span>}
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="fullName">Full Name</Label>
+            <Input
+              id="fullName"
+              type="text"
+              name="fullName"
+              placeholder="John Doe"
+              value={userData.fullName}
+              onChange={handleChange}
+              disabled={isPending}
+              className={`bg-background/50 ${validationErrors.fullName ? 'border-destructive' : ''}`}
+            />
+            {validationErrors.fullName && (
+              <p className="text-sm text-destructive">{validationErrors.fullName}</p>
+            )}
+          </div>
 
-        <div className="auth-form-group">
-          <label className="auth-label">Email</label>
-          <input
-            type="email"
-            name="email"
-            className="auth-input"
-            placeholder="john@example.com"
-            value={userData.email}
-            onChange={handleChange}
-            disabled={isPending}
-          />
-          {validationErrors.email && <span className="validation-error">{validationErrors.email}</span>}
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="john@example.com"
+              value={userData.email}
+              onChange={handleChange}
+              disabled={isPending}
+              className={`bg-background/50 ${validationErrors.email ? 'border-destructive' : ''}`}
+            />
+            {validationErrors.email && (
+              <p className="text-sm text-destructive">{validationErrors.email}</p>
+            )}
+          </div>
 
-        <div className="auth-form-group">
-          <label className="auth-label">Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            className="auth-input"
-            placeholder="9876543210"
-            value={userData.phone}
-            onChange={handleChange}
-            disabled={isPending}
-          />
-          {validationErrors.phone && <span className="validation-error">{validationErrors.phone}</span>}
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              id="phone"
+              type="text"
+              name="phone"
+              placeholder="9876543210"
+              value={userData.phone}
+              onChange={handleChange}
+              disabled={isPending}
+              className={`bg-background/50 ${validationErrors.phone ? 'border-destructive' : ''}`}
+            />
+            {validationErrors.phone && (
+              <p className="text-sm text-destructive">{validationErrors.phone}</p>
+            )}
+          </div>
 
-        <div className="auth-form-group">
-          <label className="auth-label">Password</label>
-          <input
-            type="password"
-            name="password"
-            className="auth-input"
-            placeholder="Strong password"
-            value={userData.password}
-            onChange={handleChange}
-            disabled={isPending}
-          />
-          {validationErrors.password && <span className="validation-error">{validationErrors.password}</span>}
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Strong password"
+              value={userData.password}
+              onChange={handleChange}
+              disabled={isPending}
+              className={`bg-background/50 ${validationErrors.password ? 'border-destructive' : ''}`}
+            />
+            {validationErrors.password && (
+              <p className="text-sm text-destructive">{validationErrors.password}</p>
+            )}
+          </div>
 
-        <button type="submit" className="auth-button" disabled={isPending}>
-          {isPending ? <Loader2 className="animate-spin" size={18} /> : <UserPlus size={18} />}
-          {isPending ? 'Creating Account...' : 'Register'}
-        </button>
-      </form>
-
-      <div className="auth-link">
-        Already have an account? <Link to="/login">Login here</Link>
-      </div>
-    </div>
+          <Button type="submit" className="w-full mt-6" disabled={isPending}>
+            {isPending ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <UserPlus className="mr-2 h-4 w-4" />
+            )}
+            {isPending ? 'Creating Account...' : 'Create Account'}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="flex justify-center border-t border-border/50 pt-4">
+        <p className="text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Link to="/login" className="font-semibold text-primary hover:underline">
+            Sign in
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
   );
 };
 

@@ -13,11 +13,16 @@ logging:
 
 app:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:5Y3Y1QxL9YkR4tJm2A7vPn8DgH5sKcL0WzR6bN1XqF9uM4eV7pT2iC8hJ3nS6aD0}
     expiration-ms: ${JWT_EXPIRATION_MS:900000}
     refresh-expiration-days: ${JWT_REFRESH_EXPIRATION_DAYS:7}
+  
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
 
 cloudinary:
-  cloud-name: ${CLOUDINARY_CLOUD_NAME}
-  api-key: ${CLOUDINARY_API_KEY}
-  api-secret: ${CLOUDINARY_API_SECRET}
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:Root}
+  api-key: ${CLOUDINARY_API_KEY:783463572237446}
+  api-secret: ${CLOUDINARY_API_SECRET:7J39MVsz9mkKHeC0S_xKu_570hk}

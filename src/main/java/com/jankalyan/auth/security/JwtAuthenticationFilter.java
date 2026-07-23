@@ -66,6 +66,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
+        
+        // Fallback for SSE or WebSocket which don't support custom headers easily
+        String requestURI = request.getRequestURI();
+        if (requestURI != null && requestURI.endsWith("/stream")) {
+            String tokenParam = request.getParameter("token");
+            if (StringUtils.hasText(tokenParam)) {
+                return tokenParam;
+            }
+        }
+        
         return null;
     }
 }

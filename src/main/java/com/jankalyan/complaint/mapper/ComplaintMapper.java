@@ -27,6 +27,7 @@ public class ComplaintMapper {
                 .state(request.getState())
                 .ward(request.getWard())
                 .pincode(request.getPincode())
+                .isAnonymous(request.isAnonymous())
                 // status is initialized to SUBMITTED by default through builder logic
                 .build();
     }
@@ -51,8 +52,30 @@ public class ComplaintMapper {
                 .ward(complaint.getWard())
                 .pincode(complaint.getPincode())
                 .status(complaint.getStatus())
+                .isAnonymous(complaint.isAnonymous())
                 .createdAt(complaint.getCreatedAt())
                 .updatedAt(complaint.getUpdatedAt())
                 .build();
+    }
+
+    public void updateEntityFromRequest(com.jankalyan.complaint.dto.request.UpdateComplaintRequest request, Complaint complaint, Category category) {
+        if (request == null || complaint == null) {
+            return;
+        }
+
+        if (category != null) {
+            complaint.setCategory(category);
+        }
+        
+        complaint.setTitle(request.getTitle());
+        complaint.setDescription(request.getDescription());
+        complaint.setLatitude(request.getLatitude());
+        complaint.setLongitude(request.getLongitude());
+        complaint.setAddress(request.getAddress());
+        complaint.setCity(request.getCity());
+        complaint.setState(request.getState());
+        complaint.setWard(request.getWard());
+        complaint.setPincode(request.getPincode());
+        complaint.setAnonymous(request.isAnonymous());
     }
 }

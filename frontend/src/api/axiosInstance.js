@@ -7,12 +7,16 @@ const api = axios.create({
 });
 
 let refreshPromise = null;
+let accessToken = null;
+
+export const setAccessToken = (token) => {
+  accessToken = token;
+};
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -24,8 +28,8 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     
-    // If error is 401 and we haven't retried yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // If error is 401 and we haven't retried yet, and the failed request is NOT the refresh endpoint itself
+    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/auth/refresh')) {
       originalRequest._retry = true;
       
       try {
@@ -39,25 +43,21 @@ api.interceptors.response.use(
         
         const refreshResponse = await refreshPromise;
         
-        // If the backend returns a new access token in the response body
-        if (refreshResponse.data && refreshResponse.data.accessToken) {
-          localStorage.setItem('accessToken', refreshResponse.data.accessToken);
-          // Also might need to update role if sent
-          if (refreshResponse.data.role) {
-            localStorage.setItem('role', refreshResponse.data.role);
-          }
+        // If the backend returns a new access token in the response body (nested in ApiResponse.data)
+        const authData = refreshResponse.data?.data;
+        if (authData && authData.accessToken) {
+          accessToken = authData.accessToken;
+          window.dispatchEvent(new CustomEvent('auth_refresh', { detail: authData }));
           
-          originalRequest.headers.Authorization = `Bearer ${refreshResponse.data.accessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return api(originalRequest);
         } else {
-          // If the backend handles refresh purely via HttpOnly cookies and just says OK
           return api(originalRequest);
         }
       } catch (refreshError) {
         // Refresh failed -> logout
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('role');
-        window.location.href = '/login';
+        accessToken = null;
+        window.dispatchEvent(new CustomEvent('auth_logout'));
         return Promise.reject(refreshError);
       }
     }

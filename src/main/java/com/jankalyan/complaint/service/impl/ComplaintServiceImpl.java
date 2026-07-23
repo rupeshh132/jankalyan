@@ -47,7 +47,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         User user = userRepository.getReferenceById(principal.getId());
 
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + request.getCategoryId()));
+                .orElseThrow(() -> new BadRequestException("Category not found with id: " + request.getCategoryId()));
 
         Complaint complaint = complaintMapper.toEntity(request, user, category);
         complaint.setStatus(ComplaintStatus.SUBMITTED);
@@ -84,6 +84,33 @@ public class ComplaintServiceImpl implements ComplaintService {
                 ComplaintSpecification.getPublicComplaints(search, categoryId, status), 
                 pageable
         ).map(complaintMapper::toResponse);
+    }
+
+    @Override
+    @Transactional
+    public ComplaintResponse updateComplaint(UUID id, com.jankalyan.complaint.dto.request.UpdateComplaintRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+
+        Complaint complaint = complaintRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + id));
+
+        if (!complaint.getUser().getId().equals(principal.getId())) {
+            throw new AccessDeniedException("You do not have permission to edit this complaint");
+        }
+
+        Category category = null;
+        if (!complaint.getCategory().getId().equals(request.getCategoryId())) {
+            category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new BadRequestException("Category not found with id: " + request.getCategoryId()));
+        }
+
+        complaintMapper.updateEntityFromRequest(request, complaint, category);
+        
+        complaint = complaintRepository.save(complaint);
+        log.info("Complaint updated successfully with id: {}", complaint.getId());
+        
+        return complaintMapper.toResponse(complaint);
     }
 
     @Override
