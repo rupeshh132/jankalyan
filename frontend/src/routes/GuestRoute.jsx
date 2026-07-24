@@ -1,15 +1,23 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const GuestRoute = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      if (user.role === 'ADMIN') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [user, navigate]);
 
   if (user) {
-    if (user.role === 'ADMIN') {
-      return <Navigate to="/admin" replace />;
-    }
-    return <Navigate to="/dashboard" replace />;
+    return null;
   }
 
   return <Outlet />;

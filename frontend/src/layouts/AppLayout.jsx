@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { useOutlet, useLocation } from 'react-router-dom';
 import Navbar from '../components/navigation/Navbar';
 import Sidebar from '../components/navigation/Sidebar';
 import Footer from '../components/navigation/Footer';
@@ -10,6 +10,7 @@ const AppLayout = () => {
   const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
+  const outlet = useOutlet();
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-sans antialiased overflow-x-hidden">
@@ -28,7 +29,7 @@ const AppLayout = () => {
               transition={{ duration: 0.2 }}
               className="flex-1 w-full"
             >
-              <Outlet />
+              {outlet}
             </motion.div>
           </AnimatePresence>
           {!user && <Footer />}

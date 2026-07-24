@@ -1,16 +1,21 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const AdminRoute = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate('/login', { replace: true });
+    } else if (user.role !== 'ADMIN') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
 
-  if (user.role !== 'ADMIN') {
-    return <Navigate to="/dashboard" replace />;
+  if (!user || user.role !== 'ADMIN') {
+    return null;
   }
 
   return <Outlet />;
