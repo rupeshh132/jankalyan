@@ -42,6 +42,32 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<ApiResponse<Object>> googleLogin(@Valid @RequestBody com.jankalyan.auth.dto.request.GoogleAuthRequest request, HttpServletResponse httpResponse) {
+        AuthService.AuthResult result = authService.googleLogin(request);
+        setRefreshTokenCookie(httpResponse, result.refreshToken());
+        
+        ApiResponse<Object> response = new ApiResponse<>(true, HttpStatus.OK.value(), "Success", result.jwtResponse(), LocalDateTime.now());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/send-otp")
+    public ResponseEntity<ApiResponse<Void>> sendOtp(@Valid @RequestBody com.jankalyan.auth.dto.request.SendOtpRequest request) {
+        authService.sendOtp(request);
+        
+        ApiResponse<Void> response = new ApiResponse<>(true, HttpStatus.OK.value(), "OTP sent to your registered email successfully", null, LocalDateTime.now());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<ApiResponse<Object>> verifyOtp(@Valid @RequestBody com.jankalyan.auth.dto.request.VerifyOtpRequest request, HttpServletResponse httpResponse) {
+        AuthService.AuthResult result = authService.verifyOtpLogin(request);
+        setRefreshTokenCookie(httpResponse, result.refreshToken());
+        
+        ApiResponse<Object> response = new ApiResponse<>(true, HttpStatus.OK.value(), "Success", result.jwtResponse(), LocalDateTime.now());
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<Object>> refresh(HttpServletRequest request, HttpServletResponse httpResponse) {
         Cookie cookie = WebUtils.getCookie(request, "refresh_token");

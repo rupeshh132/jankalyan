@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authApi } from '../api/authApi';
 import api, { setAccessToken } from '../api/axiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
+import { googleLogout } from '@react-oauth/google';
 
 const AuthContext = createContext(null);
 
@@ -104,6 +105,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
+      googleLogout(); // Clear Google session
       const channel = new BroadcastChannel('auth_channel');
       channel.postMessage('LOGOUT');
       channel.close();

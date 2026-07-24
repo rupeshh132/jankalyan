@@ -20,5 +20,20 @@ export const authApi = {
   refresh: async () => {
     const response = await api.post('/auth/refresh');
     return response.data.data;
+  },
+
+  googleLogin: async (data) => {
+    const response = await api.post('/auth/google', data);
+    return response.data.data;
+  },
+
+  sendOtp: async (data) => {
+    const response = await api.post('/auth/send-otp', data);
+    return response.data; // might not have data payload, just success message
+  },
+
+  verifyOtp: async (data) => {
+    const response = await api.post('/auth/verify-otp', data);
+    return response.data.data;
   }
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRegister } from '../../hooks/useRegister';
+import { useGoogleLoginHook } from '../../hooks/useLogin';
 import { Link } from 'react-router-dom';
 import { UserPlus, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -7,6 +8,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Card, CardContent, CardFooter } from '../ui/card';
 import { Alert, AlertDescription } from '../ui/alert';
+import { GoogleLogin } from '@react-oauth/google';
 
 const RegisterForm = () => {
   const [userData, setUserData] = useState({
@@ -16,7 +18,9 @@ const RegisterForm = () => {
     password: ''
   });
   const [validationErrors, setValidationErrors] = useState({});
+  
   const { mutate: register, isPending, error } = useRegister();
+  const { mutate: googleLogin, isPending: isGooglePending, error: googleError } = useGoogleLoginHook();
 
   const validate = () => {
     const errors = {};
@@ -54,14 +58,39 @@ const RegisterForm = () => {
   };
 
   const getErrorMessage = () => {
-    if (!error) return null;
-    return error.response?.data?.message || error.message || 'Registration failed';
+    const err = error || googleError;
+    if (!err) return null;
+    return err.response?.data?.message || err.message || 'Registration failed';
   };
 
+  const isAnyPending = isPending || isGooglePending;
+
   return (
-    <Card className="w-full backdrop-blur-xl bg-card/60 shadow-2xl border-white/10">
+    <Card className="w-full max-w-md mx-auto backdrop-blur-xl bg-card/60 shadow-2xl border-white/10">
       <CardContent className="pt-6">
-        {error && (
+        
+        <div className="flex justify-center mb-6">
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              googleLogin({ idToken: credentialResponse.credential });
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+            text="signup_with"
+          />
+        </div>
+        
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border/50" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">Or register with email</span>
+          </div>
+        </div>
+
+        {getErrorMessage() && (
           <Alert variant="destructive" className="mb-6">
             <AlertDescription>{getErrorMessage()}</AlertDescription>
           </Alert>
@@ -77,7 +106,7 @@ const RegisterForm = () => {
               placeholder="John Doe"
               value={userData.fullName}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isAnyPending}
               className={`bg-background/50 ${validationErrors.fullName ? 'border-destructive' : ''}`}
             />
             {validationErrors.fullName && (
@@ -94,7 +123,7 @@ const RegisterForm = () => {
               placeholder="john@example.com"
               value={userData.email}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isAnyPending}
               className={`bg-background/50 ${validationErrors.email ? 'border-destructive' : ''}`}
             />
             {validationErrors.email && (
@@ -111,7 +140,7 @@ const RegisterForm = () => {
               placeholder="9876543210"
               value={userData.phone}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isAnyPending}
               className={`bg-background/50 ${validationErrors.phone ? 'border-destructive' : ''}`}
             />
             {validationErrors.phone && (
@@ -128,7 +157,7 @@ const RegisterForm = () => {
               placeholder="Strong password"
               value={userData.password}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isAnyPending}
               className={`bg-background/50 ${validationErrors.password ? 'border-destructive' : ''}`}
             />
             {validationErrors.password && (
@@ -136,7 +165,7 @@ const RegisterForm = () => {
             )}
           </div>
 
-          <Button type="submit" className="w-full mt-6" disabled={isPending}>
+          <Button type="submit" className="w-full mt-6" disabled={isAnyPending}>
             {isPending ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (

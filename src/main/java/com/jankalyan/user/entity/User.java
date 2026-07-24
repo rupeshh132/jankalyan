@@ -30,7 +30,7 @@ public class User {
     @Column(length = 15, unique = true)
     private String phone;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash")
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -46,6 +46,14 @@ public class User {
     @Column(name = "is_active", nullable = false, columnDefinition = "boolean default true")
     @Builder.Default
     private boolean isActive = true;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider", nullable = false, columnDefinition = "varchar(20) default 'LOCAL'")
+    @Builder.Default
+    private AuthProvider authProvider = AuthProvider.LOCAL;
+
+    @Column(name = "google_id", unique = true)
+    private String googleId;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
