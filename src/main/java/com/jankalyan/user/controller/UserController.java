@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -43,6 +44,19 @@ public class UserController {
                 .success(true)
                 .status(200)
                 .message("Profile updated successfully")
+                .data(updatedProfile)
+                .build());
+    }
+
+    @PostMapping(value = "/me/photo", consumes = "multipart/form-data")
+    @Operation(summary = "Upload profile photo", description = "Uploads a new profile photo for the currently authenticated user")
+    public ResponseEntity<ApiResponse<UserProfileResponse>> uploadProfilePhoto(@RequestParam("file") MultipartFile file) {
+        UserProfileResponse updatedProfile = userService.uploadProfileImage(file);
+        
+        return ResponseEntity.ok(ApiResponse.<UserProfileResponse>builder()
+                .success(true)
+                .status(200)
+                .message("Profile photo uploaded successfully")
                 .data(updatedProfile)
                 .build());
     }

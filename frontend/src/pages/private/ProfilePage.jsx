@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { useProfile, useUpdateProfile } from '../../hooks/useProfile';
+import { useProfile, useUpdateProfile, useUploadProfilePhoto } from '../../hooks/useProfile';
 import { User, Mail, Phone, MapPin, Loader2, Save, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -8,6 +8,8 @@ const ProfilePage = () => {
   const { user } = useAuth();
   const { data: profileData, isLoading: isProfileLoading, isError } = useProfile();
   const updateProfileMutation = useUpdateProfile();
+  const uploadPhotoMutation = useUploadProfilePhoto();
+  const fileInputRef = useRef(null);
   
   const profile = profileData?.data || {};
 
@@ -32,6 +34,23 @@ const ProfilePage = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please upload an image file (JPEG, PNG, etc.)');
+        return;
+      }
+      // Check file size (e.g. max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+      uploadPhotoMutation.mutate(file);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -69,15 +88,36 @@ const ProfilePage = () => {
         {/* Left Column: Avatar & Basic Info */}
         <div className="col-span-1 space-y-6">
           <div className="bg-card rounded-xl border shadow-sm p-6 flex flex-col items-center text-center">
-            <div className="relative mb-4 group cursor-pointer">
+            <div 
+              className="relative mb-4 group cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <div className="w-32 h-32 rounded-full bg-primary/10 border-4 border-background shadow-lg overflow-hidden flex items-center justify-center">
-                <User size={64} className="text-primary/40" />
+                {profile.profileImage ? (
+                  <img src={profile.profileImage} alt={profile.fullName} className="w-full h-full object-cover" />
+                ) : (
+                  <User size={64} className="text-primary/40" />
+                )}
               </div>
-              <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="text-white" size={24} />
+              <div className="absolute inset-0 bg-black/40 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                {uploadPhotoMutation.isPending ? (
+                  <Loader2 className="text-white animate-spin" size={24} />
+                ) : (
+                  <>
+                    <Camera className="text-white mb-1" size={24} />
+                    <span className="text-xs text-white font-medium">Change</span>
+                  </>
+                )}
               </div>
             </div>
-            <h2 className="text-xl font-bold text-foreground">{formData.fullName}</h2>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept="image/*"
+              onChange={handlePhotoUpload}
+            />
+            <h2 className="text-xl font-bold text-foreground">{formData.fullName || profile.fullName}</h2>
             <p className="text-sm text-muted-foreground">{formData.email}</p>
             
             <div className="mt-6 w-full flex items-center justify-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-primary/10 text-primary">

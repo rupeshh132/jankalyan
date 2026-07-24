@@ -24,3 +24,18 @@ export const useUpdateProfile = () => {
     },
   });
 };
+
+export const useUploadProfilePhoto = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file) => userApi.uploadProfilePhoto(file),
+    onSuccess: (response) => {
+      queryClient.setQueryData(['userProfile'], response);
+      toast.success('Profile photo uploaded successfully!');
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to upload photo. Please try again.');
+    },
+  });
+};

@@ -9,5 +9,17 @@ export const userApi = {
   updateProfile: async (data) => {
     const response = await api.put('/users/me', data);
     return response.data;
+  },
+
+  uploadProfilePhoto: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await api.post('/users/me/photo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
   }
 };
