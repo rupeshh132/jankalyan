@@ -53,7 +53,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
         {!user && (
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/features" className={`text-sm font-medium transition-colors hover:text-primary ${isActive('/features') ? 'text-primary' : 'text-muted-foreground'}`}>Features</Link>
-            <a href="#dashboard" className={`text-sm font-medium transition-colors hover:text-primary focus:outline-none ${isActive('#dashboard') ? 'text-primary' : 'text-muted-foreground'}`}>Dashboard</a>
+            <a href="/#dashboard" className={`text-sm font-medium transition-colors hover:text-primary focus:outline-none ${isActive('#dashboard') ? 'text-primary' : 'text-muted-foreground'}`}>Dashboard</a>
           </nav>
         )}
 
