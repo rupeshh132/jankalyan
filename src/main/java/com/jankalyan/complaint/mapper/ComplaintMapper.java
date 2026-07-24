@@ -7,6 +7,8 @@ import com.jankalyan.complaint.dto.response.ComplaintResponse;
 import com.jankalyan.complaint.entity.Complaint;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class ComplaintMapper {
 
