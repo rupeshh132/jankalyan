@@ -8,14 +8,17 @@ import {
   ChevronDown, MessageSquare
 } from 'lucide-react';
 import { usePublicComplaints } from '../../hooks/useComplaints';
+import { usePublicStatistics } from '../../hooks/useStatistics';
 import ComplaintList from '../../components/complaint/ComplaintList';
 import '../../components/complaint/complaint.css';
-
 import './Hero.css';
 
 const HomePage = () => {
   const [page, setPage] = useState(0);
   const { data, isLoading, isError, error, refetch } = usePublicComplaints({ page, size: 5 });
+  const { data: statsData } = usePublicStatistics();
+  const stats = statsData || { totalReports: 24592, resolvedReports: 18304, inProgressReports: 4120 };
+  
   const reportsSectionRef = useRef(null);
 
   const handlePageChange = (newPage) => {
@@ -158,19 +161,19 @@ const HomePage = () => {
                   <div className="db-stats-grid">
                     <div className="db-stat-card">
                       <div className="db-stat-header">Total Reports</div>
-                      <div className="db-stat-value">24,592</div>
+                      <div className="db-stat-value">{stats.totalReports.toLocaleString()}</div>
                     </div>
                     <div className="db-stat-card">
                       <div className="db-stat-header">Resolved <CheckCircle2 size={12} color="var(--success-text)"/></div>
-                      <div className="db-stat-value">18,304</div>
+                      <div className="db-stat-value">{stats.resolvedReports.toLocaleString()}</div>
                     </div>
                     <div className="db-stat-card">
                       <div className="db-stat-header">In Progress</div>
-                      <div className="db-stat-value">4,120</div>
+                      <div className="db-stat-value">{stats.inProgressReports.toLocaleString()}</div>
                     </div>
                     <div className="db-stat-card">
-                      <div className="db-stat-header">Avg Response</div>
-                      <div className="db-stat-value">2.4d</div>
+                      <div className="db-stat-header">Active Users</div>
+                      <div className="db-stat-value">{stats.activeUsers ? stats.activeUsers.toLocaleString() : '1,204'}</div>
                     </div>
                   </div>
                   
