@@ -14,6 +14,13 @@ export const AuthProvider = ({ children }) => {
     // Silent refresh on mount
     let isMounted = true;
     const hydrate = async () => {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        if (isMounted) {
+          setUser(null);
+          setLoading(false);
+        }
+        return;
+      }
       try {
         const response = await api.post('/auth/refresh');
         if (response.data?.data && isMounted) {
@@ -75,12 +82,14 @@ export const AuthProvider = ({ children }) => {
   const handleLocalLogout = () => {
     setAccessToken(null);
     setUser(null);
+    localStorage.removeItem('isLoggedIn');
     queryClient.clear();
     window.location.href = '/login';
   };
 
   const login = (userData) => {
     setAccessToken(userData.accessToken);
+    localStorage.setItem('isLoggedIn', 'true');
     try {
       const payload = JSON.parse(atob(userData.accessToken.split('.')[1]));
       setUser({ ...userData, id: payload.userId });

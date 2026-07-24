@@ -30,6 +30,9 @@ api.interceptors.response.use(
     
     // If error is 401 and we haven't retried yet, and the failed request is NOT the refresh endpoint itself
     if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/auth/refresh')) {
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        return Promise.reject(error);
+      }
       originalRequest._retry = true;
       
       try {
