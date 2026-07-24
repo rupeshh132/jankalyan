@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { 
@@ -16,6 +16,17 @@ import './Hero.css';
 const HomePage = () => {
   const [page, setPage] = useState(0);
   const { data, isLoading, isError, error, refetch } = usePublicComplaints({ page, size: 5 });
+  const reportsSectionRef = useRef(null);
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    // Add a slight delay to allow the DOM to render the new complaints before scrolling
+    setTimeout(() => {
+      if (reportsSectionRef.current) {
+        reportsSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
+  };
 
   // Mouse Parallax for Dashboard (Elegant Apple Style - max 4deg)
   const mouseX = useMotionValue(0);
@@ -302,7 +313,7 @@ const HomePage = () => {
       </section>
 
       {/* Latest Complaints (Untouched below Hero) */}
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 var(--space-4)' }}>
+      <div ref={reportsSectionRef} style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 var(--space-4)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h2 className="page-title" style={{ fontSize: '1.8rem', margin: 0 }}>Latest Community Reports</h2>
         </div>
@@ -312,7 +323,7 @@ const HomePage = () => {
           isLoading={isLoading} 
           isError={isError} 
           error={error} 
-          onPageChange={setPage} 
+          onPageChange={handlePageChange} 
           refetch={refetch}
         />
       </div>
