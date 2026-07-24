@@ -63,7 +63,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     public ComplaintResponse getComplaintById(UUID id) {
         Complaint complaint = complaintRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + id));
-        return complaintMapper.toResponse(complaint);
+        return complaintMapper.toResponse(complaint, getCurrentUserIdSafely());
     }
 
     @Override
@@ -74,16 +74,17 @@ public class ComplaintServiceImpl implements ComplaintService {
         List<Complaint> complaints = complaintRepository.findByUserIdAndIsDeletedFalse(principal.getId());
         
         return complaints.stream()
-                .map(complaintMapper::toResponse)
+                .map(c -> complaintMapper.toResponse(c, principal.getId()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public org.springframework.data.domain.Page<ComplaintResponse> getPublicComplaints(String search, UUID categoryId, ComplaintStatus status, org.springframework.data.domain.Pageable pageable) {
+        UUID currentUserId = getCurrentUserIdSafely();
         return complaintRepository.findAll(
                 ComplaintSpecification.getPublicComplaints(search, categoryId, status), 
                 pageable
-        ).map(complaintMapper::toResponse);
+        ).map(c -> complaintMapper.toResponse(c, currentUserId));
     }
 
     @Override
@@ -134,5 +135,43 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaintRepository.save(complaint);
         
         log.info("Complaint softly deleted with id: {}", id);
+    }
+
+    @Override
+    @Transactional
+    public ComplaintResponse toggleUpvote(UUID id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+        User user = userRepository.getReferenceById(principal.getId());
+
+        Complaint complaint = complaintRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + id));
+
+        boolean alreadyUpvoted = complaint.getUpvoters().stream()
+                .anyMatch(u -> u.getId().equals(user.getId()));
+
+        if (alreadyUpvoted) {
+            complaint.getUpvoters().removeIf(u -> u.getId().equals(user.getId()));
+            complaint.setUpvoteCount(complaint.getUpvoteCount() - 1);
+        } else {
+            complaint.getUpvoters().add(user);
+            complaint.setUpvoteCount(complaint.getUpvoteCount() + 1);
+        }
+
+        complaint = complaintRepository.save(complaint);
+        return complaintMapper.toResponse(complaint, user.getId());
+    }
+
+    private UUID getCurrentUserIdSafely() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return null;
+        }
+        try {
+            UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+            return principal.getId();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

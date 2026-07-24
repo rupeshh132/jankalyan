@@ -9,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -71,6 +73,19 @@ public class Complaint {
     @Column(name = "is_anonymous", nullable = false)
     @Builder.Default
     private boolean isAnonymous = false;
+
+    @ManyToMany
+    @JoinTable(
+        name = "complaint_upvotes",
+        joinColumns = @JoinColumn(name = "complaint_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @Builder.Default
+    private Set<User> upvoters = new HashSet<>();
+
+    @Column(name = "upvote_count", nullable = false)
+    @Builder.Default
+    private int upvoteCount = 0;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

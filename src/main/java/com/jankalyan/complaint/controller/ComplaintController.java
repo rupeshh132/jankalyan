@@ -123,4 +123,19 @@ public class ComplaintController {
                 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/{id}/upvote")
+    @Operation(summary = "Toggle upvote for a complaint", description = "Upvote or remove an upvote for a specific complaint by the current user")
+    public ResponseEntity<ApiResponse<ComplaintResponse>> toggleUpvote(@PathVariable UUID id) {
+        ComplaintResponse data = complaintService.toggleUpvote(id);
+
+        ApiResponse<ComplaintResponse> response = ApiResponse.<ComplaintResponse>builder()
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("Upvote toggled successfully")
+                .data(data)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 }

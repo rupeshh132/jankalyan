@@ -13,4 +13,5 @@ public interface ComplaintService {
     org.springframework.data.domain.Page<ComplaintResponse> getPublicComplaints(String search, UUID categoryId, com.jankalyan.complaint.entity.ComplaintStatus status, org.springframework.data.domain.Pageable pageable);
     ComplaintResponse updateComplaint(UUID id, com.jankalyan.complaint.dto.request.UpdateComplaintRequest request);
     void deleteComplaint(UUID id);
+    ComplaintResponse toggleUpvote(UUID id);
 }

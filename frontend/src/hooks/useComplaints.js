@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { complaintApi } from '../api/complaintApi';
 
 export const useMyComplaints = (page = 0, size = 10) => {
@@ -13,5 +13,11 @@ export const usePublicComplaints = (params = {}) => {
     queryKey: ['publicComplaints', params],
     queryFn: () => complaintApi.getAllComplaints(params),
     keepPreviousData: true,
+  });
+};
+
+export const useToggleUpvote = () => {
+  return useMutation({
+    mutationFn: (id) => complaintApi.toggleUpvote(id),
   });
 };

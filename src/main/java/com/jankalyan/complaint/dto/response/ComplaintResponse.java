@@ -32,4 +32,6 @@ public class ComplaintResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean isAnonymous;
+    private int upvoteCount;
+    private boolean isUpvotedByCurrentUser;
 }

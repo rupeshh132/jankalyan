@@ -33,6 +33,10 @@ public class ComplaintMapper {
     }
 
     public ComplaintResponse toResponse(Complaint complaint) {
+        return toResponse(complaint, null);
+    }
+
+    public ComplaintResponse toResponse(Complaint complaint, UUID currentUserId) {
         if (complaint == null) {
             return null;
         }
@@ -53,6 +57,12 @@ public class ComplaintMapper {
                 .pincode(complaint.getPincode())
                 .status(complaint.getStatus())
                 .isAnonymous(complaint.isAnonymous())
+                .upvoteCount(complaint.getUpvoteCount())
+                .isUpvotedByCurrentUser(
+                    currentUserId != null && complaint.getUpvoters() != null 
+                    ? complaint.getUpvoters().stream().anyMatch(u -> u.getId().equals(currentUserId))
+                    : false
+                )
                 .createdAt(complaint.getCreatedAt())
                 .updatedAt(complaint.getUpdatedAt())
                 .build();

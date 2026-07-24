@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useComplaintDetails } from '../../hooks/useComplaintDetails';
 import { useDeleteComplaint } from '../../hooks/useDeleteComplaint';
-import { useVote } from '../../hooks/useVote';
+import { useToggleUpvote } from '../../hooks/useComplaints';
 import { useAuth } from '../../context/AuthContext';
+import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import ComplaintStatusBadge from '../../components/complaint/ComplaintStatusBadge';
 import LoadingSkeleton from '../../components/complaint/LoadingSkeleton';
 import DeleteConfirmModal from '../../components/complaint/DeleteConfirmModal';
@@ -14,9 +16,10 @@ const PublicComplaintDetailsPage = () => {
   const { complaintId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   
   const { data, isLoading, isError, error } = useComplaintDetails(complaintId);
-  const { upvote, isLoading: isVoting } = useVote(complaintId);
+  const { mutateAsync: toggleUpvote, isPending: isVoting } = useToggleUpvote();
   const { mutateAsync: deleteComplaint, isPending: isDeleting } = useDeleteComplaint();
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -52,6 +55,19 @@ const PublicComplaintDetailsPage = () => {
       navigate(user?.role === 'ADMIN' ? '/admin/complaints' : '/dashboard/complaints');
     } catch (e) {
       // handled in hook toast
+    }
+  };
+
+  const handleUpvote = async () => {
+    if (!user) {
+      toast.error('Please login to upvote');
+      return;
+    }
+    try {
+      await toggleUpvote(complaint.id);
+      queryClient.invalidateQueries({ queryKey: ['complaint', complaint.id] });
+    } catch (e) {
+      toast.error('Failed to upvote');
     }
   };
 
@@ -130,11 +146,24 @@ const PublicComplaintDetailsPage = () => {
 
         <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
            <button 
-             onClick={() => upvote()}
+             onClick={handleUpvote}
              disabled={isVoting}
-             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', padding: '0.5rem 1rem', borderRadius: '20px', fontWeight: 'bold', border: '1px solid var(--primary)', cursor: 'pointer', transition: 'all 0.2s' }}
+             style={{ 
+               display: 'flex', 
+               alignItems: 'center', 
+               gap: '0.5rem', 
+               background: complaint.isUpvotedByCurrentUser ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255, 255, 255, 0.05)', 
+               color: complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'var(--text-secondary)', 
+               padding: '0.5rem 1rem', 
+               borderRadius: '20px', 
+               fontWeight: 'bold', 
+               border: complaint.isUpvotedByCurrentUser ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)', 
+               cursor: isVoting ? 'wait' : 'pointer', 
+               transition: 'all 0.2s' 
+             }}
            >
-             <ThumbsUp size={16} /> {complaint.voteCount || 0} Upvote
+             <ThumbsUp size={16} fill={complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'none'} /> 
+             {complaint.upvoteCount || 0} Upvotes
            </button>
         </div>
       </div>

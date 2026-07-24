@@ -58,5 +58,10 @@ export const complaintApi = {
   deleteImage: async (imageId) => {
     const response = await api.delete(`/complaints/images/${imageId}`);
     return response.data.data;
+  },
+  
+  toggleUpvote: async (complaintId) => {
+    const response = await api.post(`/complaints/${complaintId}/upvote`);
+    return response.data.data;
   }
 };
