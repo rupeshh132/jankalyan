@@ -15,7 +15,7 @@ import './Hero.css';
 
 const HomePage = () => {
   const [page, setPage] = useState(0);
-  const { data, isLoading, isError, error, refetch } = usePublicComplaints(page, 5);
+  const { data, isLoading, isError, error, refetch } = usePublicComplaints({ page, size: 5 });
 
   // Mouse Parallax for Dashboard (Elegant Apple Style - max 4deg)
   const mouseX = useMotionValue(0);
