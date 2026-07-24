@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useProfile, useUpdateProfile } from '../../hooks/useProfile';
 import { User, Mail, Phone, MapPin, Loader2, Save, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
   const { user } = useAuth();
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: user?.fullName || 'John Doe',
-    email: user?.email || user?.sub || '',
-    phone: user?.phone || '+91 9876543210',
-    address: user?.address || '123, Main Street, Mumbai',
+  const { data: profileData, isLoading: isProfileLoading, isError } = useProfile();
+  const updateProfileMutation = useUpdateProfile();
+  
+  const profile = profileData?.data || {};
+
+  const [formData, setFormData] = React.useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
   });
+
+  // Update form data when profile data is loaded
+  React.useEffect(() => {
+    if (profile) {
+      setFormData({
+        fullName: profile.fullName || '',
+        email: profile.email || '',
+        phone: profile.phone || '',
+        address: profile.address || '',
+      });
+    }
+  }, [profileData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,13 +36,28 @@ const ProfilePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsUpdating(true);
-    // Simulate API call
-    setTimeout(() => {
-      toast.success('Profile updated successfully!');
-      setIsUpdating(false);
-    }, 1500);
+    updateProfileMutation.mutate({
+      fullName: formData.fullName,
+      phone: formData.phone,
+      address: formData.address,
+    });
   };
+
+  if (isProfileLoading) {
+    return (
+      <div className="flex h-[60vh] w-full items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-[60vh] w-full items-center justify-center text-destructive">
+        Failed to load profile. Please refresh the page.
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
@@ -125,11 +157,11 @@ const ProfilePage = () => {
               <div className="flex justify-end pt-4 border-t border-border">
                 <button 
                   type="submit" 
-                  disabled={isUpdating}
+                  disabled={updateProfileMutation.isPending}
                   className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8"
                 >
-                  {isUpdating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                  {isUpdating ? 'Saving...' : 'Save Changes'}
+                  {updateProfileMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                  {updateProfileMutation.isPending ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>

@@ -40,6 +40,9 @@ public class User {
     @Column(name = "profile_image", length = 500)
     private String profileImage;
     
+    @Column(length = 255)
+    private String address;
+    
     @Column(name = "is_active", nullable = false, columnDefinition = "boolean default true")
     @Builder.Default
     private boolean isActive = true;
