@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { authApi } from '../api/authApi';
-import api, { setAccessToken } from '../api/axiosInstance';
+import api, { setAccessToken, refreshToken } from '../api/axiosInstance';
 import { useQueryClient } from '@tanstack/react-query';
 import { googleLogout } from '@react-oauth/google';
 
@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       try {
-        const response = await api.post('/auth/refresh');
+        const response = await refreshToken();
         if (response.data?.data && isMounted) {
           const authData = response.data.data;
           setAccessToken(authData.accessToken);

@@ -186,11 +186,7 @@ public class AdminServiceImpl implements AdminService {
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + complaintId));
 
-        if (complaint.isDeleted()) {
-            throw new BadRequestException("Complaint is already deleted.");
-        }
-
-        complaint.setDeleted(true);
+        complaintRepository.delete(complaint);
     }
 
     private void validateTransition(ComplaintStatus oldStatus, ComplaintStatus newStatus) {

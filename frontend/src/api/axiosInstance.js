@@ -13,6 +13,18 @@ export const setAccessToken = (token) => {
   accessToken = token;
 };
 
+export const refreshToken = async () => {
+  if (!refreshPromise) {
+    refreshPromise = axios.post(`${api.defaults.baseURL}/auth/refresh`, {}, {
+      withCredentials: true
+    }).finally(() => {
+      refreshPromise = null;
+    });
+  }
+  const response = await refreshPromise;
+  return response;
+};
+
 api.interceptors.request.use(
   (config) => {
     if (accessToken) {
@@ -36,15 +48,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       
       try {
-        if (!refreshPromise) {
-          refreshPromise = axios.post(`${api.defaults.baseURL}/auth/refresh`, {}, {
-            withCredentials: true
-          }).finally(() => {
-            refreshPromise = null;
-          });
-        }
-        
-        const refreshResponse = await refreshPromise;
+        const refreshResponse = await refreshToken();
         
         // If the backend returns a new access token in the response body (nested in ApiResponse.data)
         const authData = refreshResponse.data?.data;
