@@ -43,11 +43,11 @@ const AdminComplaintDetailsPage = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteComplaint({ id: complaint.id, isAdmin: true });
+      await deleteComplaint({ id, isAdmin: true });
       setIsDeleteModalOpen(false);
       navigate('/admin/complaints');
-    } catch (e) {
-      // handled in hook toast
+    } catch (err) {
+      // Handled by hook
     }
   };
 

@@ -15,7 +15,7 @@ const ComplaintTable = ({ data, onPageChange }) => {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to soft delete this complaint?')) {
-      deleteComplaint(id);
+      deleteComplaint({ id, isAdmin: true });
     }
   };
 
@@ -75,16 +75,16 @@ const ComplaintTable = ({ data, onPageChange }) => {
         <div className="pagination">
           <button 
             className="pagination-btn"
-            disabled={pageData.page === 0} 
-            onClick={() => onPageChange(pageData.page - 1)}
+            disabled={pageData.number === 0} 
+            onClick={() => onPageChange(pageData.number - 1)}
           >
             Previous
           </button>
-          <span>Page {pageData.page + 1} of {pageData.totalPages}</span>
+          <span>Page {pageData.number + 1} of {pageData.totalPages}</span>
           <button 
             className="pagination-btn"
-            disabled={pageData.page === pageData.totalPages - 1} 
-            onClick={() => onPageChange(pageData.page + 1)}
+            disabled={pageData.number === pageData.totalPages - 1} 
+            onClick={() => onPageChange(pageData.number + 1)}
           >
             Next
           </button>
