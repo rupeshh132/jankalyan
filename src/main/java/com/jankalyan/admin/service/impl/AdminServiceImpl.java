@@ -16,11 +16,13 @@ import com.jankalyan.admin.dto.response.ComplaintStatusHistoryResponse;
 import com.jankalyan.complainthistory.entity.ComplaintStatusHistory;
 import com.jankalyan.complainthistory.repository.ComplaintStatusHistoryRepository;
 import com.jankalyan.complaintimage.service.ComplaintImageService;
+import com.jankalyan.complaintimage.repository.ComplaintImageRepository;
 import com.jankalyan.complaintimage.dto.response.ComplaintImageResponse;
 import com.jankalyan.complaint.specification.ComplaintSpecification;
 import com.jankalyan.user.entity.User;
 import com.jankalyan.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,12 +38,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final ComplaintRepository complaintRepository;
     private final ComplaintStatusHistoryRepository historyRepository;
+    private final ComplaintImageRepository imageRepository;
     private final ComplaintMapper complaintMapper;
     private final UserRepository userRepository;
     private final ComplaintImageService imageService;
@@ -193,6 +197,19 @@ public class AdminServiceImpl implements AdminService {
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + complaintId));
 
+        // 1. Delete status history records
+        historyRepository.deleteByComplaintId(complaintId);
+
+        // 2. Delete complaint images
+        imageRepository.deleteByComplaintId(complaintId);
+
+        // 3. Clear upvoters (join table)
+        complaint.getUpvoters().clear();
+        complaintRepository.save(complaint);
+
+        // 4. Hard delete the complaint
         complaintRepository.delete(complaint);
+
+        log.info("Complaint permanently deleted by admin: {}", complaintId);
     }
 }

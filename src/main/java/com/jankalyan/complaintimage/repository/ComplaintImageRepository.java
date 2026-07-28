@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ComplaintImageRepository extends JpaRepository<ComplaintImage, UUID> {
     List<ComplaintImage> findByComplaintIdOrderByCreatedAtAsc(UUID complaintId);
+
+    void deleteByComplaintId(UUID complaintId);
 }

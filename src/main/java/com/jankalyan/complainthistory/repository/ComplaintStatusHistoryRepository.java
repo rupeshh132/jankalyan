@@ -13,4 +13,6 @@ public interface ComplaintStatusHistoryRepository extends JpaRepository<Complain
     
     @EntityGraph(attributePaths = {"changedBy"})
     List<ComplaintStatusHistory> findByComplaintIdOrderByCreatedAtDesc(UUID complaintId);
+
+    void deleteByComplaintId(UUID complaintId);
 }
