@@ -8,18 +8,14 @@ const ALL_STATUSES = ['SUBMITTED', 'UNDER_REVIEW', 'APPROVED', 'REJECTED', 'RESO
 const ComplaintStatusModal = ({ complaint, onClose }) => {
   const modalRef = useRef(null);
 
-  // Admin can change to any status except the current one
   const availableStatuses = ALL_STATUSES.filter(s => s !== complaint?.status);
-
   const [status, setStatus] = useState(availableStatuses[0] || '');
   const [remarks, setRemarks] = useState('');
   const { mutate: updateStatus, isPending, error } = useUpdateComplaintStatus();
 
   useEffect(() => {
     if (modalRef.current) modalRef.current.focus();
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const handleKeyDown = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
@@ -38,80 +34,150 @@ const ComplaintStatusModal = ({ complaint, onClose }) => {
   const formatStatus = (s) => s.replace(/_/g, ' ');
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div
+      style={{
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        zIndex: 9999, padding: '1rem'
+      }}
+      onClick={onClose}
+    >
       <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
+        tabIndex="-1"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        tabIndex="-1"
-        ref={modalRef}
-        style={{ maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: 'var(--bg-card, #fff)',
+          border: '1px solid rgba(128,128,128,0.2)',
+          borderRadius: '12px',
+          width: '100%',
+          maxWidth: '480px',
+          boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
+        }}
       >
-        <div className="modal-header">
-          <h3 className="modal-title" id="modal-title">Update Status</h3>
-          <button className="close-btn" onClick={onClose} disabled={isPending} aria-label="Close modal">
-            <X size={24} />
+        {/* Header */}
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '1.5rem 1.5rem 1rem',
+          borderBottom: '1px solid rgba(128,128,128,0.15)'
+        }}>
+          <h3 id="modal-title" style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>
+            Update Status
+          </h3>
+          <button
+            onClick={onClose}
+            disabled={isPending}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '4px' }}
+          >
+            <X size={22} />
           </button>
         </div>
 
-        {error && (
-          <div className="auth-error" style={{ marginBottom: '1rem' }}>
-            {error?.response?.data?.message || error.message}
-          </div>
-        )}
+        {/* Body */}
+        <div style={{ padding: '1.25rem 1.5rem' }}>
+          {error && (
+            <div style={{
+              background: 'rgba(239,68,68,0.1)', color: '#ef4444',
+              border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px',
+              padding: '0.75rem 1rem', marginBottom: '1rem', fontSize: '0.9rem'
+            }}>
+              {error?.response?.data?.message || 'Failed to update status'}
+            </div>
+          )}
 
-        <div style={{
-          marginBottom: '1rem',
-          padding: '0.75rem 1rem',
-          background: 'rgba(255,255,255,0.04)',
-          borderRadius: 'var(--radius)',
-          fontSize: '0.9rem',
-          color: 'var(--text-secondary)'
-        }}>
-          Current Status: <strong style={{ color: 'var(--text-primary)' }}>{formatStatus(complaint.status)}</strong>
+          <div style={{
+            background: 'rgba(128,128,128,0.08)', borderRadius: '8px',
+            padding: '0.6rem 1rem', marginBottom: '1.25rem', fontSize: '0.875rem', color: 'var(--text-secondary)'
+          }}>
+            Current: <strong style={{ color: 'var(--text-primary)' }}>{formatStatus(complaint.status)}</strong>
+          </div>
+
+          <form id="status-update-form" onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label style={{ display: 'block', fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+                Change Status To
+              </label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                disabled={isPending}
+                style={{
+                  width: '100%', padding: '0.75rem 1rem',
+                  border: '1px solid rgba(128,128,128,0.3)', borderRadius: '8px',
+                  background: 'var(--bg-primary, #f9f9f9)', color: 'var(--text-primary)',
+                  fontSize: '1rem', cursor: 'pointer', boxSizing: 'border-box'
+                }}
+              >
+                {availableStatuses.map(s => (
+                  <option key={s} value={s}>{formatStatus(s)}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label style={{ display: 'block', fontWeight: 600, fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+                Admin Remarks (Optional)
+              </label>
+              <textarea
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+                placeholder="Reason for status change..."
+                disabled={isPending}
+                rows={3}
+                style={{
+                  width: '100%', padding: '0.75rem 1rem',
+                  border: '1px solid rgba(128,128,128,0.3)', borderRadius: '8px',
+                  background: 'var(--bg-primary, #f9f9f9)', color: 'var(--text-primary)',
+                  fontSize: '0.95rem', resize: 'vertical', fontFamily: 'inherit',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+          </form>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-          <div className="modal-form-group">
-            <label className="modal-label">Change Status To</label>
-            <select
-              className="modal-input"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              disabled={isPending}
-            >
-              {availableStatuses.map(s => (
-                <option key={s} value={s}>{formatStatus(s)}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="modal-form-group">
-            <label className="modal-label">Admin Remarks (Optional)</label>
-            <textarea
-              className="modal-input"
-              style={{ minHeight: '100px', resize: 'vertical' }}
-              value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
-              placeholder="Reason for status change..."
-              disabled={isPending}
-            />
-          </div>
-
-          <div className="modal-footer">
-            <button type="button" className="modal-btn-secondary" onClick={onClose} disabled={isPending}>
-              Cancel
-            </button>
-            <button type="submit" className="modal-btn-primary" disabled={isPending || !status}>
-              {isPending
-                ? <><Loader2 style={{ display: 'inline', marginRight: '6px' }} size={18} /> Saving...</>
-                : 'Save Changes'
-              }
-            </button>
-          </div>
-        </form>
+        {/* Footer — always visible, outside the scrollable body */}
+        <div style={{
+          display: 'flex', justifyContent: 'flex-end', gap: '0.75rem',
+          padding: '1rem 1.5rem 1.5rem',
+          borderTop: '1px solid rgba(128,128,128,0.15)'
+        }}>
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={isPending}
+            style={{
+              padding: '0.65rem 1.25rem', borderRadius: '8px', border: '1px solid rgba(128,128,128,0.3)',
+              background: 'rgba(128,128,128,0.1)', color: 'var(--text-primary)',
+              fontWeight: 600, cursor: 'pointer', fontSize: '0.95rem'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            form="status-update-form"
+            disabled={isPending || !status}
+            style={{
+              padding: '0.65rem 1.4rem', borderRadius: '8px', border: 'none',
+              background: isPending ? 'rgba(37,99,235,0.5)' : '#2563eb',
+              color: 'white', fontWeight: 700, cursor: isPending ? 'wait' : 'pointer',
+              fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px',
+              opacity: (!status) ? 0.5 : 1
+            }}
+          >
+            {isPending ? (
+              <>
+                <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                Saving...
+              </>
+            ) : '💾 Save Changes'}
+          </button>
+        </div>
       </div>
     </div>
   );
