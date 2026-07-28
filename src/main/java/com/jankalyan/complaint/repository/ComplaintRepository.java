@@ -34,15 +34,17 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, Jpa
     
     boolean existsByIdAndIsDeletedFalse(UUID id);
     
-    @Query("SELECT new com.jankalyan.admin.dto.response.AdminDashboardResponse(" +
-           "COUNT(c), " +
-           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.SUBMITTED THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.UNDER_REVIEW THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.APPROVED THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.REJECTED THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.RESOLVED THEN 1L ELSE 0L END), 0L)) " +
-           "FROM Complaint c WHERE c.isDeleted = false")
-    com.jankalyan.admin.dto.response.AdminDashboardResponse getDashboardStatistics();
+    // Native SQL — more reliable than JPQL constructor with aggregates
+    @Query(value = "SELECT " +
+           "COUNT(*), " +
+           "COALESCE(SUM(CASE WHEN status = 'SUBMITTED' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(SUM(CASE WHEN status = 'UNDER_REVIEW' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(SUM(CASE WHEN status = 'APPROVED' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(SUM(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END), 0), " +
+           "COALESCE(SUM(CASE WHEN status = 'RESOLVED' THEN 1 ELSE 0 END), 0) " +
+           "FROM complaints WHERE is_deleted = false",
+           nativeQuery = true)
+    Object[] getDashboardStatisticsRaw();
     
     @Query("SELECT cat.name, COUNT(c.id) FROM Category cat LEFT JOIN Complaint c ON c.category = cat AND c.isDeleted = false GROUP BY cat.name")
     List<Object[]> countComplaintsByCategory();

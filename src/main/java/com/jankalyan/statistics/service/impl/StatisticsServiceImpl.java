@@ -19,17 +19,20 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     @Transactional(readOnly = true)
     public PublicStatsResponse getPublicStatistics() {
-        AdminDashboardResponse adminStats = complaintRepository.getDashboardStatistics();
+        Object[] raw = complaintRepository.getDashboardStatisticsRaw();
+        long totalComplaints = ((Number) raw[0]).longValue();
+        long submitted       = ((Number) raw[1]).longValue();
+        long underReview     = ((Number) raw[2]).longValue();
+        long approved        = ((Number) raw[3]).longValue();
+        long rejected        = ((Number) raw[4]).longValue();
+        long resolved        = ((Number) raw[5]).longValue();
         long totalUsers = userRepository.count();
 
-        // Include SUBMITTED, UNDER_REVIEW, APPROVED in "in-progress" conceptually for the public
-        long inProgress = adminStats.getSubmittedCount() 
-                        + adminStats.getUnderReviewCount() 
-                        + adminStats.getApprovedCount();
+        long inProgress = submitted + underReview + approved;
 
         return PublicStatsResponse.builder()
-                .totalReports(adminStats.getTotalComplaints())
-                .resolvedReports(adminStats.getResolvedCount())
+                .totalReports(totalComplaints)
+                .resolvedReports(resolved)
                 .inProgressReports(inProgress)
                 .activeUsers(totalUsers)
                 .build();

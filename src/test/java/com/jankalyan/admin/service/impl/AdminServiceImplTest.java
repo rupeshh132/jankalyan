@@ -63,12 +63,18 @@ class AdminServiceImplTest {
 
     @Test
     void shouldReturnDashboardStatistics() {
-        AdminDashboardResponse response = new AdminDashboardResponse();
-        given(complaintRepository.getDashboardStatistics()).willReturn(response);
+        Object[] raw = new Object[]{0L, 0L, 0L, 0L, 0L, 0L};
+        given(complaintRepository.getDashboardStatisticsRaw()).willReturn(raw);
+        given(complaintRepository.countComplaintsByCategory()).willReturn(java.util.Collections.emptyList());
+        given(complaintRepository.countComplaintsByMonth()).willReturn(java.util.Collections.emptyList());
+        given(complaintRepository.getAverageResolutionTimeInHours()).willReturn(null);
+        given(complaintRepository.countClosedToday()).willReturn(0L);
+        given(userRepository.count()).willReturn(0L);
 
         AdminDashboardResponse result = adminService.getDashboard();
 
-        assertThat(result).isEqualTo(response);
+        assertThat(result).isNotNull();
+        assertThat(result.getTotalComplaints()).isEqualTo(0L);
     }
 
     @Test

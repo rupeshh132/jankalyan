@@ -95,12 +95,12 @@ class ComplaintRepositoryTest {
         entityManager.persist(c3);
         entityManager.flush();
 
-        var stats = complaintRepository.getDashboardStatistics();
+        Object[] stats = complaintRepository.getDashboardStatisticsRaw();
 
-        assertThat(stats.getTotalComplaints()).isEqualTo(2);
-        assertThat(stats.getSubmittedCount()).isEqualTo(1);
-        assertThat(stats.getUnderReviewCount()).isEqualTo(1);
-        assertThat(stats.getApprovedCount()).isEqualTo(0);
+        assertThat(((Number) stats[0]).longValue()).isEqualTo(2); // totalComplaints
+        assertThat(((Number) stats[1]).longValue()).isEqualTo(1); // submittedCount
+        assertThat(((Number) stats[2]).longValue()).isEqualTo(1); // underReviewCount
+        assertThat(((Number) stats[3]).longValue()).isEqualTo(0); // approvedCount
     }
 
     @Test

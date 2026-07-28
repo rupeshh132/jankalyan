@@ -50,7 +50,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional(readOnly = true)
     public AdminDashboardResponse getDashboard() {
-        AdminDashboardResponse response = complaintRepository.getDashboardStatistics();
+        // Use native SQL result and map manually (avoids JPQL constructor validation issues)
+        Object[] raw = complaintRepository.getDashboardStatisticsRaw();
+        AdminDashboardResponse response = new AdminDashboardResponse(
+            ((Number) raw[0]).longValue(),  // totalComplaints
+            ((Number) raw[1]).longValue(),  // submittedCount
+            ((Number) raw[2]).longValue(),  // underReviewCount
+            ((Number) raw[3]).longValue(),  // approvedCount
+            ((Number) raw[4]).longValue(),  // rejectedCount
+            ((Number) raw[5]).longValue()   // resolvedCount
+        );
         
         List<Object[]> categoryCounts = complaintRepository.countComplaintsByCategory();
         java.util.Map<String, Long> categoryMap = new java.util.HashMap<>();
