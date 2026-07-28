@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { User as UserIcon } from 'lucide-react';
 
 const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { data: profileData } = useProfile();
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -66,9 +66,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
           {user ? (
             <>
               <NotificationBell />
-              <Link to={user.role === 'ADMIN' ? '/admin' : '/dashboard'} className="hidden sm:block">
-                <Button variant="ghost">Dashboard</Button>
-              </Link>
+              <Button onClick={logout} variant="outline" size="sm" className="hidden sm:inline-flex">Logout</Button>
               <Link to="/dashboard/profile" className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
                 {profile.profileImage ? (
                   <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
