@@ -141,8 +141,6 @@ public class AdminServiceImpl implements AdminService {
             throw new BadRequestException("Complaint is already in the requested status.");
         }
 
-        validateTransition(oldStatus, newStatus);
-
         complaint.setStatus(newStatus);
 
         UUID adminId = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
@@ -187,18 +185,5 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + complaintId));
 
         complaintRepository.delete(complaint);
-    }
-
-    private void validateTransition(ComplaintStatus oldStatus, ComplaintStatus newStatus) {
-        boolean valid = switch (oldStatus) {
-            case SUBMITTED -> newStatus == ComplaintStatus.UNDER_REVIEW;
-            case UNDER_REVIEW -> newStatus == ComplaintStatus.APPROVED || newStatus == ComplaintStatus.REJECTED;
-            case APPROVED -> newStatus == ComplaintStatus.RESOLVED;
-            case REJECTED, RESOLVED -> false; // Terminal states
-        };
-
-        if (!valid) {
-            throw new BadRequestException("Invalid status transition from " + oldStatus + " to " + newStatus);
-        }
     }
 }

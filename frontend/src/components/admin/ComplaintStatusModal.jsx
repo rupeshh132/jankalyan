@@ -3,128 +3,93 @@ import { useUpdateComplaintStatus } from '../../hooks/useUpdateComplaintStatus';
 import { X, Loader2 } from 'lucide-react';
 import './admin.css';
 
+const ALL_STATUSES = ['SUBMITTED', 'UNDER_REVIEW', 'APPROVED', 'REJECTED', 'RESOLVED'];
 
 const ComplaintStatusModal = ({ complaint, onClose }) => {
   const modalRef = useRef(null);
-  const previouslyFocusedElement = useRef(null);
-  const getAllowedTransitions = (currentStatus) => {
-    switch (currentStatus) {
-      case 'SUBMITTED': return ['UNDER_REVIEW'];
-      case 'UNDER_REVIEW': return ['APPROVED', 'REJECTED'];
-      case 'APPROVED': return ['RESOLVED'];
-      case 'REJECTED': return [];
-      case 'RESOLVED': return [];
-      default: return [];
-    }
-  };
 
-  const validStatuses = getAllowedTransitions(complaint?.status);
+  // Admin can change to any status except the current one
+  const availableStatuses = ALL_STATUSES.filter(s => s !== complaint?.status);
 
-  const [status, setStatus] = useState(validStatuses.length > 0 ? validStatuses[0] : '');
+  const [status, setStatus] = useState(availableStatuses[0] || '');
   const [remarks, setRemarks] = useState('');
   const { mutate: updateStatus, isPending, error } = useUpdateComplaintStatus();
 
   useEffect(() => {
-    // Save previous focus
-    previouslyFocusedElement.current = document.activeElement;
-    
-    // Focus the modal
-    if (modalRef.current) {
-      modalRef.current.focus();
-    }
-
+    if (modalRef.current) modalRef.current.focus();
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-
-      // Focus trap
-      if (e.key === 'Tab' && modalRef.current) {
-        const focusableElements = modalRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        
-        if (focusableElements.length > 0) {
-          const firstElement = focusableElements[0];
-          const lastElement = focusableElements[focusableElements.length - 1];
-
-          if (e.shiftKey) {
-            if (document.activeElement === firstElement) {
-              lastElement.focus();
-              e.preventDefault();
-            }
-          } else {
-            if (document.activeElement === lastElement) {
-              firstElement.focus();
-              e.preventDefault();
-            }
-          }
-        }
-      }
+      if (e.key === 'Escape') onClose();
     };
-
     document.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      // Restore previous focus
-      if (previouslyFocusedElement.current) {
-        previouslyFocusedElement.current.focus();
-      }
-    };
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
   if (!complaint) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!status) return;
     updateStatus(
       { complaintId: complaint.id, status, remarks },
       { onSuccess: () => onClose() }
     );
   };
 
+  const formatStatus = (s) => s.replace(/_/g, ' ');
+
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div 
-        className="modal-content" 
+      <div
+        className="modal-content"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
         tabIndex="-1"
         ref={modalRef}
+        style={{ maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}
       >
         <div className="modal-header">
           <h3 className="modal-title" id="modal-title">Update Status</h3>
-          <button className="close-btn" onClick={onClose} disabled={isPending} aria-label="Close modal"><X size={24} /></button>
+          <button className="close-btn" onClick={onClose} disabled={isPending} aria-label="Close modal">
+            <X size={24} />
+          </button>
         </div>
 
-        {error && <div className="auth-error">{error.message}</div>}
+        {error && (
+          <div className="auth-error" style={{ marginBottom: '1rem' }}>
+            {error?.response?.data?.message || error.message}
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit}>
+        <div style={{
+          marginBottom: '1rem',
+          padding: '0.75rem 1rem',
+          background: 'rgba(255,255,255,0.04)',
+          borderRadius: 'var(--radius)',
+          fontSize: '0.9rem',
+          color: 'var(--text-secondary)'
+        }}>
+          Current Status: <strong style={{ color: 'var(--text-primary)' }}>{formatStatus(complaint.status)}</strong>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <div className="modal-form-group">
-            <label className="modal-label">Status</label>
-            {validStatuses.length === 0 ? (
-              <div className="modal-input" style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}>
-                Terminal Status
-              </div>
-            ) : (
-              <select
-                className="modal-input"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                disabled={isPending}
-              >
-                {validStatuses.map(s => (
-                  <option key={s} value={s}>{s.replace('_', ' ')}</option>
-                ))}
-              </select>
-            )}
+            <label className="modal-label">Change Status To</label>
+            <select
+              className="modal-input"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              disabled={isPending}
+            >
+              {availableStatuses.map(s => (
+                <option key={s} value={s}>{formatStatus(s)}</option>
+              ))}
+            </select>
           </div>
 
           <div className="modal-form-group">
-            <label className="modal-label">Admin Comments (Optional)</label>
+            <label className="modal-label">Admin Remarks (Optional)</label>
             <textarea
               className="modal-input"
               style={{ minHeight: '100px', resize: 'vertical' }}
@@ -139,8 +104,11 @@ const ComplaintStatusModal = ({ complaint, onClose }) => {
             <button type="button" className="modal-btn-secondary" onClick={onClose} disabled={isPending}>
               Cancel
             </button>
-            <button type="submit" className="modal-btn-primary" disabled={isPending || validStatuses.length === 0}>
-              {isPending ? <Loader2 className="animate-spin" size={18} /> : 'Save Changes'}
+            <button type="submit" className="modal-btn-primary" disabled={isPending || !status}>
+              {isPending
+                ? <><Loader2 style={{ display: 'inline', marginRight: '6px' }} size={18} /> Saving...</>
+                : 'Save Changes'
+              }
             </button>
           </div>
         </form>
