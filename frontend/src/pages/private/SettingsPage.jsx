@@ -1,7 +1,9 @@
 import React from 'react';
-import { Bell, Lock, Shield, Eye, Smartphone, HelpCircle } from 'lucide-react';
+import { Bell, Lock, Shield, Eye, Smartphone, HelpCircle, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 const SettingsPage = () => {
+  const { logout } = useAuth();
   const settingsSections = [
     {
       id: 'notifications',
@@ -55,6 +57,21 @@ const SettingsPage = () => {
       </div>
 
       <div className="bg-card rounded-xl border shadow-sm p-6 mt-8">
+        <div className="flex items-start space-x-4">
+          <div className="p-3 rounded-lg flex-shrink-0 bg-primary/10 text-primary">
+            <LogOut size={24} />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-foreground mb-1">Account Session</h3>
+            <p className="text-sm text-muted-foreground mb-4">Log out from your current session on this browser.</p>
+            <button onClick={logout} className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm font-medium">
+              Log Out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-card rounded-xl border shadow-sm p-6 mt-6">
         <div className="flex items-start space-x-4">
           <div className="p-3 rounded-lg flex-shrink-0 bg-destructive/10 text-destructive">
             <Shield size={24} />

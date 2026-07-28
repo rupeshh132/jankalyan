@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShieldCheck, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useProfile } from '../../hooks/useProfile';
 import NotificationBell from '../layout/NotificationBell';
 import { Button } from '../ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User as UserIcon } from 'lucide-react';
 
 const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const { data: profileData } = useProfile();
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  const profile = profileData?.data || {};
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,11 +69,13 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
               <Link to={user.role === 'ADMIN' ? '/admin' : '/dashboard'} className="hidden sm:block">
                 <Button variant="ghost">Dashboard</Button>
               </Link>
-              <Button onClick={logout} variant="outline" size="sm" className="hidden sm:inline-flex">Logout</Button>
-              {/* Mobile logout inside sidebar or here. For now, keep it available */}
-              <Button onClick={logout} variant="ghost" size="icon" className="sm:hidden" aria-label="Logout">
-                <X className="h-4 w-4" />
-              </Button>
+              <Link to="/dashboard/profile" className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
+                {profile.profileImage ? (
+                  <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <UserIcon className="h-4 w-4 text-primary" />
+                )}
+              </Link>
             </>
           ) : (
             <>
