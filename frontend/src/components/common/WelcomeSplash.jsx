@@ -242,36 +242,36 @@ const WelcomeSplash = () => {
           Welcome to <span className="creator-name">JanKalyan</span>
         </h1>
         <p className="welcome-subtitle">
-          Namaste! Main <strong style={{color:'#c4b5fd'}}>Rupesh Vishwakarma</strong> hoon, is platform ka creator.
-          Aapka hamare Civic Issue Reporting Portal mein swagat hai. 🙏
+          Hello! I'm <strong style={{color:'#c4b5fd'}}>Rupesh Vishwakarma</strong>, the creator of this platform.
+          Welcome to the <strong style={{color:'#c4b5fd'}}>JanKalyan Portal</strong> — your voice for a better city. 🙏
         </p>
 
         <div className="divider"></div>
 
         {/* How to use */}
-        <p className="how-to-title">📋 Kaise Istemaal Karein</p>
+        <p className="how-to-title">📋 How to Use</p>
         <ul className="steps">
           <li className="step">
             <span className="step-num">1</span>
-            <span><strong style={{color:'#e2e8f0'}}>Register / Login</strong> — Apna account banayein aur login karein</span>
+            <span><strong style={{color:'#e2e8f0'}}>Register / Login</strong> — Create your account and sign in to get started</span>
           </li>
           <li className="step">
             <span className="step-num">2</span>
-            <span><strong style={{color:'#e2e8f0'}}>Complaint Darz Karein</strong> — "Report an Issue" button se apni samasya report karein</span>
+            <span><strong style={{color:'#e2e8f0'}}>File a Complaint</strong> — Use the "Report an Issue" button to submit your civic problem</span>
           </li>
           <li className="step">
             <span className="step-num">3</span>
-            <span><strong style={{color:'#e2e8f0'}}>Track Karein</strong> — Dashboard mein apni complaint ka status real-time dekhen</span>
+            <span><strong style={{color:'#e2e8f0'}}>Track Progress</strong> — Monitor your complaint status in real-time from your dashboard</span>
           </li>
           <li className="step">
             <span className="step-num">4</span>
-            <span><strong style={{color:'#e2e8f0'}}>Upvote Karein</strong> — Doosron ki important complaints ko vote dekar support dikhayein</span>
+            <span><strong style={{color:'#e2e8f0'}}>Upvote Issues</strong> — Support other important complaints by casting your vote</span>
           </li>
         </ul>
 
         {/* CTA Button */}
         <button className="close-btn" onClick={handleClose}>
-          ✨ Platform Explore Karein
+          ✨ Explore the Platform
         </button>
 
         {/* Thank you */}
