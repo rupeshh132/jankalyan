@@ -26,5 +26,8 @@ USER appuser
 # Expose the application port
 EXPOSE 8080
 
+# Set active Spring profile to prod
+ENV SPRING_PROFILES_ACTIVE=prod
+
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
