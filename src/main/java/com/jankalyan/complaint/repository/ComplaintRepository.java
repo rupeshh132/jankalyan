@@ -33,11 +33,11 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, Jpa
     
     @Query("SELECT new com.jankalyan.admin.dto.response.AdminDashboardResponse(" +
            "COUNT(c), " +
-           "COALESCE(SUM(CASE WHEN c.status = 'SUBMITTED' THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = 'UNDER_REVIEW' THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = 'APPROVED' THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = 'REJECTED' THEN 1L ELSE 0L END), 0L), " +
-           "COALESCE(SUM(CASE WHEN c.status = 'RESOLVED' THEN 1L ELSE 0L END), 0L)) " +
+           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.SUBMITTED THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.UNDER_REVIEW THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.APPROVED THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.REJECTED THEN 1L ELSE 0L END), 0L), " +
+           "COALESCE(SUM(CASE WHEN c.status = com.jankalyan.complaint.entity.ComplaintStatus.RESOLVED THEN 1L ELSE 0L END), 0L)) " +
            "FROM Complaint c WHERE c.isDeleted = false")
     com.jankalyan.admin.dto.response.AdminDashboardResponse getDashboardStatistics();
     

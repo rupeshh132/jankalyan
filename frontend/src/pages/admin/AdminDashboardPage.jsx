@@ -23,7 +23,7 @@ const AdminDashboardPage = () => {
 
   if (isDashboardLoading) return <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8 py-6"><AdminLoadingSkeleton type="cards" /></div>;
 
-  const stats = dashboardData?.data || {};
+  const stats = dashboardData || {};
 
   // Parse Charts Data
   const monthlyTrendData = stats.monthlyTrend 
@@ -177,7 +177,7 @@ const AdminDashboardPage = () => {
         <CardContent>
           {isRecentLoading ? (
             <AdminLoadingSkeleton type="table" />
-          ) : recentComplaintsData?.data?.content?.length > 0 ? (
+          ) : recentComplaintsData?.content?.length > 0 ? (
             <ComplaintTable data={recentComplaintsData} onPageChange={() => {}} />
           ) : (
             <div className="text-center py-12 text-muted-foreground">
