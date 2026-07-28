@@ -95,12 +95,10 @@ class ComplaintRepositoryTest {
         entityManager.persist(c3);
         entityManager.flush();
 
-        Object[] stats = complaintRepository.getDashboardStatisticsRaw();
-
-        assertThat(((Number) stats[0]).longValue()).isEqualTo(2); // totalComplaints
-        assertThat(((Number) stats[1]).longValue()).isEqualTo(1); // submittedCount
-        assertThat(((Number) stats[2]).longValue()).isEqualTo(1); // underReviewCount
-        assertThat(((Number) stats[3]).longValue()).isEqualTo(0); // approvedCount
+        assertThat(complaintRepository.countByIsDeletedFalse()).isEqualTo(2);
+        assertThat(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.SUBMITTED)).isEqualTo(1);
+        assertThat(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.UNDER_REVIEW)).isEqualTo(1);
+        assertThat(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.APPROVED)).isEqualTo(0);
     }
 
     @Test

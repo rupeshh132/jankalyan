@@ -63,18 +63,23 @@ class AdminServiceImplTest {
 
     @Test
     void shouldReturnDashboardStatistics() {
-        Object[] raw = new Object[]{0L, 0L, 0L, 0L, 0L, 0L};
-        given(complaintRepository.getDashboardStatisticsRaw()).willReturn(raw);
+        given(complaintRepository.countByIsDeletedFalse()).willReturn(5L);
+        given(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.SUBMITTED)).willReturn(2L);
+        given(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.UNDER_REVIEW)).willReturn(1L);
+        given(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.APPROVED)).willReturn(1L);
+        given(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.REJECTED)).willReturn(0L);
+        given(complaintRepository.countByStatusAndIsDeletedFalse(ComplaintStatus.RESOLVED)).willReturn(1L);
         given(complaintRepository.countComplaintsByCategory()).willReturn(java.util.Collections.emptyList());
         given(complaintRepository.countComplaintsByMonth()).willReturn(java.util.Collections.emptyList());
         given(complaintRepository.getAverageResolutionTimeInHours()).willReturn(null);
         given(complaintRepository.countClosedToday()).willReturn(0L);
-        given(userRepository.count()).willReturn(0L);
+        given(userRepository.count()).willReturn(10L);
 
         AdminDashboardResponse result = adminService.getDashboard();
 
         assertThat(result).isNotNull();
-        assertThat(result.getTotalComplaints()).isEqualTo(0L);
+        assertThat(result.getTotalComplaints()).isEqualTo(5L);
+        assertThat(result.getSubmittedCount()).isEqualTo(2L);
     }
 
     @Test

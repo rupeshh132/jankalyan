@@ -34,17 +34,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, Jpa
     
     boolean existsByIdAndIsDeletedFalse(UUID id);
     
-    // Native SQL — more reliable than JPQL constructor with aggregates
-    @Query(value = "SELECT " +
-           "COUNT(*), " +
-           "COALESCE(SUM(CASE WHEN status = 'SUBMITTED' THEN 1 ELSE 0 END), 0), " +
-           "COALESCE(SUM(CASE WHEN status = 'UNDER_REVIEW' THEN 1 ELSE 0 END), 0), " +
-           "COALESCE(SUM(CASE WHEN status = 'APPROVED' THEN 1 ELSE 0 END), 0), " +
-           "COALESCE(SUM(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END), 0), " +
-           "COALESCE(SUM(CASE WHEN status = 'RESOLVED' THEN 1 ELSE 0 END), 0) " +
-           "FROM complaints WHERE is_deleted = false",
-           nativeQuery = true)
-    Object[] getDashboardStatisticsRaw();
+    // Simple, reliable derived queries for dashboard stats
+    long countByIsDeletedFalse();
+    long countByStatusAndIsDeletedFalse(ComplaintStatus status);
     
     @Query("SELECT cat.name, COUNT(c.id) FROM Category cat LEFT JOIN Complaint c ON c.category = cat AND c.isDeleted = false GROUP BY cat.name")
     List<Object[]> countComplaintsByCategory();
