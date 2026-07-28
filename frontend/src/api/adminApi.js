@@ -6,12 +6,12 @@ export const adminApi = {
     return response.data.data;
   },
   
-  getAllComplaints: async (page = 0, size = 10, search = '', categoryId = '', status = '', sort = '') => {
+  getAllComplaints: async (page = 0, size = 10, search = '', categoryId = '', status = '', sort = 'createdAt,desc') => {
     const params = new URLSearchParams({ page, size });
+    params.append('sort', sort);  // Always send sort
     if (search) params.append('search', search);
     if (categoryId) params.append('categoryId', categoryId);
     if (status) params.append('status', status);
-    if (sort) params.append('sort', sort);
     
     const response = await api.get(`/admin/complaints?${params.toString()}`);
     return response.data.data;

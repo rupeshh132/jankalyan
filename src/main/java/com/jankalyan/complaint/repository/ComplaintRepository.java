@@ -22,6 +22,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, UUID>, Jpa
     
     @EntityGraph(attributePaths = {"category"})
     List<Complaint> findByUserIdAndIsDeletedFalse(UUID userId);
+
+    @EntityGraph(attributePaths = {"category"})
+    List<Complaint> findByUserIdAndIsDeletedFalseOrderByCreatedAtDesc(UUID userId);
     
     Optional<Complaint> findByIdAndIsDeletedFalse(UUID id);
     

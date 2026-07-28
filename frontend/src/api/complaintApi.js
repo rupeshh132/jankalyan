@@ -2,14 +2,14 @@ import api from './axiosInstance';
 
 export const complaintApi = {
   getAllComplaints: async (paramsObj = {}) => {
-    const { page = 0, size = 10, categoryId = null, status = null, search = null, sort = null } = paramsObj;
+    const { page = 0, size = 10, categoryId = null, status = null, search = null, sort = 'createdAt,desc' } = paramsObj;
     const params = new URLSearchParams();
     params.append('page', page);
     params.append('size', size);
+    params.append('sort', sort);  // Always send sort
     if (categoryId) params.append('categoryId', categoryId);
     if (status) params.append('status', status);
     if (search) params.append('search', search);
-    if (sort) params.append('sort', sort);
     
     const response = await api.get(`/complaints?${params.toString()}`);
     return response.data.data;

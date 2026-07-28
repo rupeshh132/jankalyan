@@ -71,7 +71,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
 
-        List<Complaint> complaints = complaintRepository.findByUserIdAndIsDeletedFalse(principal.getId());
+        List<Complaint> complaints = complaintRepository.findByUserIdAndIsDeletedFalseOrderByCreatedAtDesc(principal.getId());
         
         return complaints.stream()
                 .map(c -> complaintMapper.toResponse(c, principal.getId()))
