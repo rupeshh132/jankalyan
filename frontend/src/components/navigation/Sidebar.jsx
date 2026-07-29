@@ -48,7 +48,7 @@ const SidebarContent = ({ navItems, closeMobile }) => {
             >
               <item.icon
                 className={cn(
-                  "mr-3 h-5 w-5 flex-shrink-0 transition-colors",
+                  "mr-3 h-5 w-5 flex-shrink-0 transition-all duration-200 group-hover:translate-x-1",
                   isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-accent-foreground"
                 )}
                 aria-hidden="true"
