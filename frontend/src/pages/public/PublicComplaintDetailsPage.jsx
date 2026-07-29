@@ -87,8 +87,21 @@ const PublicComplaintDetailsPage = () => {
     setTimeout(() => setIsAnimating(false), 300);
 
     toggleUpvote(complaint.id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['complaint', complaint.id] });
+      onSuccess: (updatedComplaint) => {
+        // Manually update the cache for instant sync
+        queryClient.setQueriesData({ queryKey: ['complaint', complaint.id] }, (oldData) => {
+          if (!oldData) return oldData;
+          return updatedComplaint.data; // The backend returns ComplaintResponse
+        });
+        
+        // Also sync the list view caches if they exist
+        queryClient.setQueriesData({ queryKey: ['publicComplaints'] }, (oldData) => {
+          if (!oldData || !oldData.content) return oldData;
+          return {
+            ...oldData,
+            content: oldData.content.map(c => c.id === complaint.id ? updatedComplaint.data : c)
+          };
+        });
       },
       onError: () => {
         // Revert on failure

@@ -52,9 +52,30 @@ const ComplaintCard = ({ complaint }) => {
     setTimeout(() => setIsAnimating(false), 300);
 
     toggleUpvote(complaint.id, {
-      onSuccess: () => {
-        // Silently invalidate to sync real data in background
-        queryClient.invalidateQueries({ queryKey: ['publicComplaints'] });
+      onSuccess: (updatedComplaint) => {
+        // Update the cache manually for immediate consistency
+        queryClient.setQueriesData({ queryKey: ['publicComplaints'] }, (oldData) => {
+          if (!oldData) return oldData;
+          if (oldData.content) {
+            return {
+              ...oldData,
+              content: oldData.content.map(c => c.id === complaint.id ? updatedComplaint : c)
+            };
+          }
+          return oldData.map(c => c.id === complaint.id ? updatedComplaint : c);
+        });
+        
+        // Also update myComplaints if it exists
+        queryClient.setQueriesData({ queryKey: ['myComplaints'] }, (oldData) => {
+          if (!oldData) return oldData;
+          if (oldData.content) {
+            return {
+              ...oldData,
+              content: oldData.content.map(c => c.id === complaint.id ? updatedComplaint : c)
+            };
+          }
+          return oldData.map(c => c.id === complaint.id ? updatedComplaint : c);
+        });
       },
       onError: (error) => {
         // Revert on failure
