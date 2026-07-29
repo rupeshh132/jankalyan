@@ -1,6 +1,5 @@
 import React from 'react';
 import { CheckCircle2, Clock, XCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import { complaintApi } from '../../api/complaintApi';
 
@@ -123,7 +122,7 @@ const ComplaintTracker = ({ complaintId }) => {
                   </h4>
                   {timestamp ? (
                     <p className="text-sm text-muted-foreground mt-0.5">
-                      {format(new Date(timestamp), "EEE, d MMM ''yy - h:mm a")}
+                      {new Intl.DateTimeFormat('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true }).format(new Date(timestamp))}
                     </p>
                   ) : (
                     <p className="text-sm text-muted-foreground/60 mt-0.5">
