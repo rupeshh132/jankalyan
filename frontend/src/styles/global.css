@@ -113,8 +113,13 @@
     @apply bg-muted-foreground/50;
   }
   
-  /* Selection */
   ::selection {
     @apply bg-primary/30 text-primary-foreground;
+  }
+  
+  /* Premium Typography */
+  h1, h2, h3, h4, h5, h6, .page-title {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: -0.02em;
   }
 }

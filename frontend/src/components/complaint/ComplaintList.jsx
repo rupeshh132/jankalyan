@@ -3,6 +3,7 @@ import ComplaintCard from './ComplaintCard';
 import EmptyState from './EmptyState';
 import LoadingSkeleton from './LoadingSkeleton';
 import Pagination from './Pagination';
+import { motion } from 'framer-motion';
 import './complaint.css';
 
 const ComplaintList = ({ isLoading, isError, error, data, onPageChange, refetch }) => {
@@ -27,13 +28,26 @@ const ComplaintList = ({ isLoading, isError, error, data, onPageChange, refetch 
 
   if (!content.length) return <EmptyState />;
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
   return (
     <div>
-      <div className="complaint-list-container">
+      <motion.div 
+        className="complaint-list-container"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
         {content.map(complaint => (
           <ComplaintCard key={complaint.id} complaint={complaint} />
         ))}
-      </div>
+      </motion.div>
       
       {/* Pagination controls */}
       {isPage && data.totalPages > 1 && (

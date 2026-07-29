@@ -1,13 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileQuestion } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Inbox, FileQuestion } from 'lucide-react';
+import { Button } from './button';
+import { useNavigate } from 'react-router-dom';
 
 const EmptyState = ({ 
-  title = "No complaints found", 
-  message = "We couldn't find any complaints matching your current filters. Try adjusting your search criteria.",
-  showAction = true
+  icon: Icon = Inbox, 
+  title = "No data found", 
+  description = "There is nothing to display here at the moment.", 
+  actionText, 
+  actionPath 
 }) => {
+  const navigate = useNavigate();
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -18,7 +23,7 @@ const EmptyState = ({
       <div className="relative mb-6">
         <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150" />
         <div className="relative bg-card border shadow-sm w-20 h-20 rounded-2xl flex items-center justify-center">
-          <FileQuestion size={32} className="text-muted-foreground" />
+          <Icon size={32} className="text-muted-foreground" />
         </div>
       </div>
       
@@ -26,16 +31,13 @@ const EmptyState = ({
         {title}
       </h3>
       <p className="text-muted-foreground max-w-sm mb-6">
-        {message}
+        {description}
       </p>
       
-      {showAction && (
-        <Link 
-          to="/dashboard/report" 
-          className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8 rounded-full"
-        >
-          Report an Issue
-        </Link>
+      {actionText && actionPath && (
+        <Button onClick={() => navigate(actionPath)} size="lg" className="rounded-full shadow-lg hover:shadow-primary/25 transition-all">
+          {actionText}
+        </Button>
       )}
     </motion.div>
   );

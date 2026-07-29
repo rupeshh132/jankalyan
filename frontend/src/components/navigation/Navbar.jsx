@@ -37,17 +37,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     >
       <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {user && (
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="md:hidden" 
-              onClick={toggleSidebar}
-              aria-label="Toggle Menu"
-            >
-              {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          )}
+
           
           <Link to="/" className="flex items-center gap-2 group">
             <ShieldCheck className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />

@@ -4,6 +4,7 @@ import ComplaintStatusBadge from './ComplaintStatusBadge';
 import { MapPin, Calendar, Heart, Tag, Copy } from 'lucide-react';
 import { useToggleUpvote } from '../../hooks/useComplaints';
 import { useQueryClient } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import './complaint.css';
@@ -86,9 +87,15 @@ const ComplaintCard = ({ complaint }) => {
     });
   };
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <Link to={`/complaints/${complaint.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-      <div className="complaint-card">
+    <motion.div variants={cardVariants} whileHover={{ y: -4 }} whileTap={{ scale: 0.98 }}>
+      <Link to={`/complaints/${complaint.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+        <div className="complaint-card hover:shadow-lg transition-shadow duration-300">
         {complaint.images && complaint.images.length > 0 && (
           <div className="complaint-thumbnail">
             <img src={complaint.images[0].imageUrl} alt="Complaint thumbnail" loading="lazy" />
@@ -185,8 +192,8 @@ const ComplaintCard = ({ complaint }) => {
             </div>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </motion.div>
   );
 };
 
