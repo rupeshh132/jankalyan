@@ -189,9 +189,10 @@ const ComplaintCard = ({ complaint }) => {
                 />
                 <span>{optimisticCount}</span>
               </button>
-            </div>
           </div>
         </div>
+      </div>
+      </div>
       </Link>
     </motion.div>
   );
