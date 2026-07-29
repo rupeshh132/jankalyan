@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useProfile, useUpdateProfile, useUploadProfilePhoto } from '../../hooks/useProfile';
-import { User, Mail, Phone, MapPin, Loader2, Save, Camera } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Loader2, Save, LogOut } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { data: profileData, isLoading: isProfileLoading, isError } = useProfile();
   const updateProfileMutation = useUpdateProfile();
   const uploadPhotoMutation = useUploadProfilePhoto();
@@ -194,11 +194,19 @@ const ProfilePage = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end pt-4 border-t border-border">
+              <div className="flex justify-end pt-4 border-t border-border gap-4">
+                <button 
+                  type="button" 
+                  onClick={() => logout()}
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-destructive text-destructive hover:bg-destructive/10 h-10 px-8 md:hidden"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </button>
                 <button 
                   type="submit" 
                   disabled={updateProfileMutation.isPending}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8"
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8 flex-1 md:flex-none"
                 >
                   {updateProfileMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                   {updateProfileMutation.isPending ? 'Saving...' : 'Save Changes'}
