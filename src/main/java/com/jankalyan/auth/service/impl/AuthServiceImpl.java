@@ -2,6 +2,8 @@ package com.jankalyan.auth.service.impl;
 
 import com.jankalyan.auth.dto.request.LoginRequest;
 import com.jankalyan.auth.dto.request.RegisterRequest;
+import com.jankalyan.auth.dto.request.ForgotPasswordRequest;
+import com.jankalyan.auth.dto.request.ResetPasswordRequest;
 import com.jankalyan.auth.dto.response.JwtAuthResponse;
 import com.jankalyan.auth.entity.RefreshToken;
 import com.jankalyan.auth.repository.RefreshTokenRepository;
@@ -199,5 +201,29 @@ public class AuthServiceImpl implements AuthService {
         if (authentication != null && authentication.getPrincipal() instanceof com.jankalyan.auth.security.UserPrincipal principal) {
             refreshTokenService.deleteByUserId(principal.getId());
         }
+    }
+
+    @Override
+    @Transactional
+    public void forgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail().toLowerCase())
+                .orElseThrow(() -> new com.jankalyan.common.exception.ResourceNotFoundException("No user found with this email"));
+        
+        String otp = otpService.generateAndSaveOtp(user.getEmail());
+        emailService.sendPasswordResetOtpEmail(user.getEmail(), otp);
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail().toLowerCase())
+                .orElseThrow(() -> new com.jankalyan.common.exception.ResourceNotFoundException("No user found with this email"));
+        
+        // Validate OTP
+        otpService.validateOtp(user.getEmail(), request.getOtpCode());
+        
+        // Update password
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 }

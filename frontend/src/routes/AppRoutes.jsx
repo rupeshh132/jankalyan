@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import LoginPage from '../pages/public/LoginPage';
 import RegisterPage from '../pages/public/RegisterPage';
+import ForgotPasswordPage from '../pages/public/ForgotPasswordPage';
 import HomePage from '../pages/public/HomePage';
 import HowItWorksPage from '../pages/public/HowItWorksPage';
 import FeaturesPage from '../pages/public/FeaturesPage';
@@ -40,6 +41,7 @@ const AppRoutes = () => {
         <Route element={<GuestRoute />}>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
         </Route>
 
         {/* Citizen Routes */}

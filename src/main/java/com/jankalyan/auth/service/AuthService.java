@@ -2,6 +2,8 @@ package com.jankalyan.auth.service;
 
 import com.jankalyan.auth.dto.request.LoginRequest;
 import com.jankalyan.auth.dto.request.RegisterRequest;
+import com.jankalyan.auth.dto.request.ForgotPasswordRequest;
+import com.jankalyan.auth.dto.request.ResetPasswordRequest;
 import com.jankalyan.auth.dto.response.JwtAuthResponse;
 
 public interface AuthService {
@@ -12,6 +14,8 @@ public interface AuthService {
     AuthResult verifyOtpLogin(com.jankalyan.auth.dto.request.VerifyOtpRequest request);
     AuthResult refresh(String refreshToken);
     void logout();
+    void forgotPassword(ForgotPasswordRequest request);
+    void resetPassword(ResetPasswordRequest request);
 
     record AuthResult(JwtAuthResponse jwtResponse, String refreshToken) {}
 }

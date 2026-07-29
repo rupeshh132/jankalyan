@@ -53,4 +53,39 @@ public class EmailService {
             throw new RuntimeException("Failed to send email");
         }
     }
+
+    public void sendPasswordResetOtpEmail(String toEmail, String otpCode) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail);
+            helper.setTo(toEmail);
+            helper.setSubject("JanKalyan - Password Reset OTP");
+            
+            String htmlContent = String.format(
+                "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">" +
+                "  <h2 style=\"color: #dc3545; text-align: center;\">JanKalyan Password Reset</h2>" +
+                "  <p>Hello,</p>" +
+                "  <p>You have requested to reset your password. Please use the following One-Time Password (OTP) to reset it:</p>" +
+                "  <div style=\"background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 24px; letter-spacing: 5px; font-weight: bold; border-radius: 4px; margin: 20px 0; color: #dc3545;\">" +
+                "    %s" +
+                "  </div>" +
+                "  <p>This OTP is valid for <strong>10 minutes</strong>. Do not share it with anyone.</p>" +
+                "  <p>If you didn't request a password reset, please ignore this email or contact support if you have concerns.</p>" +
+                "  <br>" +
+                "  <p>Best regards,<br>Team JanKalyan</p>" +
+                "</div>",
+                otpCode
+            );
+            
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+            log.info("Password Reset OTP email sent successfully to {}", toEmail);
+        } catch (MessagingException e) {
+            log.error("Failed to send Password Reset OTP email to {}", toEmail, e);
+            throw new RuntimeException("Failed to send email");
+        }
+    }
 }

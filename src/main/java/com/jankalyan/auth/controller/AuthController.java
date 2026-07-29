@@ -2,6 +2,8 @@ package com.jankalyan.auth.controller;
 
 import com.jankalyan.auth.dto.request.LoginRequest;
 import com.jankalyan.auth.dto.request.RegisterRequest;
+import com.jankalyan.auth.dto.request.ForgotPasswordRequest;
+import com.jankalyan.auth.dto.request.ResetPasswordRequest;
 import com.jankalyan.auth.service.AuthService;
 import com.jankalyan.common.dto.ApiResponse;
 import com.jankalyan.config.JwtProperties;
@@ -84,19 +86,35 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse httpResponse) {
+    public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse response) {
         authService.logout();
         
-        ResponseCookie cookie = ResponseCookie.from("refresh_token", "")
+        // Clear refresh token cookie
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)
                 .secure(true)
-                .sameSite("None")
-                .path("/")
+                .path("/api/v1/auth/refresh")
                 .maxAge(0)
+                .sameSite("Strict")
                 .build();
-        httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, cookie.toString());
+                
+        response.addHeader("Set-Cookie", cookie.toString());
+        
+        ApiResponse<Void> apiResponse = new ApiResponse<>(true, HttpStatus.OK.value(), "Logged out successfully", null, LocalDateTime.now());
+        return ResponseEntity.ok(apiResponse);
+    }
 
-        ApiResponse<Void> response = new ApiResponse<>(true, HttpStatus.OK.value(), "Success", null, LocalDateTime.now());
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<Void>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        authService.forgotPassword(request);
+        ApiResponse<Void> response = new ApiResponse<>(true, HttpStatus.OK.value(), "Password reset OTP sent to your email", null, LocalDateTime.now());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request);
+        ApiResponse<Void> response = new ApiResponse<>(true, HttpStatus.OK.value(), "Password has been reset successfully", null, LocalDateTime.now());
         return ResponseEntity.ok(response);
     }
 
