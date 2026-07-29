@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { usePublicComplaints } from '../../hooks/useComplaints';
 import ComplaintList from '../../components/complaint/ComplaintList';
+import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import '../../components/complaint/complaint.css';
 
 
 const DashboardPage = () => {
+  const { user } = useAuth();
   const [page, setPage] = useState(0);
-  const { data, isLoading, isError, error, refetch } = usePublicComplaints(page, 10);
+  const { data, isLoading, isError, error, refetch } = usePublicComplaints({ page, size: 10 }, user?.id);
 
   return (
     <div className="page-container">

@@ -90,12 +90,12 @@ public class AuthController {
         authService.logout();
         
         // Clear refresh token cookie
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
                 .secure(true)
-                .path("/api/v1/auth/refresh")
+                .path("/")
                 .maxAge(0)
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
                 
         response.addHeader("Set-Cookie", cookie.toString());

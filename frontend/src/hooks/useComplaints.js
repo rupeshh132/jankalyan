@@ -8,9 +8,9 @@ export const useMyComplaints = (page = 0, size = 10) => {
   });
 };
 
-export const usePublicComplaints = (params = {}) => {
+export const usePublicComplaints = (params = {}, userId = null) => {
   return useQuery({
-    queryKey: ['publicComplaints', params],
+    queryKey: ['publicComplaints', params, userId],
     queryFn: () => complaintApi.getAllComplaints(params),
     keepPreviousData: true,
   });

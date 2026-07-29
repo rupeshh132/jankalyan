@@ -36,6 +36,8 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         setUser(null);
+        setAccessToken(null);
+        localStorage.removeItem('isLoggedIn');
       } finally {
         if (isMounted) setLoading(false);
       }

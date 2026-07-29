@@ -8,7 +8,10 @@ import ComplaintList from '../../components/complaint/ComplaintList';
 import { Search, Filter } from 'lucide-react';
 import './public-complaints.css';
 
+import { useAuth } from '../../context/AuthContext';
+
 const PublicComplaintsPage = () => {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Read state from URL params directly (Single Source of Truth)
@@ -69,7 +72,7 @@ const PublicComplaintsPage = () => {
     search: debouncedSearch || null,
     categoryId: categoryId || null,
     status: status || null
-  });
+  }, user?.id);
 
   const handlePageChange = (newPage) => {
     updateParams({ page: newPage });

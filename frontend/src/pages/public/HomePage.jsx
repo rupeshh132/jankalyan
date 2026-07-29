@@ -13,9 +13,12 @@ import ComplaintList from '../../components/complaint/ComplaintList';
 import '../../components/complaint/complaint.css';
 import './Hero.css';
 
+import { useAuth } from '../../context/AuthContext';
+
 const HomePage = () => {
   const [page, setPage] = useState(0);
-  const { data, isLoading, isError, error, refetch } = usePublicComplaints({ page, size: 5 });
+  const { user } = useAuth();
+  const { data, isLoading, isError, error, refetch } = usePublicComplaints({ page, size: 5 }, user?.id);
   const { data: statsData } = usePublicStatistics();
   const stats = statsData || { totalReports: 24592, resolvedReports: 18304, inProgressReports: 4120 };
   
