@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ComplaintStatusBadge from './ComplaintStatusBadge';
-import { MapPin, Calendar, ThumbsUp, Tag, Copy } from 'lucide-react';
+import { MapPin, Calendar, Heart, Tag, Copy } from 'lucide-react';
 import { useToggleUpvote } from '../../hooks/useComplaints';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
@@ -121,18 +121,24 @@ const ComplaintCard = ({ complaint }) => {
                 disabled={isPending}
                 style={{
                   cursor: isPending ? 'wait' : 'pointer',
-                  background: complaint.isUpvotedByCurrentUser ? 'rgba(59, 130, 246, 0.1)' : 'rgba(0, 0, 0, 0.04)',
-                  color: complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'var(--text-secondary)',
+                  background: complaint.isUpvotedByCurrentUser ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                  color: complaint.isUpvotedByCurrentUser ? '#ef4444' : 'var(--text-secondary)',
                   border: 'none',
                   padding: '4px 8px',
                   borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.25rem',
-                  transition: 'all 0.2s'
+                  transition: 'all 0.2s',
+                  transform: isPending ? 'scale(0.95)' : 'scale(1)'
                 }}
               >
-                <ThumbsUp size={14} fill={complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'none'} />
+                <Heart 
+                  size={14} 
+                  fill={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'none'} 
+                  color={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'currentColor'}
+                  className={complaint.isUpvotedByCurrentUser ? 'animate-pulse-short' : ''}
+                />
                 <span>{complaint.upvoteCount || 0}</span>
               </button>
             </div>

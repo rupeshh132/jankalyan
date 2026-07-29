@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import ComplaintStatusBadge from '../../components/complaint/ComplaintStatusBadge';
 import LoadingSkeleton from '../../components/complaint/LoadingSkeleton';
 import DeleteConfirmModal from '../../components/complaint/DeleteConfirmModal';
-import { ArrowLeft, MapPin, Calendar, Hash, FolderOpen, ThumbsUp, Trash2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, Hash, FolderOpen, Heart, Trash2 } from 'lucide-react';
 import '../../components/complaint/complaint.css';
 
 const PublicComplaintDetailsPage = () => {
@@ -152,18 +152,24 @@ const PublicComplaintDetailsPage = () => {
                display: 'flex', 
                alignItems: 'center', 
                gap: '0.5rem', 
-               background: complaint.isUpvotedByCurrentUser ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255, 255, 255, 0.05)', 
-               color: complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'var(--text-secondary)', 
+               background: complaint.isUpvotedByCurrentUser ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.05)', 
+               color: complaint.isUpvotedByCurrentUser ? '#ef4444' : 'var(--text-secondary)', 
                padding: '0.5rem 1rem', 
                borderRadius: '20px', 
                fontWeight: 'bold', 
-               border: complaint.isUpvotedByCurrentUser ? '1px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)', 
+               border: complaint.isUpvotedByCurrentUser ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)', 
                cursor: isVoting ? 'wait' : 'pointer', 
-               transition: 'all 0.2s' 
+               transition: 'all 0.2s',
+               transform: isVoting ? 'scale(0.95)' : 'scale(1)'
              }}
            >
-             <ThumbsUp size={16} fill={complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'none'} /> 
-             {complaint.upvoteCount || 0} Upvotes
+             <Heart 
+                size={18} 
+                fill={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'none'} 
+                color={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'currentColor'}
+                className={complaint.isUpvotedByCurrentUser ? 'animate-pulse-short' : ''}
+             /> 
+             <span>{complaint.upvoteCount || 0} Upvotes</span>
            </button>
         </div>
       </div>
