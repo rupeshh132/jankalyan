@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useProfile, useUpdateProfile, useUploadProfilePhoto } from '../../hooks/useProfile';
-import { User, Mail, Phone, MapPin, Loader2, Save, LogOut } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Loader2, Save, LogOut, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
