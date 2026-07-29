@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ComplaintStatusBadge from './ComplaintStatusBadge';
-import { MapPin, Calendar, ThumbsUp, Tag } from 'lucide-react';
+import { MapPin, Calendar, ThumbsUp, Tag, Copy } from 'lucide-react';
 import { useToggleUpvote } from '../../hooks/useComplaints';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
@@ -81,8 +81,20 @@ const ComplaintCard = ({ complaint }) => {
                 <Calendar size={14} />
                 <span className="text-sm">{formatDate(complaint.createdAt)}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', marginLeft: 'auto', marginRight: '8px' }}>
-                <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded border">ID: {complaint.id?.split('-')[0]}</span>
+              <div 
+                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', marginLeft: 'auto', marginRight: '8px', cursor: 'pointer' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  navigator.clipboard.writeText(complaint.id);
+                  toast.success('Complaint ID copied!');
+                }}
+                title="Copy Full Complaint ID"
+              >
+                <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded border flex items-center gap-1 hover:bg-gray-200 transition-colors">
+                  ID: {complaint.id?.split('-')[0]}
+                  <Copy size={10} className="ml-1 opacity-70" />
+                </span>
               </div>
             </div>
             
