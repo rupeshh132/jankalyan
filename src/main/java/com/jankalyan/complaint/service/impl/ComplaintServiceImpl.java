@@ -157,10 +157,15 @@ public class ComplaintServiceImpl implements ComplaintService {
     public ComplaintResponse toggleUpvote(UUID id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
-        User user = userRepository.getReferenceById(principal.getId());
+        User user = userRepository.findById(principal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Complaint complaint = complaintRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + id));
+
+        if (complaint.getUpvoters() == null) {
+            complaint.setUpvoters(new java.util.HashSet<>());
+        }
 
         boolean alreadyUpvoted = complaint.getUpvoters().stream()
                 .anyMatch(u -> u.getId().equals(user.getId()));
