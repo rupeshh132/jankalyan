@@ -3,6 +3,7 @@ package com.jankalyan.complaint.controller;
 import com.jankalyan.common.dto.ApiResponse;
 import com.jankalyan.complaint.dto.request.CreateComplaintRequest;
 import com.jankalyan.complaint.dto.response.ComplaintResponse;
+import com.jankalyan.complainthistory.dto.response.ComplaintStatusHistoryResponse;
 import com.jankalyan.complaint.entity.ComplaintStatus;
 import com.jankalyan.complaint.service.ComplaintService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,6 +71,21 @@ public class ComplaintController {
                 .success(true)
                 .status(HttpStatus.OK.value())
                 .message("Complaint retrieved successfully")
+                .data(data)
+                .build();
+                
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/history")
+    @Operation(summary = "Get complaint status history", description = "Fetch the tracking timeline of a complaint")
+    public ResponseEntity<ApiResponse<List<ComplaintStatusHistoryResponse>>> getComplaintHistory(@PathVariable UUID id) {
+        List<ComplaintStatusHistoryResponse> data = complaintService.getComplaintHistory(id);
+        
+        ApiResponse<List<ComplaintStatusHistoryResponse>> response = ApiResponse.<List<ComplaintStatusHistoryResponse>>builder()
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message("Complaint history retrieved successfully")
                 .data(data)
                 .build();
                 

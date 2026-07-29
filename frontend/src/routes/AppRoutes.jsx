@@ -15,6 +15,7 @@ import DashboardPage from '../pages/citizen/DashboardPage';
 import MyComplaintsPage from '../pages/citizen/MyComplaintsPage';
 import ReportComplaintPage from '../pages/citizen/ReportComplaintPage';
 import EditComplaintPage from '../pages/citizen/EditComplaintPage';
+import TrackComplaintPage from '../pages/citizen/TrackComplaintPage';
 import ProfilePage from '../pages/private/ProfilePage';
 import SettingsPage from '../pages/private/SettingsPage';
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
@@ -50,6 +51,7 @@ const AppRoutes = () => {
           <Route path="complaints" element={<MyComplaintsPage />} />
           <Route path="complaints/:id/edit" element={<EditComplaintPage />} />
           <Route path="report" element={<ReportComplaintPage />} />
+          <Route path="track" element={<TrackComplaintPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, AlertCircle, FileText, Settings, User } from 'lucide-react';
+import { LayoutDashboard, AlertCircle, FileText, Settings, User, Activity } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,7 @@ const getNavItems = (role) => {
   return [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'My Complaints', path: '/dashboard/complaints', icon: FileText },
+    { name: 'Track Status', path: '/dashboard/track', icon: Activity },
     { name: 'Notifications', path: '/notifications', icon: AlertCircle },
     { name: 'Profile', path: '/dashboard/profile', icon: User },
     { name: 'Settings', path: '/dashboard/settings', icon: Settings },

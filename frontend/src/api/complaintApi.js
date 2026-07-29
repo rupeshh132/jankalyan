@@ -63,5 +63,10 @@ export const complaintApi = {
   toggleUpvote: async (complaintId) => {
     const response = await api.post(`/complaints/${complaintId}/upvote`);
     return response.data.data;
+  },
+  
+  getComplaintHistory: async (id) => {
+    const response = await api.get(`/complaints/${id}/history`);
+    return response.data.data;
   }
 };

@@ -13,6 +13,9 @@ import com.jankalyan.complaint.mapper.ComplaintMapper;
 import com.jankalyan.complaint.repository.ComplaintRepository;
 import com.jankalyan.complaint.service.ComplaintService;
 import com.jankalyan.complaint.specification.ComplaintSpecification;
+import com.jankalyan.complainthistory.repository.ComplaintStatusHistoryRepository;
+import com.jankalyan.complainthistory.mapper.ComplaintStatusHistoryMapper;
+import com.jankalyan.complainthistory.dto.response.ComplaintStatusHistoryResponse;
 import com.jankalyan.user.entity.User;
 import com.jankalyan.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,8 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ComplaintMapper complaintMapper;
+    private final ComplaintStatusHistoryRepository historyRepository;
+    private final ComplaintStatusHistoryMapper historyMapper;
 
     @Override
     @Transactional
@@ -75,6 +80,16 @@ public class ComplaintServiceImpl implements ComplaintService {
         
         return complaints.stream()
                 .map(c -> complaintMapper.toResponse(c, principal.getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ComplaintStatusHistoryResponse> getComplaintHistory(UUID id) {
+        Complaint complaint = complaintRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Complaint not found with id: " + id));
+        
+        return historyRepository.findByComplaintIdOrderByCreatedAtDesc(id).stream()
+                .map(historyMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
