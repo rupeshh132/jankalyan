@@ -72,37 +72,58 @@ const ComplaintCard = ({ complaint }) => {
           </div>
         
           <div className="complaint-footer">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem', flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)' }}>
                 <MapPin size={14} />
                 <span className="text-sm">{complaint.city || 'Unknown City'}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)' }}>
                 <Calendar size={14} />
                 <span className="text-sm">{formatDate(complaint.createdAt)}</span>
               </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', marginLeft: 'auto', marginRight: '8px' }}>
+                <span className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded border">ID: {complaint.id?.split('-')[0]}</span>
+              </div>
             </div>
             
-            <button 
-              className={`vote-badge ${complaint.isUpvotedByCurrentUser ? 'active' : ''}`}
-              onClick={handleUpvote}
-              disabled={isPending}
-              style={{
-                cursor: isPending ? 'wait' : 'pointer',
-                background: complaint.isUpvotedByCurrentUser ? 'rgba(59, 130, 246, 0.1)' : 'rgba(0, 0, 0, 0.04)',
-                color: complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'var(--text-secondary)',
-                border: 'none',
-                padding: '4px 8px',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem',
-                transition: 'all 0.2s'
-              }}
-            >
-              <ThumbsUp size={14} fill={complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'none'} />
-              <span>{complaint.upvoteCount || 0}</span>
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button
+                className="track-btn hover:bg-primary/10 hover:text-primary transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.location.href = `/dashboard/track?id=${complaint.id}`;
+                }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.25rem',
+                  padding: '4px 8px', borderRadius: '12px', border: '1px solid var(--border-color)',
+                  background: 'transparent', fontSize: '0.85rem', cursor: 'pointer', color: 'var(--text-primary)'
+                }}
+              >
+                Track
+              </button>
+
+              <button 
+                className={`vote-badge ${complaint.isUpvotedByCurrentUser ? 'active' : ''}`}
+                onClick={handleUpvote}
+                disabled={isPending}
+                style={{
+                  cursor: isPending ? 'wait' : 'pointer',
+                  background: complaint.isUpvotedByCurrentUser ? 'rgba(59, 130, 246, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                  color: complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'var(--text-secondary)',
+                  border: 'none',
+                  padding: '4px 8px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <ThumbsUp size={14} fill={complaint.isUpvotedByCurrentUser ? '#3b82f6' : 'none'} />
+                <span>{complaint.upvoteCount || 0}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
