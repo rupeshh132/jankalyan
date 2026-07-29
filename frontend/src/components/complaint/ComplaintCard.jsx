@@ -137,7 +137,7 @@ const ComplaintCard = ({ complaint }) => {
                   size={14} 
                   fill={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'none'} 
                   color={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'currentColor'}
-                  className={complaint.isUpvotedByCurrentUser ? 'animate-pulse-short' : ''}
+                  className={complaint.isUpvotedByCurrentUser ? 'animate-heart-pop' : ''}
                 />
                 <span>{complaint.upvoteCount || 0}</span>
               </button>
