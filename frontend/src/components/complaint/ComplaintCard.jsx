@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ComplaintStatusBadge from './ComplaintStatusBadge';
 import { MapPin, Calendar, Heart, Tag, Copy } from 'lucide-react';
@@ -20,7 +20,18 @@ const ComplaintCard = ({ complaint }) => {
 
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { mutate: toggleUpvote, isPending } = useToggleUpvote();
+  const { mutate: toggleUpvote } = useToggleUpvote();
+
+  // Optimistic UI State for instant feedback (Instagram style)
+  const [optimisticUpvoted, setOptimisticUpvoted] = useState(complaint.isUpvotedByCurrentUser);
+  const [optimisticCount, setOptimisticCount] = useState(complaint.upvoteCount || 0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Keep in sync with server state
+  useEffect(() => {
+    setOptimisticUpvoted(complaint.isUpvotedByCurrentUser);
+    setOptimisticCount(complaint.upvoteCount || 0);
+  }, [complaint.isUpvotedByCurrentUser, complaint.upvoteCount]);
 
   const handleUpvote = (e) => {
     e.preventDefault();
@@ -31,14 +42,24 @@ const ComplaintCard = ({ complaint }) => {
       return;
     }
 
-    if (isPending) return;
+    // Instantly apply optimistic update
+    const previousUpvoted = optimisticUpvoted;
+    const previousCount = optimisticCount;
+    
+    setOptimisticUpvoted(!previousUpvoted);
+    setOptimisticCount(previousUpvoted ? previousCount - 1 : previousCount + 1);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 300);
 
     toggleUpvote(complaint.id, {
       onSuccess: () => {
-        // Invalidate queries to refresh the feed
+        // Silently invalidate to sync real data in background
         queryClient.invalidateQueries({ queryKey: ['publicComplaints'] });
       },
       onError: (error) => {
+        // Revert on failure
+        setOptimisticUpvoted(previousUpvoted);
+        setOptimisticCount(previousCount);
         toast.error('Failed to toggle upvote');
       }
     });
@@ -116,13 +137,12 @@ const ComplaintCard = ({ complaint }) => {
               </button>
 
               <button 
-                className={`vote-badge ${complaint.isUpvotedByCurrentUser ? 'active' : ''}`}
+                className={`vote-badge ${optimisticUpvoted ? 'active' : ''}`}
                 onClick={handleUpvote}
-                disabled={isPending}
                 style={{
-                  cursor: isPending ? 'wait' : 'pointer',
-                  background: complaint.isUpvotedByCurrentUser ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 0, 0, 0.04)',
-                  color: complaint.isUpvotedByCurrentUser ? '#ef4444' : 'var(--text-secondary)',
+                  cursor: 'pointer',
+                  background: optimisticUpvoted ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                  color: optimisticUpvoted ? '#ef4444' : 'var(--text-secondary)',
                   border: 'none',
                   padding: '4px 8px',
                   borderRadius: '12px',
@@ -130,16 +150,16 @@ const ComplaintCard = ({ complaint }) => {
                   alignItems: 'center',
                   gap: '0.25rem',
                   transition: 'all 0.2s',
-                  transform: isPending ? 'scale(0.95)' : 'scale(1)'
+                  transform: isAnimating ? 'scale(0.95)' : 'scale(1)'
                 }}
               >
                 <Heart 
                   size={14} 
-                  fill={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'none'} 
-                  color={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'currentColor'}
-                  className={complaint.isUpvotedByCurrentUser ? 'animate-heart-pop' : ''}
+                  fill={optimisticUpvoted ? '#ef4444' : 'none'} 
+                  color={optimisticUpvoted ? '#ef4444' : 'currentColor'}
+                  className={isAnimating && optimisticUpvoted ? 'animate-heart-pop' : ''}
                 />
-                <span>{complaint.upvoteCount || 0}</span>
+                <span>{optimisticCount}</span>
               </button>
             </div>
           </div>

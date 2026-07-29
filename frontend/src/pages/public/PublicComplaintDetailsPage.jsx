@@ -19,7 +19,22 @@ const PublicComplaintDetailsPage = () => {
   const queryClient = useQueryClient();
   
   const { data, isLoading, isError, error } = useComplaintDetails(complaintId);
-  const { mutateAsync: toggleUpvote, isPending: isVoting } = useToggleUpvote();
+  
+  // Optimistic UI State
+  const [optimisticUpvoted, setOptimisticUpvoted] = useState(false);
+  const [optimisticCount, setOptimisticCount] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const complaint = data?.data;
+
+  useEffect(() => {
+    if (complaint) {
+      setOptimisticUpvoted(complaint.isUpvotedByCurrentUser);
+      setOptimisticCount(complaint.upvoteCount || 0);
+    }
+  }, [complaint]);
+
+  const { mutate: toggleUpvote } = useToggleUpvote();
   const { mutateAsync: deleteComplaint, isPending: isDeleting } = useDeleteComplaint();
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -35,8 +50,6 @@ const PublicComplaintDetailsPage = () => {
       </div>
     );
   }
-
-  const complaint = data?.data;
 
   if (!complaint) {
     return (
@@ -58,17 +71,32 @@ const PublicComplaintDetailsPage = () => {
     }
   };
 
-  const handleUpvote = async () => {
+  const handleUpvote = () => {
     if (!user) {
-      toast.error('Please login to upvote');
+      toast.error('Please login to upvote this complaint');
       return;
     }
-    try {
-      await toggleUpvote(complaint.id);
-      queryClient.invalidateQueries({ queryKey: ['complaint', complaint.id] });
-    } catch (e) {
-      toast.error('Failed to upvote');
-    }
+    
+    // Instantly apply optimistic update
+    const previousUpvoted = optimisticUpvoted;
+    const previousCount = optimisticCount;
+    
+    setOptimisticUpvoted(!previousUpvoted);
+    setOptimisticCount(previousUpvoted ? previousCount - 1 : previousCount + 1);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 300);
+
+    toggleUpvote(complaint.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['complaint', complaint.id] });
+      },
+      onError: () => {
+        // Revert on failure
+        setOptimisticUpvoted(previousUpvoted);
+        setOptimisticCount(previousCount);
+        toast.error('Failed to toggle upvote');
+      }
+    });
   };
 
   return (
@@ -147,29 +175,28 @@ const PublicComplaintDetailsPage = () => {
         <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
            <button 
              onClick={handleUpvote}
-             disabled={isVoting}
              style={{ 
                display: 'flex', 
                alignItems: 'center', 
                gap: '0.5rem', 
-               background: complaint.isUpvotedByCurrentUser ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.05)', 
-               color: complaint.isUpvotedByCurrentUser ? '#ef4444' : 'var(--text-secondary)', 
+               background: optimisticUpvoted ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.05)', 
+               color: optimisticUpvoted ? '#ef4444' : 'var(--text-secondary)', 
                padding: '0.5rem 1rem', 
                borderRadius: '20px', 
                fontWeight: 'bold', 
-               border: complaint.isUpvotedByCurrentUser ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)', 
-               cursor: isVoting ? 'wait' : 'pointer', 
+               border: optimisticUpvoted ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)', 
+               cursor: 'pointer', 
                transition: 'all 0.2s',
-               transform: isVoting ? 'scale(0.95)' : 'scale(1)'
+               transform: isAnimating ? 'scale(0.95)' : 'scale(1)'
              }}
            >
              <Heart 
                 size={18} 
-                fill={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'none'} 
-                color={complaint.isUpvotedByCurrentUser ? '#ef4444' : 'currentColor'}
-                className={complaint.isUpvotedByCurrentUser ? 'animate-heart-pop' : ''}
+                fill={optimisticUpvoted ? '#ef4444' : 'none'} 
+                color={optimisticUpvoted ? '#ef4444' : 'currentColor'}
+                className={isAnimating && optimisticUpvoted ? 'animate-heart-pop' : ''}
              /> 
-             <span>{complaint.upvoteCount || 0} Upvotes</span>
+             <span>{optimisticCount} Upvotes</span>
            </button>
         </div>
       </div>
