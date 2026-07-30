@@ -36,7 +36,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
         scrolled ? 'bg-background/80 backdrop-blur-md border-b shadow-sm' : 'bg-background border-b border-transparent'
       }`}
     >
-      <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+      <div className={`container mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-14' : 'h-16'}`}>
         <div className="flex items-center gap-4">
 
           
