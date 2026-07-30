@@ -30,40 +30,46 @@ const HeroSection = () => {
     <section className="hero-wrapper" onMouseMove={handleMouseMove}>
       {/* Top Text Content */}
       <motion.div 
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+          }
+        }}
         style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
-        <div className="hero-badge">
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-badge">
           <ShieldCheck size={14} color="var(--accent)" />
           Building Better Cities Together.
-        </div>
+        </motion.div>
         
-        <h1 className="hero-headline">
+        <motion.h1 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-headline">
           Report Issues.
           <span>Track Progress.</span>
           <span>Improve Your City.</span>
-        </h1>
+        </motion.h1>
         
-        <p className="hero-desc">
+        <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-desc">
           The infrastructure for modern municipalities. Connect citizens with local government through real-time tracking, transparent resolutions, and actionable analytics.
-        </p>
+        </motion.p>
         
-        <div className="hero-cta-group">
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-cta-group">
           <Link to="/dashboard/report" className="btn-hero-primary">
             Report an Issue
           </Link>
           <Link to="/dashboard" className="btn-hero-secondary">
             Explore Complaints
           </Link>
-        </div>
+        </motion.div>
         
-        <div className="hero-trust">
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-trust">
           <div className="trust-item"><ShieldCheck size={14} /> Secure Platform</div>
           <div className="trust-item"><Users size={14} /> Community Driven</div>
           <div className="trust-item"><Building size={14} /> Government Ready</div>
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* Bottom Dashboard Mockup */}

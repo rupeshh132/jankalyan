@@ -32,11 +32,11 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
 
   return (
     <header 
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? 'bg-background/80 backdrop-blur-md border-b shadow-sm' : 'bg-background border-b border-transparent'
+      className={`sticky top-0 z-50 w-full transition-all duration-500 ease-in-out ${
+        scrolled ? 'bg-background/80 backdrop-blur-xl border-b shadow-md' : 'bg-background border-b border-transparent'
       }`}
     >
-      <div className={`container mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-14' : 'h-16'}`}>
+      <div className={`container mx-auto px-4 md:px-6 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? 'h-14' : 'h-20'}`}>
         <div className="flex items-center gap-4">
 
           
