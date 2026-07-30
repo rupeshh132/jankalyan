@@ -14,7 +14,7 @@ const AppLayout = () => {
   const outlet = useOutlet();
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans antialiased">
       <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
       
       <div className="flex flex-1 overflow-hidden">

@@ -89,7 +89,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   
