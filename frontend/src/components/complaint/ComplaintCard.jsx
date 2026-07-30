@@ -23,16 +23,8 @@ const ComplaintCard = ({ complaint }) => {
   const queryClient = useQueryClient();
   const { mutate: toggleUpvote } = useToggleUpvote();
 
-  // Optimistic UI State for instant feedback (Instagram style)
-  const [optimisticUpvoted, setOptimisticUpvoted] = useState(complaint.isUpvotedByCurrentUser);
-  const [optimisticCount, setOptimisticCount] = useState(complaint.upvoteCount || 0);
+  // Animation state only (actual state is handled globally by TanStack Query onMutate)
   const [isAnimating, setIsAnimating] = useState(false);
-
-  // Keep in sync with server state
-  useEffect(() => {
-    setOptimisticUpvoted(complaint.isUpvotedByCurrentUser);
-    setOptimisticCount(complaint.upvoteCount || 0);
-  }, [complaint.isUpvotedByCurrentUser, complaint.upvoteCount]);
 
   const handleUpvote = (e) => {
     e.preventDefault();
@@ -43,45 +35,11 @@ const ComplaintCard = ({ complaint }) => {
       return;
     }
 
-    // Instantly apply optimistic update
-    const previousUpvoted = optimisticUpvoted;
-    const previousCount = optimisticCount;
-    
-    setOptimisticUpvoted(!previousUpvoted);
-    setOptimisticCount(previousUpvoted ? previousCount - 1 : previousCount + 1);
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 300);
 
     toggleUpvote(complaint.id, {
-      onSuccess: (updatedComplaint) => {
-        // Update the cache manually for immediate consistency
-        queryClient.setQueriesData({ queryKey: ['publicComplaints'] }, (oldData) => {
-          if (!oldData) return oldData;
-          if (oldData.content) {
-            return {
-              ...oldData,
-              content: oldData.content.map(c => c.id === complaint.id ? updatedComplaint : c)
-            };
-          }
-          return oldData.map(c => c.id === complaint.id ? updatedComplaint : c);
-        });
-        
-        // Also update myComplaints if it exists
-        queryClient.setQueriesData({ queryKey: ['myComplaints'] }, (oldData) => {
-          if (!oldData) return oldData;
-          if (oldData.content) {
-            return {
-              ...oldData,
-              content: oldData.content.map(c => c.id === complaint.id ? updatedComplaint : c)
-            };
-          }
-          return oldData.map(c => c.id === complaint.id ? updatedComplaint : c);
-        });
-      },
-      onError: (error) => {
-        // Revert on failure
-        setOptimisticUpvoted(previousUpvoted);
-        setOptimisticCount(previousCount);
+      onError: () => {
         toast.error('Failed to toggle upvote');
       }
     });
@@ -165,31 +123,21 @@ const ComplaintCard = ({ complaint }) => {
               </button>
 
               <button 
-                className={`vote-badge ${optimisticUpvoted ? 'active' : ''}`}
                 onClick={handleUpvote}
                 style={{
                   cursor: 'pointer',
-                  background: optimisticUpvoted ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 0, 0, 0.04)',
-                  color: optimisticUpvoted ? '#ef4444' : 'var(--text-secondary)',
-                  border: 'none',
-                  padding: '4px 8px',
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  transition: 'all 0.2s',
-                  transform: isAnimating ? 'scale(0.95)' : 'scale(1)'
+                  background: complaint.isUpvotedByCurrentUser ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 0, 0, 0.04)',
                 }}
+                className={`vote-badge cursor-pointer transition-all duration-200 ${complaint.isUpvotedByCurrentUser ? 'text-red-500' : 'hover:text-red-400'}`}
               >
                 <Heart 
-                  size={14} 
-                  fill={optimisticUpvoted ? '#ef4444' : 'none'} 
-                  color={optimisticUpvoted ? '#ef4444' : 'currentColor'}
-                  className={isAnimating && optimisticUpvoted ? 'animate-heart-pop' : ''}
+                  size={16} 
+                  className={`${complaint.isUpvotedByCurrentUser ? 'fill-current' : ''} ${isAnimating ? 'animate-heart-pop' : ''}`}
+                  strokeWidth={complaint.isUpvotedByCurrentUser ? 0 : 2}
                 />
-                <span>{optimisticCount}</span>
+                <span>{complaint.upvoteCount || 0}</span>
               </button>
-          </div>
+            </div>
         </div>
       </div>
       </div>

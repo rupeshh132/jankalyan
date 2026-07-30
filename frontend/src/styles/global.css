@@ -4,28 +4,28 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* gray-50 */
-    --foreground: 222.2 84% 4.9%; /* gray-950 */
+    --background: 240 20% 98%; /* Warm custom off-white */
+    --foreground: 240 40% 10%; /* Deep custom slate */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 40% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 40% 10%;
 
-    --primary: 221.2 83.2% 53.3%; /* blue-600 */
+    --primary: 245 80% 55%; /* Custom vibrant premium Indigo */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%; /* gray-100 */
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 20% 92%; /* Custom secondary */
+    --secondary-foreground: 240 40% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 10% 94%;
+    --muted-foreground: 240 15% 45%;
 
-    --accent: 262.1 83.3% 57.8%; /* violet-500 */
+    --accent: 340 85% 55%; /* Custom vibrant pink/rose accent */
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%; /* red-500 */
+    --destructive: 350 85% 55%; /* Custom red */
     --destructive-foreground: 210 40% 98%;
 
     --success: 160 84% 39%; /* emerald-500 */
@@ -45,28 +45,28 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%; /* gray-950 */
-    --foreground: 210 40% 98%; /* gray-50 */
+    --background: 240 30% 6%; /* Deep custom dark space */
+    --foreground: 240 20% 95%; /* Soft off-white text */
 
-    --card: 217.2 32.6% 17.5%; /* gray-800 */
-    --card-foreground: 210 40% 98%;
+    --card: 240 25% 10%; /* Elevated dark card */
+    --card-foreground: 240 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 30% 6%;
+    --popover-foreground: 240 20% 95%;
 
-    --primary: 217.2 91.2% 59.8%; /* blue-500 */
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 245 80% 65%; /* Bright indigo for dark mode */
+    --primary-foreground: 240 30% 6%;
 
-    --secondary: 217.2 32.6% 17.5%; /* gray-800 */
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 240 20% 15%; 
+    --secondary-foreground: 240 20% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 240 20% 12%;
+    --muted-foreground: 240 15% 65%;
 
-    --accent: 258.3 89.5% 66.3%; /* violet-400 */
-    --accent-foreground: 210 40% 98%;
+    --accent: 340 85% 65%; /* Bright rose for dark mode */
+    --accent-foreground: 240 20% 95%;
 
-    --destructive: 0 62.8% 30.6%; /* red-900 */
+    --destructive: 350 85% 65%;
     --destructive-foreground: 210 40% 98%;
 
     --success: 158.1 64.4% 32.7%; /* emerald-900 */
