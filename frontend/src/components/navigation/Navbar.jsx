@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useProfile } from '../../hooks/useProfile';
 import NotificationBell from '../layout/NotificationBell';
 import { Button } from '../ui/button';
+import { throttle } from '../../utils/throttle';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User as UserIcon } from 'lucide-react';
 
@@ -17,9 +18,9 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
   const profile = profileData?.data || {};
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       setScrolled(window.scrollY > 20);
-    };
+    }, 100);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

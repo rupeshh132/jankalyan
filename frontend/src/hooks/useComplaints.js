@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { complaintApi } from '../api/complaintApi';
 
 export const useMyComplaints = (page = 0, size = 10) => {
@@ -17,7 +17,12 @@ export const usePublicComplaints = (params = {}, userId = null) => {
 };
 
 export const useToggleUpvote = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => complaintApi.toggleUpvote(id),
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['publicComplaints'] });
+      await queryClient.cancelQueries({ queryKey: ['myComplaints'] });
+    }
   });
 };
