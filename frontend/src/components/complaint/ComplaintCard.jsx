@@ -187,14 +187,19 @@ const ComplaintCard = ({ complaint }) => {
                 onClick={handleUpvote}
                 style={{
                   cursor: 'pointer',
-                  background: complaint.isUpvotedByCurrentUser ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                  background: 'transparent',
+                  border: 'none',
+                  color: complaint.isUpvotedByCurrentUser ? '#ef4444' : 'var(--text-primary)',
+                  fontWeight: complaint.isUpvotedByCurrentUser ? '600' : '500',
+                  opacity: 1
                 }}
-                className={`vote-badge cursor-pointer transition-all duration-200 ${complaint.isUpvotedByCurrentUser ? 'text-red-500' : 'hover:text-red-400'}`}
+                className={`vote-badge transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5`}
               >
                 <Heart 
                   size={16} 
-                  className={`${complaint.isUpvotedByCurrentUser ? 'fill-current' : ''} ${isAnimating ? 'animate-heart-pop' : ''}`}
-                  strokeWidth={complaint.isUpvotedByCurrentUser ? 0 : 2}
+                  className={`transition-transform duration-200 ${isAnimating ? 'animate-heart-pop' : ''} ${complaint.isUpvotedByCurrentUser ? 'scale-110' : 'hover:scale-110'}`}
+                  fill={complaint.isUpvotedByCurrentUser ? 'currentColor' : 'transparent'}
+                  strokeWidth={complaint.isUpvotedByCurrentUser ? 0 : 2.5}
                 />
                 <span>{complaint.upvoteCount || 0}</span>
               </button>
