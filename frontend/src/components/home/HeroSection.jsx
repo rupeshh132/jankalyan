@@ -28,6 +28,9 @@ const HeroSection = () => {
 
   return (
     <section className="hero-wrapper" onMouseMove={handleMouseMove}>
+      {/* Point 2: Subtle Background Mesh Glow */}
+      <div className="mesh-glow" />
+
       {/* Top Text Content */}
       <motion.div 
         initial="hidden"
@@ -49,7 +52,8 @@ const HeroSection = () => {
         <motion.h1 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-headline">
           Report Issues.
           <span>Track Progress.</span>
-          <span>Improve Your City.</span>
+          {/* Point 1: Text Gradient Shimmer */}
+          <span className="text-gradient-shimmer">Improve Your City.</span>
         </motion.h1>
         
         <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-desc">
@@ -72,17 +76,18 @@ const HeroSection = () => {
         </motion.div>
       </motion.div>
 
-      {/* Bottom Dashboard Mockup */}
+      {/* Point 3: Scroll Reveal Dashboard Mockup */}
       <motion.div 
         id="dashboard"
         className="mockup-wrapper"
-        style={{ rotateX: springY, rotateY: springX }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+        initial={{ opacity: 0, y: 80, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="dashboard-ui">
-          {/* App Header (Mac/SaaS style) */}
+        <motion.div style={{ rotateX: springY, rotateY: springX }}>
+          <div className="dashboard-ui">
+            {/* App Header (Mac/SaaS style) */}
           <div className="db-header">
             <div className="db-header-left">
               <div className="db-dots">
@@ -253,7 +258,7 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );
