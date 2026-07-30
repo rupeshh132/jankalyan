@@ -10,7 +10,17 @@ import GlobalErrorBoundary from './components/common/GlobalErrorBoundary';
 import { Toaster } from 'react-hot-toast';
 import './styles/global.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error) => {
+        if (error?.response?.status === 401 || error?.response?.status === 403) return false;
+        return failureCount < 3;
+      },
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
