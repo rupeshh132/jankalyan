@@ -6,6 +6,8 @@ import { complaintApi } from '../../api/complaintApi';
 import { Loader2, Send, UploadCloud, X, RefreshCw, ArrowRight, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { MapPin, Upload, Camera, Map } from 'lucide-react';
+import { Card } from '../ui/card';
 import './complaint.css';
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FORMATS = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];

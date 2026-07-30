@@ -92,10 +92,10 @@ public class AuthController {
         // Clear refresh token cookie
         ResponseCookie cookie = ResponseCookie.from("refresh_token", "")
                 .httpOnly(true)
-                .secure(true)
+                .secure(false) // Changed for local development
                 .path("/")
                 .maxAge(0)
-                .sameSite("None")
+                .sameSite("Lax") // Changed for local development
                 .build();
                 
         response.addHeader("Set-Cookie", cookie.toString());
@@ -121,8 +121,8 @@ public class AuthController {
     private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
+                .secure(false) // Changed for local development
+                .sameSite("Lax") // Changed for local development
                 .path("/")
                 .maxAge(jwtProperties.getRefreshExpirationDays() * 24 * 60 * 60)
                 .build();

@@ -26,13 +26,19 @@ export const AuthProvider = ({ children }) => {
         const response = await refreshToken();
         if (response.data?.data && isMounted) {
           const authData = response.data.data;
+          if (!authData || !authData.accessToken) {
+            throw new Error("Invalid or missing access token in refresh response");
+          }
           setAccessToken(authData.accessToken);
           try {
             const payload = JSON.parse(atob(authData.accessToken.split('.')[1]));
             setUser({ accessToken: authData.accessToken, role: authData.role, id: payload.userId });
           } catch (e) {
+            console.error('Failed to parse token payload:', e);
             setUser({ accessToken: authData.accessToken, role: authData.role });
           }
+        } else {
+          throw new Error("Invalid refresh response");
         }
       } catch (error) {
         setUser(null);

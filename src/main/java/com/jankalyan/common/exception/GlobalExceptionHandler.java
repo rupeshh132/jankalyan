@@ -150,7 +150,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .errorCode("INTERNAL_SERVER_ERROR")
-                .message(ex.getClass().getName() + ": " + ex.getMessage())
+                .message("An unexpected error occurred")
                 .path(request.getRequestURI())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

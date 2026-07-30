@@ -13,6 +13,9 @@ import com.jankalyan.complainthistory.entity.ComplaintStatusHistory;
 import com.jankalyan.complainthistory.repository.ComplaintStatusHistoryRepository;
 import com.jankalyan.user.entity.User;
 import com.jankalyan.user.repository.UserRepository;
+import com.jankalyan.complaintimage.service.ComplaintImageService;
+import com.jankalyan.complaintimage.repository.ComplaintImageRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +45,9 @@ class AdminServiceImplTest {
     @Mock private ComplaintStatusHistoryRepository historyRepository;
     @Mock private ComplaintMapper complaintMapper;
     @Mock private UserRepository userRepository;
+    @Mock private ComplaintImageService imageService;
+    @Mock private ComplaintImageRepository imageRepository;
+    @Mock private ApplicationEventPublisher eventPublisher;
 
     @InjectMocks
     private AdminServiceImpl adminService;
@@ -73,7 +79,6 @@ class AdminServiceImplTest {
         given(complaintRepository.countComplaintsByMonth()).willReturn(java.util.Collections.emptyList());
         given(complaintRepository.getAverageResolutionTimeInHours()).willReturn(null);
         given(complaintRepository.countClosedToday()).willReturn(0L);
-        given(userRepository.count()).willReturn(10L);
 
         AdminDashboardResponse result = adminService.getDashboard();
 

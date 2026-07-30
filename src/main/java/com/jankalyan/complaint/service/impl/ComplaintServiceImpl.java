@@ -52,7 +52,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         User user = userRepository.getReferenceById(principal.getId());
 
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new BadRequestException("Category not found with id: " + request.getCategoryId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + request.getCategoryId()));
 
         Complaint complaint = complaintMapper.toEntity(request, user, category);
         complaint.setStatus(ComplaintStatus.SUBMITTED);

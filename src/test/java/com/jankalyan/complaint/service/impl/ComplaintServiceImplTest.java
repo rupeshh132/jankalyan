@@ -85,7 +85,7 @@ class ComplaintServiceImplTest {
         given(categoryRepository.findById(request.getCategoryId())).willReturn(Optional.of(category));
         given(complaintMapper.toEntity(request, user, category)).willReturn(mappedComplaint);
         given(complaintRepository.save(any(Complaint.class))).willReturn(savedComplaint);
-        given(complaintMapper.toResponse(savedComplaint)).willReturn(response);
+        given(complaintMapper.toResponse(any(Complaint.class))).willReturn(response);
 
         ComplaintResponse result = complaintService.createComplaint(request);
 
@@ -117,7 +117,7 @@ class ComplaintServiceImplTest {
         ComplaintResponse response = new ComplaintResponse();
 
         given(complaintRepository.findByIdAndIsDeletedFalse(id)).willReturn(Optional.of(complaint));
-        given(complaintMapper.toResponse(complaint)).willReturn(response);
+        given(complaintMapper.toResponse(any(Complaint.class), any(UUID.class))).willReturn(response);
 
         ComplaintResponse result = complaintService.getComplaintById(id);
 
@@ -138,8 +138,8 @@ class ComplaintServiceImplTest {
         Complaint complaint = new Complaint();
         ComplaintResponse response = new ComplaintResponse();
 
-        given(complaintRepository.findByUserIdAndIsDeletedFalse(userId)).willReturn(List.of(complaint));
-        given(complaintMapper.toResponse(complaint)).willReturn(response);
+        given(complaintRepository.findByUserIdAndIsDeletedFalseOrderByCreatedAtDesc(userId)).willReturn(List.of(complaint));
+        given(complaintMapper.toResponse(any(Complaint.class), any(UUID.class))).willReturn(response);
 
         List<ComplaintResponse> result = complaintService.getMyComplaints();
 
