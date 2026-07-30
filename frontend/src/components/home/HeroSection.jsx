@@ -6,7 +6,7 @@ import {
   LayoutDashboard, FileText, Settings, Bell, Circle, Filter,
   ChevronDown, AlertCircle, CheckCircle2, MapPin
 } from 'lucide-react';
-import { usePublicStatistics } from '../../../hooks/useStatistics';
+import { usePublicStatistics } from '../../hooks/useStatistics';
 import './Hero.css';
 
 const HeroSection = () => {
