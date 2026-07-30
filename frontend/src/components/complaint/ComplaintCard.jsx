@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ComplaintStatusBadge from './ComplaintStatusBadge';
 import { MapPin, Calendar, Heart, Tag, Copy } from 'lucide-react';
 import { useToggleUpvote } from '../../hooks/useComplaints';
 import { useQueryClient } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import './complaint.css';
@@ -25,6 +25,42 @@ const ComplaintCard = ({ complaint }) => {
 
   // Animation state only (actual state is handled globally by TanStack Query onMutate)
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showLargeHeart, setShowLargeHeart] = useState(false);
+  const clickTimeout = useRef(null);
+  const navigate = useNavigate();
+
+  const handleImageClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (clickTimeout.current) {
+      // Double click detected
+      clearTimeout(clickTimeout.current);
+      clickTimeout.current = null;
+      
+      if (!user) {
+        toast.error('Please login to upvote');
+        return;
+      }
+      
+      setShowLargeHeart(true);
+      setTimeout(() => setShowLargeHeart(false), 800);
+      
+      if (!complaint.isUpvotedByCurrentUser) {
+        setIsAnimating(true);
+        setTimeout(() => setIsAnimating(false), 300);
+        toggleUpvote(complaint.id, {
+          onError: () => toast.error('Failed to toggle upvote')
+        });
+      }
+    } else {
+      // Single click detected, wait to see if it's a double click
+      clickTimeout.current = setTimeout(() => {
+        clickTimeout.current = null;
+        navigate(`/complaints/${complaint.id}`);
+      }, 250);
+    }
+  };
 
   const handleUpvote = (e) => {
     e.preventDefault();
@@ -55,8 +91,33 @@ const ComplaintCard = ({ complaint }) => {
       <Link to={`/complaints/${complaint.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
         <div className="complaint-card hover:shadow-lg transition-shadow duration-300">
         {complaint.images && complaint.images.length > 0 && (
-          <div className="complaint-thumbnail">
+          <div 
+            className="complaint-thumbnail"
+            onClick={handleImageClick}
+            style={{ position: 'relative', cursor: 'pointer' }}
+          >
             <img src={complaint.images[0].imageUrl} alt="Complaint thumbnail" loading="lazy" />
+            <AnimatePresence>
+              {showLargeHeart && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1.2 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 10,
+                    pointerEvents: 'none',
+                    filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))'
+                  }}
+                >
+                  <Heart size={80} fill="#ef4444" color="#ef4444" />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
         <div className="complaint-content-wrapper">
