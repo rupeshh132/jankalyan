@@ -7,7 +7,7 @@ import {
   ChevronDown, AlertCircle, CheckCircle2, MapPin
 } from 'lucide-react';
 import { usePublicStatistics } from '../../../hooks/useStatistics';
-import '../Hero.css';
+import './Hero.css';
 
 const HeroSection = () => {
   const { data: statsData } = usePublicStatistics();
