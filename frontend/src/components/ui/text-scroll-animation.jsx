@@ -2,8 +2,11 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import ReactLenis from "lenis/react";
-import React, { useRef } from "react";
 import { cn } from "@/lib/utils";
+import { 
+  AlertTriangle, Trash2, Droplets, Flame, Hammer, MapPin,
+  CheckCircle2, Heart, Users, TreePine, ShieldCheck, Trophy
+} from "lucide-react";
 
 const CharacterV1 = ({
   char,
@@ -40,12 +43,12 @@ const CharacterV2 = ({
   const y = useTransform(scrollYProgress, [0, 0.5], [Math.abs(distanceFromCenter) * 50, 0]);
 
   return (
-    <motion.img
-      src={char}
-      alt="Community Member"
-      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full object-cover shadow-xl border-4 border-white will-change-transform"
-      style={{ x, scale, y, transformOrigin: "center" }}
-    />
+    <motion.div
+      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full shadow-2xl border-4 border-white will-change-transform flex items-center justify-center text-white"
+      style={{ x, scale, y, transformOrigin: "center", background: char.gradient }}
+    >
+      {char.icon}
+    </motion.div>
   );
 };
 
@@ -63,12 +66,12 @@ const CharacterV3 = ({
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.75, 1]);
 
   return (
-    <motion.img
-      src={char}
-      alt="Community Member"
-      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full object-cover shadow-xl border-4 border-white will-change-transform"
-      style={{ x, rotate, y, scale, transformOrigin: "center" }}
-    />
+    <motion.div
+      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full shadow-2xl border-4 border-white will-change-transform flex items-center justify-center text-white"
+      style={{ x, rotate, y, scale, transformOrigin: "center", background: char.gradient }}
+    >
+      {char.icon}
+    </motion.div>
   );
 };
 
@@ -96,25 +99,25 @@ export const ScrollShowcase = () => {
   const characters = text.split("");
   const centerIndex = Math.floor(characters.length / 2);
   
-  const issueImages = [
-    "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=300&q=80", // Pothole/texture
-    "https://images.unsplash.com/photo-1532996122724-e3c354a0b15f?auto=format&fit=crop&w=300&q=80", // Trash/Waste
-    "https://images.unsplash.com/photo-1503594384566-461fe158e797?auto=format&fit=crop&w=300&q=80", // Broken infrastructure
-    "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=300&q=80", // Pipes/Water
-    "https://images.unsplash.com/photo-1473655551229-da395bd7e7bd?auto=format&fit=crop&w=300&q=80", // Urban gritty street
-    "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?auto=format&fit=crop&w=300&q=80"  // Congestion
+  const issueIcons = [
+    { icon: <AlertTriangle size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)" },
+    { icon: <Trash2 size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)" },
+    { icon: <Droplets size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" },
+    { icon: <Flame size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)" },
+    { icon: <Hammer size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
+    { icon: <MapPin size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" }
   ];
   
-  const resolutionImages = [
-    "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=300&q=80", // Clean city
-    "https://images.unsplash.com/photo-1504307651254-35680f35aa27?auto=format&fit=crop&w=300&q=80", // Construction worker/fixing
-    "https://images.unsplash.com/photo-1593113580332-628880628e81?auto=format&fit=crop&w=300&q=80", // Volunteers cleaning
-    "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=300&q=80", // Park / Greenery
-    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=300&q=80", // Bright streetlights
-    "https://images.unsplash.com/photo-1461280360983-bd93eaa5051b?auto=format&fit=crop&w=300&q=80"  // Happy citizens
+  const resolutionIcons = [
+    { icon: <CheckCircle2 size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" },
+    { icon: <Heart size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" },
+    { icon: <Users size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
+    { icon: <TreePine size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #0ba360 0%, #3cba92 100%)" },
+    { icon: <ShieldCheck size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)" },
+    { icon: <Trophy size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)" }
   ];
 
-  const iconCenterIndex = Math.floor(issueImages.length / 2);
+  const iconCenterIndex = Math.floor(issueIcons.length / 2);
 
   return (
     <ReactLenis root>
@@ -159,10 +162,10 @@ export const ScrollShowcase = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mt-12">
-            {issueImages.map((icon, index) => (
+            {issueIcons.map((item, index) => (
               <CharacterV2
                 key={index}
-                char={icon}
+                char={item}
                 index={index}
                 centerIndex={iconCenterIndex}
                 scrollYProgress={scrollYProgress2}
@@ -183,10 +186,10 @@ export const ScrollShowcase = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mt-12" style={{ perspective: "500px" }}>
-            {resolutionImages.map((icon, index) => (
+            {resolutionIcons.map((item, index) => (
               <CharacterV3
                 key={index}
-                char={icon}
+                char={item}
                 index={index}
                 centerIndex={iconCenterIndex}
                 scrollYProgress={scrollYProgress3}
