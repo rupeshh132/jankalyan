@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import ReactLenis from "lenis/react";
 import React, { useRef } from "react";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, Users, Building, MapPin, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const CharacterV1 = ({
   char,
@@ -41,12 +40,12 @@ const CharacterV2 = ({
   const y = useTransform(scrollYProgress, [0, 0.5], [Math.abs(distanceFromCenter) * 50, 0]);
 
   return (
-    <motion.div
-      className="shrink-0 will-change-transform flex items-center justify-center text-primary bg-background shadow-lg rounded-2xl p-4 border border-border"
+    <motion.img
+      src={char}
+      alt="Community Member"
+      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full object-cover shadow-xl border-4 border-white will-change-transform"
       style={{ x, scale, y, transformOrigin: "center" }}
-    >
-      {char}
-    </motion.div>
+    />
   );
 };
 
@@ -64,12 +63,12 @@ const CharacterV3 = ({
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.75, 1]);
 
   return (
-    <motion.div
-      className="shrink-0 will-change-transform flex items-center justify-center text-primary bg-background shadow-lg rounded-2xl p-4 border border-border"
+    <motion.img
+      src={char}
+      alt="Community Member"
+      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full object-cover shadow-xl border-4 border-white will-change-transform"
       style={{ x, rotate, y, scale, transformOrigin: "center" }}
-    >
-      {char}
-    </motion.div>
+    />
   );
 };
 
@@ -98,12 +97,12 @@ export const ScrollShowcase = () => {
   const centerIndex = Math.floor(characters.length / 2);
   
   const icons = [
-    <ShieldCheck size={48} key="1" />,
-    <Users size={48} key="2" />,
-    <Building size={48} key="3" />,
-    <MapPin size={48} key="4" />,
-    <AlertCircle size={48} key="5" />,
-    <CheckCircle2 size={48} key="6" />,
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=80",
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+    "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=300&q=80"
   ];
   const iconCenterIndex = Math.floor(icons.length / 2);
 
@@ -145,7 +144,7 @@ export const ScrollShowcase = () => {
         >
           <p className="flex items-center justify-center gap-3 text-2xl md:text-4xl font-medium tracking-tight text-foreground px-4 text-center">
             <Bracket className="h-8 md:h-12 text-primary" />
-            <span className="font-medium text-center">built for transparent governance</span>
+            <span className="font-medium text-center">real people. real impact.</span>
             <Bracket className="h-8 md:h-12 scale-x-[-1] text-primary" />
           </p>
 
@@ -169,7 +168,7 @@ export const ScrollShowcase = () => {
         >
           <p className="flex items-center justify-center gap-3 text-2xl md:text-4xl font-medium tracking-tight text-foreground px-4 text-center">
             <Bracket className="h-8 md:h-12 text-primary" />
-            <span className="font-medium text-center">connect with your community</span>
+            <span className="font-medium text-center">a community that cares.</span>
             <Bracket className="h-8 md:h-12 scale-x-[-1] text-primary" />
           </p>
 
