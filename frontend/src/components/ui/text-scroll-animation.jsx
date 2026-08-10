@@ -123,7 +123,7 @@ export const ScrollShowcase = () => {
           className="relative box-border flex h-[210vh] items-center justify-center gap-[2vw] bg-background p-[2vw]"
         >
           <div
-            className="w-full max-w-5xl text-center text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-foreground"
+            className="w-full max-w-5xl text-center text-5xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tighter text-foreground leading-tight"
             style={{ perspective: "500px" }}
           >
             {characters.map((char, index) => (
@@ -141,7 +141,7 @@ export const ScrollShowcase = () => {
         {/* Block 2 - Animated Icons V2 */}
         <div
           ref={targetRef2}
-          className="relative -mt-[100vh] box-border flex h-[210vh] flex-col items-center justify-center gap-[2vw] bg-background p-[2vw]"
+          className="relative -mt-[70vh] box-border flex h-[210vh] flex-col items-center justify-center gap-[2vw] bg-background p-[2vw] z-10"
         >
           <p className="flex items-center justify-center gap-3 text-2xl md:text-4xl font-medium tracking-tight text-foreground px-4 text-center">
             <Bracket className="h-8 md:h-12 text-primary" />
@@ -165,7 +165,7 @@ export const ScrollShowcase = () => {
         {/* Block 3 - Animated Icons V3 */}
         <div
           ref={targetRef3}
-          className="relative -mt-[95vh] box-border flex h-[210vh] flex-col items-center justify-center gap-[2vw] bg-background p-[2vw]"
+          className="relative -mt-[70vh] box-border flex h-[210vh] flex-col items-center justify-center gap-[2vw] bg-background p-[2vw] z-20"
         >
           <p className="flex items-center justify-center gap-3 text-2xl md:text-4xl font-medium tracking-tight text-foreground px-4 text-center">
             <Bracket className="h-8 md:h-12 text-primary" />
