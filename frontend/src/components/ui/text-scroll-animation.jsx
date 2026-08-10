@@ -4,10 +4,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import ReactLenis from "lenis/react";
 import React, { useRef } from "react";
 import { cn } from "@/lib/utils";
-import { 
-  AlertTriangle, Trash2, Droplets, Flame, Hammer, MapPin,
-  CheckCircle2, Heart, Users, TreePine, ShieldCheck, Trophy
-} from "lucide-react";
 
 const CharacterV1 = ({
   char,
@@ -45,10 +41,17 @@ const CharacterV2 = ({
 
   return (
     <motion.div
-      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full shadow-2xl border-4 border-white will-change-transform flex items-center justify-center text-white"
-      style={{ x, scale, y, transformOrigin: "center", background: char.gradient }}
+      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full shadow-xl border-4 border-white will-change-transform bg-gray-200 overflow-hidden flex items-center justify-center"
+      style={{ x, scale, y, transformOrigin: "center" }}
     >
-      {char.icon}
+      <img
+        src={char}
+        alt="Urban Issue"
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
     </motion.div>
   );
 };
@@ -68,10 +71,17 @@ const CharacterV3 = ({
 
   return (
     <motion.div
-      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full shadow-2xl border-4 border-white will-change-transform flex items-center justify-center text-white"
-      style={{ x, rotate, y, scale, transformOrigin: "center", background: char.gradient }}
+      className="h-24 w-24 md:h-32 md:w-32 shrink-0 rounded-full shadow-xl border-4 border-white will-change-transform bg-gray-200 overflow-hidden flex items-center justify-center"
+      style={{ x, rotate, y, scale, transformOrigin: "center" }}
     >
-      {char.icon}
+      <img
+        src={char}
+        alt="Resolution"
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
     </motion.div>
   );
 };
@@ -100,25 +110,25 @@ export const ScrollShowcase = () => {
   const characters = text.split("");
   const centerIndex = Math.floor(characters.length / 2);
   
-  const issueIcons = [
-    { icon: <AlertTriangle size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)" },
-    { icon: <Trash2 size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)" },
-    { icon: <Droplets size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" },
-    { icon: <Flame size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)" },
-    { icon: <Hammer size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
-    { icon: <MapPin size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" }
+  const issueImages = [
+    "https://loremflickr.com/300/300/pothole,road?lock=1",
+    "https://loremflickr.com/300/300/trash,street?lock=2",
+    "https://loremflickr.com/300/300/leak,water?lock=3",
+    "https://loremflickr.com/300/300/traffic,jam?lock=4",
+    "https://loremflickr.com/300/300/broken,road?lock=5",
+    "https://loremflickr.com/300/300/urban,decay?lock=6"
   ];
   
-  const resolutionIcons = [
-    { icon: <CheckCircle2 size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)" },
-    { icon: <Heart size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" },
-    { icon: <Users size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-    { icon: <TreePine size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #0ba360 0%, #3cba92 100%)" },
-    { icon: <ShieldCheck size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)" },
-    { icon: <Trophy size={48} strokeWidth={1.5} />, gradient: "linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)" }
+  const resolutionImages = [
+    "https://loremflickr.com/300/300/clean,city?lock=10",
+    "https://loremflickr.com/300/300/park,greenery?lock=11",
+    "https://loremflickr.com/300/300/volunteers,cleaning?lock=12",
+    "https://loremflickr.com/300/300/streetlight,night?lock=13",
+    "https://loremflickr.com/300/300/happy,community?lock=14",
+    "https://loremflickr.com/300/300/construction,worker?lock=15"
   ];
 
-  const iconCenterIndex = Math.floor(issueIcons.length / 2);
+  const iconCenterIndex = Math.floor(issueImages.length / 2);
 
   return (
     <ReactLenis root>
@@ -163,7 +173,7 @@ export const ScrollShowcase = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mt-12">
-            {issueIcons.map((item, index) => (
+            {issueImages.map((item, index) => (
               <CharacterV2
                 key={index}
                 char={item}
@@ -187,7 +197,7 @@ export const ScrollShowcase = () => {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mt-12" style={{ perspective: "500px" }}>
-            {resolutionIcons.map((item, index) => (
+            {resolutionImages.map((item, index) => (
               <CharacterV3
                 key={index}
                 char={item}
