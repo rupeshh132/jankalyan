@@ -6,18 +6,24 @@ import Footer from '../components/navigation/Footer';
 import BottomNav from '../components/navigation/BottomNav';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RadialBackground } from '../components/ui/light-theme-tailwind-css-background-snippet';
 
 const AppLayout = () => {
   const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const outlet = useOutlet();
+  const isLandingPage = location.pathname === '/';
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground font-sans antialiased">
-      <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
+    <div className={`min-h-screen flex flex-col bg-background text-foreground font-sans antialiased ${isLandingPage ? 'relative overflow-hidden' : ''}`}>
+      {isLandingPage && <RadialBackground className="opacity-80" />}
       
-      <div className="flex flex-1 overflow-hidden">
+      <div className="relative z-10 w-full">
+        <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
+      </div>
+      
+      <div className="relative z-10 flex flex-1 overflow-hidden">
         {user && <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />}
         
         <main className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${user ? 'md:pl-64 pb-16 md:pb-0' : ''}`}>
