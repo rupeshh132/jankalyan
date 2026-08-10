@@ -96,15 +96,25 @@ export const ScrollShowcase = () => {
   const characters = text.split("");
   const centerIndex = Math.floor(characters.length / 2);
   
-  const icons = [
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
-    "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=300&q=80"
+  const issueImages = [
+    "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=300&q=80", // Pothole/texture
+    "https://images.unsplash.com/photo-1532996122724-e3c354a0b15f?auto=format&fit=crop&w=300&q=80", // Trash/Waste
+    "https://images.unsplash.com/photo-1503594384566-461fe158e797?auto=format&fit=crop&w=300&q=80", // Broken infrastructure
+    "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?auto=format&fit=crop&w=300&q=80", // Pipes/Water
+    "https://images.unsplash.com/photo-1473655551229-da395bd7e7bd?auto=format&fit=crop&w=300&q=80", // Urban gritty street
+    "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?auto=format&fit=crop&w=300&q=80"  // Congestion
   ];
-  const iconCenterIndex = Math.floor(icons.length / 2);
+  
+  const resolutionImages = [
+    "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=300&q=80", // Clean city
+    "https://images.unsplash.com/photo-1504307651254-35680f35aa27?auto=format&fit=crop&w=300&q=80", // Construction worker/fixing
+    "https://images.unsplash.com/photo-1593113580332-628880628e81?auto=format&fit=crop&w=300&q=80", // Volunteers cleaning
+    "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=300&q=80", // Park / Greenery
+    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=300&q=80", // Bright streetlights
+    "https://images.unsplash.com/photo-1461280360983-bd93eaa5051b?auto=format&fit=crop&w=300&q=80"  // Happy citizens
+  ];
+
+  const iconCenterIndex = Math.floor(issueImages.length / 2);
 
   return (
     <ReactLenis root>
@@ -144,12 +154,12 @@ export const ScrollShowcase = () => {
         >
           <p className="flex items-center justify-center gap-3 text-2xl md:text-4xl font-medium tracking-tight text-foreground px-4 text-center">
             <Bracket className="h-8 md:h-12 text-primary" />
-            <span className="font-medium text-center">real people. real impact.</span>
+            <span className="font-medium text-center">report urban issues.</span>
             <Bracket className="h-8 md:h-12 scale-x-[-1] text-primary" />
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mt-12">
-            {icons.map((icon, index) => (
+            {issueImages.map((icon, index) => (
               <CharacterV2
                 key={index}
                 char={icon}
@@ -168,12 +178,12 @@ export const ScrollShowcase = () => {
         >
           <p className="flex items-center justify-center gap-3 text-2xl md:text-4xl font-medium tracking-tight text-foreground px-4 text-center">
             <Bracket className="h-8 md:h-12 text-primary" />
-            <span className="font-medium text-center">a community that cares.</span>
+            <span className="font-medium text-center">track community progress.</span>
             <Bracket className="h-8 md:h-12 scale-x-[-1] text-primary" />
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mt-12" style={{ perspective: "500px" }}>
-            {icons.map((icon, index) => (
+            {resolutionImages.map((icon, index) => (
               <CharacterV3
                 key={index}
                 char={icon}
