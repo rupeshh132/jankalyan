@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import ReactLenis from "lenis/react";
+import React, { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { 
   AlertTriangle, Trash2, Droplets, Flame, Hammer, MapPin,
