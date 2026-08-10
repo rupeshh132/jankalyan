@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { usePublicComplaints } from '../../hooks/useComplaints';
 import ComplaintList from '../../components/complaint/ComplaintList';
 import HeroSection from '../../components/home/HeroSection';
+import { ScrollShowcase } from '../../components/ui/text-scroll-animation';
 import FeaturesSection from '../../components/home/FeaturesSection';
 import '../../components/complaint/complaint.css';
 import { useAuth } from '../../context/AuthContext';
@@ -24,9 +25,11 @@ const HomePage = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container relative z-20">
       
       <HeroSection />
+      
+      <ScrollShowcase />
       
       <FeaturesSection />
 
