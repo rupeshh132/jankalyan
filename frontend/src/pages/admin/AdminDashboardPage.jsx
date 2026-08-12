@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card';
 import { 
-  FileText, Clock, PlayCircle, CheckCircle, XCircle, Activity, 
-  BarChart2, PieChart as PieChartIcon, ArrowRight
+  FileText, Clock, PlayCircle, CheckCircle, XCircle, Timer, 
+  TrendingUp, PieChart as PieChartIcon, ArrowRight, ClipboardList
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -55,7 +55,7 @@ const AdminDashboardPage = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Analytics Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Overview of system metrics and complaint status.</p>
+          <p className="text-muted-foreground mt-1">Real-time overview of complaints across all wards.</p>
         </div>
         <Link to="/admin/complaints">
           <Button className="w-full sm:w-auto shadow-sm">
@@ -79,7 +79,7 @@ const AdminDashboardPage = () => {
         <SummaryCard 
           title="Avg Resolution Time" 
           value={stats.averageResolutionTime ? `${stats.averageResolutionTime.toFixed(1)} hrs` : 'N/A'} 
-          icon={Activity} 
+          icon={Timer} 
           colorClass="border-t-cyan-500" 
         />
         <SummaryCard 
@@ -91,7 +91,7 @@ const AdminDashboardPage = () => {
         <SummaryCard 
           title="Open Complaints" 
           value={(stats.totalComplaints || 0) - (stats.resolvedCount || 0) - (stats.rejectedCount || 0)} 
-          icon={FileText} 
+          icon={ClipboardList} 
           colorClass="border-t-amber-500" 
         />
       </div>
@@ -102,7 +102,7 @@ const AdminDashboardPage = () => {
         <Card className="col-span-1 lg:col-span-2">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <BarChart2 className="h-5 w-5 text-primary" />
+              <TrendingUp className="h-5 w-5 text-primary" />
               <CardTitle>Monthly Complaint Trend</CardTitle>
             </div>
           </CardHeader>
@@ -110,7 +110,7 @@ const AdminDashboardPage = () => {
             {monthlyTrendData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyTrendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-light)" />
                   <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                   <RechartsTooltip 
@@ -171,8 +171,8 @@ const AdminDashboardPage = () => {
       {/* Bottom Row: Recent Complaints */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Complaints</CardTitle>
-          <CardDescription>Latest issues submitted requiring attention.</CardDescription>
+          <CardTitle>Recent Filings</CardTitle>
+          <CardDescription>Most recently filed — needs review.</CardDescription>
         </CardHeader>
         <CardContent>
           {isRecentLoading ? (

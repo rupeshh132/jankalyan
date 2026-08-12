@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, MapPin } from 'lucide-react';
+import { Search, Route } from 'lucide-react';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 import ComplaintTracker from '../../components/complaint/ComplaintTracker';
@@ -28,14 +28,14 @@ const TrackComplaintPage = () => {
   }, [initialId]);
 
   return (
-    <div className="page-container max-w-4xl mx-auto">
+    <div className="page-container max-w-7xl mx-auto px-4 md:px-6 py-6">
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center justify-center gap-3">
-          <MapPin className="h-8 w-8 text-primary" />
+          <Route className="h-8 w-8 text-primary" />
           Track Your Complaint
         </h1>
         <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
-          Enter your complaint tracking ID below to see its real-time status and progress history.
+          Enter your Complaint ID to see live status and resolution updates.
         </p>
       </div>
 
@@ -47,7 +47,7 @@ const TrackComplaintPage = () => {
             </div>
             <Input
               type="text"
-              placeholder="Enter Complaint ID (e.g., 123e4567-e89b...)"
+              placeholder="Enter your Complaint ID"
               className="pl-10 w-full"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -62,8 +62,9 @@ const TrackComplaintPage = () => {
           <ComplaintTracker complaintId={trackingId} />
         </div>
       ) : (
-        <div className="mt-12 text-center text-muted-foreground/60">
-          <p>The tracking timeline will appear here.</p>
+        <div className="mt-12 text-center text-muted-foreground flex flex-col items-center justify-center">
+          <Search className="h-12 w-12 opacity-20 mb-4" />
+          <p>Enter a Complaint ID above to track its status.</p>
         </div>
       )}
     </div>

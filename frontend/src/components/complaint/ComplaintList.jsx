@@ -39,7 +39,7 @@ const ComplaintList = ({ isLoading, isError, error, data, onPageChange, refetch 
   return (
     <div>
       <motion.div 
-        className="complaint-list-container"
+        className="editorial-list"
         variants={containerVariants}
         initial="hidden"
         animate="show"

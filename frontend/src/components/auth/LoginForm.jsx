@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { useLogin, useGoogleLoginHook, useSendOtp, useVerifyOtp } from '../../hooks/useLogin';
 import { Link } from 'react-router-dom';
-import { LogIn, Loader2, Mail, Phone } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Card, CardContent, CardFooter } from '../ui/card';
+import { Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '../ui/alert';
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -87,184 +83,267 @@ const LoginForm = () => {
 
   const isAnyPending = isLoginPending || isGooglePending || isOtpPending || isVerifyPending;
 
+  const inputStyle = {
+    width: '100%',
+    background: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid #d1d5db',
+    borderRadius: '0',
+    padding: '8px 0',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '15px',
+    color: '#111827',
+    outline: 'none',
+    transition: 'border-color 0.2s ease',
+  };
+
+  const labelStyle = {
+    display: 'block',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '10px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    color: '#6b7280',
+    marginBottom: '4px',
+  };
+
+  const wrapperStyle = {
+    marginBottom: '20px',
+  };
+
   return (
-    <Card className="w-full max-w-md mx-auto backdrop-blur-xl bg-card/60 shadow-2xl border-white/10">
-      <CardContent className="pt-6">
-        
-        <div className="flex justify-center mb-6">
-          <GoogleLogin
-            onSuccess={credentialResponse => {
-              googleLogin({ idToken: credentialResponse.credential });
-            }}
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          />
-        </div>
-        
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border/50" />
+    <div style={{ width: '100%' }}>
+      {getErrorMessage() && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{getErrorMessage()}</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Google Login custom wrapper */}
+      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'center', overflow: 'hidden', borderRadius: '4px', border: '1px solid #e5e7eb', background: 'transparent' }}>
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            googleLogin({ idToken: credentialResponse.credential });
+          }}
+          onError={() => {}}
+          theme="outline"
+          size="large"
+          text="signin_with"
+          shape="rectangular"
+          width="100%"
+        />
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', margin: '24px 0' }}>
+        <div style={{ flex: 1, borderTop: '1px solid #e5e7eb' }}></div>
+        <span style={{ padding: '0 12px', fontSize: '10px', fontWeight: 600, color: '#9ca3af', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Or continue with</span>
+        <div style={{ flex: 1, borderTop: '1px solid #e5e7eb' }}></div>
+      </div>
+
+      {/* Minimal Tabs */}
+      <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb', marginBottom: '24px' }}>
+        <button
+          type="button"
+          onClick={() => setActiveTab('email')}
+          style={{
+            flex: 1,
+            background: 'transparent',
+            border: 'none',
+            borderBottom: activeTab === 'email' ? '2px solid #111827' : '2px solid transparent',
+            padding: '12px 0',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '13px',
+            fontWeight: 600,
+            color: activeTab === 'email' ? '#111827' : '#9ca3af',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          EMAIL
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('otp')}
+          style={{
+            flex: 1,
+            background: 'transparent',
+            border: 'none',
+            borderBottom: activeTab === 'otp' ? '2px solid #111827' : '2px solid transparent',
+            padding: '12px 0',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '13px',
+            fontWeight: 600,
+            color: activeTab === 'otp' ? '#111827' : '#9ca3af',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+        >
+          PHONE (OTP)
+        </button>
+      </div>
+
+      {activeTab === 'email' && (
+        <form onSubmit={handleEmailSubmit}>
+          <div style={wrapperStyle}>
+            <label htmlFor="email" style={labelStyle}>Email Address</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={credentials.email}
+              onChange={handleChange}
+              disabled={isAnyPending}
+              style={{ ...inputStyle, borderBottomColor: validationErrors.email ? '#ef4444' : '#d1d5db' }}
+              onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+              onBlur={(e) => e.target.style.borderBottomColor = validationErrors.email ? '#ef4444' : '#d1d5db'}
+            />
+            {validationErrors.email && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.email}</p>}
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-          </div>
-        </div>
 
-        <div className="flex space-x-2 mb-6 p-1 bg-muted/50 rounded-lg">
-          <button
-            onClick={() => setActiveTab('email')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-              activeTab === 'email' ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Mail className="inline-block w-4 h-4 mr-2" />
-            Email
-          </button>
-          <button
-            onClick={() => setActiveTab('otp')}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
-              activeTab === 'otp' ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Phone className="inline-block w-4 h-4 mr-2" />
-            Phone (OTP)
-          </button>
-        </div>
-
-        {getErrorMessage() && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertDescription>{getErrorMessage()}</AlertDescription>
-          </Alert>
-        )}
-
-        {activeTab === 'email' && (
-          <form onSubmit={handleEmailSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="name@example.com"
-                value={credentials.email}
-                onChange={handleChange}
-                disabled={isAnyPending}
-                className={`bg-background/50 ${validationErrors.email ? 'border-destructive' : ''}`}
-              />
-              {validationErrors.email && (
-                <p className="text-sm text-destructive">{validationErrors.email}</p>
-              )}
+          <div style={wrapperStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <label htmlFor="password" style={labelStyle}>Password</label>
+              <Link to="/forgot-password" style={{ fontSize: '11px', color: '#6b7280', textDecoration: 'none' }}>Forgot password?</Link>
             </div>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
+              disabled={isAnyPending}
+              style={{ ...inputStyle, borderBottomColor: validationErrors.password ? '#ef4444' : '#d1d5db' }}
+              onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+              onBlur={(e) => e.target.style.borderBottomColor = validationErrors.password ? '#ef4444' : '#d1d5db'}
+            />
+            {validationErrors.password && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.password}</p>}
+          </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link to="/forgot-password" className="text-sm font-medium text-primary hover:underline">
-                  Forgot password?
-                </Link>
+          <button 
+            type="submit" 
+            disabled={isAnyPending}
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: '#111827',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '12px',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              cursor: isAnyPending ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '24px',
+              transition: 'background 0.5s ease',
+            }}
+            onMouseEnter={e => e.target.style.background = '#2563eb'}
+            onMouseLeave={e => e.target.style.background = '#111827'}
+          >
+            {isLoginPending ? <Loader2 className="animate-spin" size={16} /> : 'Sign In'}
+          </button>
+        </form>
+      )}
+
+      {activeTab === 'otp' && (
+        <div>
+          {!isOtpSent ? (
+            <form onSubmit={handleSendOtp}>
+              <div style={wrapperStyle}>
+                <label htmlFor="phone" style={labelStyle}>Phone Number</label>
+                <input
+                  id="phone"
+                  type="text"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (validationErrors.phone) setValidationErrors({ ...validationErrors, phone: '' });
+                  }}
+                  disabled={isAnyPending}
+                  style={{ ...inputStyle, borderBottomColor: validationErrors.phone ? '#ef4444' : '#d1d5db' }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+                  onBlur={(e) => e.target.style.borderBottomColor = validationErrors.phone ? '#ef4444' : '#d1d5db'}
+                />
+                {validationErrors.phone && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.phone}</p>}
               </div>
-              <Input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="••••••••"
-                value={credentials.password}
-                onChange={handleChange}
+              <button 
+                type="submit" 
                 disabled={isAnyPending}
-                className={`bg-background/50 ${validationErrors.password ? 'border-destructive' : ''}`}
-              />
-              {validationErrors.password && (
-                <p className="text-sm text-destructive">{validationErrors.password}</p>
-              )}
-            </div>
+                style={{
+                  width: '100%', padding: '12px', background: '#111827', color: '#fff', border: 'none',
+                  borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontSize: '12px', fontWeight: 700,
+                  textTransform: 'uppercase', letterSpacing: '0.1em', cursor: isAnyPending ? 'not-allowed' : 'pointer',
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '24px',
+                  transition: 'background 0.5s ease',
+                }}
+                onMouseEnter={e => e.target.style.background = '#2563eb'}
+                onMouseLeave={e => e.target.style.background = '#111827'}
+              >
+                {isOtpPending ? <Loader2 className="animate-spin" size={16} /> : 'Send OTP'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOtp}>
+              <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 4px 0' }}>OTP sent to {phone}</p>
+                <button 
+                  type="button" 
+                  onClick={() => setIsOtpSent(false)} 
+                  style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '11px', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Change number
+                </button>
+              </div>
+              <div style={wrapperStyle}>
+                <label htmlFor="otpCode" style={labelStyle}>Enter OTP</label>
+                <input
+                  id="otpCode"
+                  type="text"
+                  maxLength={6}
+                  value={otpCode}
+                  onChange={(e) => {
+                    setOtpCode(e.target.value);
+                    if (validationErrors.otpCode) setValidationErrors({ ...validationErrors, otpCode: '' });
+                  }}
+                  disabled={isAnyPending}
+                  style={{ ...inputStyle, textAlign: 'center', letterSpacing: '0.5em', borderBottomColor: validationErrors.otpCode ? '#ef4444' : '#d1d5db' }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+                  onBlur={(e) => e.target.style.borderBottomColor = validationErrors.otpCode ? '#ef4444' : '#d1d5db'}
+                />
+                {validationErrors.otpCode && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0', textAlign: 'center' }}>{validationErrors.otpCode}</p>}
+              </div>
+              <button 
+                type="submit" 
+                disabled={isAnyPending}
+                style={{
+                  width: '100%', padding: '12px', background: '#111827', color: '#fff', border: 'none',
+                  borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontSize: '12px', fontWeight: 700,
+                  textTransform: 'uppercase', letterSpacing: '0.1em', cursor: isAnyPending ? 'not-allowed' : 'pointer',
+                  display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '24px',
+                  transition: 'background 0.5s ease',
+                }}
+                onMouseEnter={e => e.target.style.background = '#2563eb'}
+                onMouseLeave={e => e.target.style.background = '#111827'}
+              >
+                {isVerifyPending ? <Loader2 className="animate-spin" size={16} /> : 'Verify & Login'}
+              </button>
+            </form>
+          )}
+        </div>
+      )}
 
-            <Button type="submit" className="w-full mt-6" disabled={isAnyPending}>
-              {isLoginPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogIn className="mr-2 h-4 w-4" />}
-              {isLoginPending ? 'Signing in...' : 'Sign In'}
-            </Button>
-          </form>
-        )}
-
-        {activeTab === 'otp' && (
-          <div className="space-y-4">
-            {!isOtpSent ? (
-              <form onSubmit={handleSendOtp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    type="text"
-                    placeholder="Enter your registered phone number"
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      if (validationErrors.phone) setValidationErrors({ ...validationErrors, phone: '' });
-                    }}
-                    disabled={isAnyPending}
-                    className={`bg-background/50 ${validationErrors.phone ? 'border-destructive' : ''}`}
-                  />
-                  {validationErrors.phone && (
-                    <p className="text-sm text-destructive">{validationErrors.phone}</p>
-                  )}
-                </div>
-                <Button type="submit" className="w-full mt-6" disabled={isAnyPending}>
-                  {isOtpPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
-                  {isOtpPending ? 'Sending OTP...' : 'Send OTP to Email'}
-                </Button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOtp} className="space-y-4">
-                <div className="space-y-2 text-center mb-4">
-                  <p className="text-sm text-muted-foreground">
-                    OTP sent to your registered email associated with {phone}
-                  </p>
-                  <button 
-                    type="button" 
-                    onClick={() => setIsOtpSent(false)} 
-                    className="text-xs text-primary hover:underline"
-                  >
-                    Change Phone Number
-                  </button>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="otpCode">Enter OTP</Label>
-                  <Input
-                    id="otpCode"
-                    type="text"
-                    maxLength={6}
-                    placeholder="123456"
-                    value={otpCode}
-                    onChange={(e) => {
-                      setOtpCode(e.target.value);
-                      if (validationErrors.otpCode) setValidationErrors({ ...validationErrors, otpCode: '' });
-                    }}
-                    disabled={isAnyPending}
-                    className={`bg-background/50 text-center tracking-widest ${validationErrors.otpCode ? 'border-destructive' : ''}`}
-                  />
-                  {validationErrors.otpCode && (
-                    <p className="text-sm text-destructive">{validationErrors.otpCode}</p>
-                  )}
-                </div>
-                <Button type="submit" className="w-full mt-6" disabled={isAnyPending}>
-                  {isVerifyPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogIn className="mr-2 h-4 w-4" />}
-                  {isVerifyPending ? 'Verifying...' : 'Verify & Login'}
-                </Button>
-              </form>
-            )}
-          </div>
-        )}
-
-      </CardContent>
-      <CardFooter className="flex justify-center border-t border-border/50 pt-4">
-        <p className="text-sm text-muted-foreground">
-          Don't have an account?{' '}
-          <Link to="/register" className="font-semibold text-primary hover:underline">
-            Register here
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+      <p style={{ marginTop: '32px', fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#6b7280', textAlign: 'center' }}>
+        Don't have an account?{' '}
+        <Link to="/register" style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'none' }}>
+          Register here &rarr;
+        </Link>
+      </p>
+    </div>
   );
 };
 

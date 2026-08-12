@@ -1,21 +1,19 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, AlertCircle, FileText, Settings, User, Activity } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { ShieldCheck } from 'lucide-react';
 import { cn } from '../../lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
-
 import { getNavItems } from './navConfig';
 
 const SidebarContent = ({ navItems, closeMobile }) => {
   const location = useLocation();
 
   return (
-    <div className="flex h-full flex-col bg-card py-6 border-r">
-      <div className="px-6 mb-8 hidden md:block">
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">Menu</h2>
-      </div>
-      <nav className="flex-1 space-y-1 px-4">
+    <div style={{
+      display: 'flex', flexDirection: 'column', height: '100%',
+      background: '#ffffff', borderRight: '1px solid #e2e8f0', padding: '1.5rem 0'
+    }}>
+      <nav style={{ flex: 1, padding: '0 0.75rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
         {navItems.map((item) => {
           const isActive = location.pathname === item.path || (item.path !== '/dashboard' && item.path !== '/admin' && location.pathname.startsWith(item.path));
           return (
@@ -23,43 +21,58 @@ const SidebarContent = ({ navItems, closeMobile }) => {
               key={item.path}
               to={item.path}
               onClick={closeMobile}
+              style={{ textDecoration: 'none' }}
               className={cn(
-                "group flex items-center rounded-md px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                isActive 
-                  ? "bg-primary text-primary-foreground shadow-sm" 
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                "group flex items-center rounded-lg px-3 py-2.5 transition-all duration-200",
+                isActive
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               )}
             >
-              <item.icon
-                className={cn(
-                  "mr-3 h-5 w-5 flex-shrink-0 transition-all duration-200 group-hover:translate-x-1",
-                  isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-accent-foreground"
-                )}
-                aria-hidden="true"
-              />
-              {item.name}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: '32px', height: '32px', borderRadius: '8px', marginRight: '12px',
+                background: isActive ? '#dbeafe' : 'transparent',
+                color: isActive ? '#2563eb' : '#64748b',
+                transition: 'all 0.2s ease'
+              }} className={!isActive ? "group-hover:bg-slate-100 group-hover:color-slate-900" : ""}>
+                <item.icon size={18} />
+              </div>
+              <span style={{
+                fontFamily: 'Inter, sans-serif', fontSize: '0.925rem',
+                fontWeight: isActive ? 600 : 500, letterSpacing: '-0.01em'
+              }}>
+                {item.name}
+              </span>
+              {isActive && (
+                <div style={{ width: '3px', height: '16px', background: '#2563eb', borderRadius: '4px', marginLeft: 'auto' }} />
+              )}
             </NavLink>
           );
         })}
       </nav>
+
+      {/* Subtle footer inside sidebar */}
+      <div style={{ padding: '1.5rem', marginTop: 'auto', borderTop: '1px solid #f1f5f9' }}>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#94a3b8', margin: 0, textAlign: 'center' }}>
+          Civic Platform v2.0
+        </p>
+      </div>
     </div>
   );
 };
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { user } = useAuth();
-  
   if (!user) return null;
-  
   const navItems = getNavItems(user.role);
 
   return (
-    <>
-      {/* Desktop Sidebar ONLY. Mobile uses BottomNav */}
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 md:pt-16 z-30">
+    <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-40">
+      <div style={{ marginTop: '64px', height: 'calc(100vh - 64px)' }}>
         <SidebarContent navItems={navItems} />
       </div>
-    </>
+    </div>
   );
 };
 

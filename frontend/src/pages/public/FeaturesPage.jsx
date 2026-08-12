@@ -1,136 +1,184 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Activity, Users, ShieldCheck, Database, LayoutDashboard, MessageSquare, Bell } from 'lucide-react';
+import { MapPin, Activity, Users, ShieldCheck, Database, LayoutDashboard } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FeaturesPage = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { type: "tween", ease: "easeOut", duration: 0.4 }
-    }
-  };
-
-  const features = [
-    {
-      title: "Geolocated Incident Reporting",
-      description: "Pinpoint exact locations on a digital map. Citizens can provide precise coordinates so municipal workers know exactly where to dispatch resources, saving valuable time and effort.",
-      icon: <MapPin size={28} />,
-      color: "var(--primary)"
-    },
-    {
-      title: "Real-Time Tracking & Transparency",
-      description: "No more black holes for complaints. Track the real-time status of your report from 'Pending' to 'In Progress' to 'Resolved' with timestamps and official remarks.",
-      icon: <Activity size={28} />,
-      color: "var(--warning-text)"
-    },
-    {
-      title: "Community Upvoting",
-      description: "Democratize city planning. If someone else has already reported a pothole, just upvote it! High-vote issues are automatically prioritized on the admin dashboard.",
-      icon: <Users size={28} />,
-      color: "var(--success-text)"
-    },
-    {
-      title: "Role-Based Access Control",
-      description: "Secure separation of concerns. Citizens have dedicated portals to manage their reports, while Admins get powerful tools to update statuses and categorize issues seamlessly.",
-      icon: <ShieldCheck size={28} />,
-      color: "var(--accent)"
-    },
-    {
-      title: "Rich Media Attachments",
-      description: "A picture is worth a thousand words. Users can attach high-resolution images to their complaints, providing incontrovertible proof and context for the authorities.",
-      icon: <Database size={28} />,
-      color: "var(--primary-dark)"
-    },
-    {
-      title: "Analytics Dashboard",
-      description: "Municipalities get access to a comprehensive overview of city health. See at a glance how many issues are pending, average resolution times, and the most affected zones.",
-      icon: <LayoutDashboard size={28} />,
-      color: "var(--danger-text)"
-    }
-  ];
-
   return (
-    <div className="bg-background min-h-screen pt-12 pb-24">
-      <div className="container mx-auto px-4 md:px-6 max-w-5xl">
-        
-        {/* Header */}
-        <div className="text-center mb-16">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4"
-          >
-            Features built for modern cities
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg text-muted-foreground max-w-2xl mx-auto"
-          >
-            Explore the powerful tools we provide to bridge the gap between citizens and local government.
-          </motion.p>
-        </div>
-
-        {/* Features Grid */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {features.map((feature, index) => (
-            <motion.div 
-              key={index} 
-              variants={itemVariants}
-              className="bg-card/50 backdrop-blur-sm border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group"
-            >
-              <div 
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-                style={{ backgroundColor: `${feature.color}15`, color: feature.color }}
-              >
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* CTA Section */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-20 bg-primary/5 border border-primary/10 rounded-3xl p-10 text-center"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Ready to improve your neighborhood?</h2>
-          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Join thousands of active citizens using JanKalyan to make their cities safer, cleaner, and better.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/register" className="px-8 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm w-full sm:w-auto text-center">
-              Create an account
-            </a>
-            <a href="/complaints" className="px-8 py-3 bg-secondary text-secondary-foreground font-medium rounded-lg hover:bg-secondary/80 transition-colors shadow-sm w-full sm:w-auto text-center">
-              View public issues
-            </a>
-          </div>
-        </motion.div>
-        
+    <div style={{ background: '#F4F3ED', minHeight: '100vh', fontFamily: 'Inter, sans-serif' }}>
+      
+      {/* Header Section */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '120px 24px 80px' }}>
+        <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#666', marginBottom: '32px' }}>
+          Core Capabilities
+        </p>
+        <h1 style={{ 
+          fontFamily: 'Playfair Display, serif', 
+          fontSize: 'clamp(40px, 6vw, 64px)', 
+          fontWeight: 700, 
+          color: '#1C1C1A', 
+          margin: '0 0 24px 0', 
+          lineHeight: 1.1,
+          letterSpacing: '-0.02em',
+          maxWidth: '800px'
+        }}>
+          Empowering communities through systemic transparency.
+        </h1>
+        <p style={{ fontSize: '16px', color: '#555', lineHeight: 1.6, maxWidth: '600px', margin: 0 }}>
+          A comprehensive toolset designed to replace fragmented reporting with a unified, actionable, and accountable civic network.
+        </p>
       </div>
+
+      {/* Grid Layout Section */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px 100px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '24px' }}>
+          
+          {/* Card 01 - Large Left */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-7 col-span-12"
+          >
+            <div style={{ background: '#FFFFFF', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+              <div style={{ padding: '64px 48px 0', flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                  <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '32px', color: '#6b7280', fontWeight: 600 }}>01</span>
+                  <MapPin size={24} color="#D05A44" strokeWidth={2} />
+                </div>
+                <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '32px', fontWeight: 700, color: '#1C1C1A', margin: '0 0 20px 0', lineHeight: 1.2 }}>
+                  Geolocated Incident Reporting
+                </h3>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#555', lineHeight: 1.7, margin: '0 0 48px 0' }}>
+                  Pinpoint precise coordinates for civic issues. Our platform maps reports with rigorous accuracy, allowing local authorities to visualize clusters, prioritize dispatches, and track resolution timelines geographically.
+                </p>
+              </div>
+              <div style={{ background: '#f8f8f8', padding: '0 48px' }}>
+                <img src="/geolocated_map_ui.jpg" alt="Geolocated map" style={{ width: '100%', display: 'block', objectFit: 'cover', objectPosition: 'top', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', marginTop: '20px', border: '1px solid #eaeaea', borderBottom: 'none' }} />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Cards 02-05 Stacked Right */}
+          <div className="lg:col-span-5 col-span-12" style={{ display: 'flex', flexDirection: 'column' }}>
+            
+            {[
+              { num: '02', title: 'Real-Time Tracking & Transparency', desc: 'Monitor the lifecycle of every report from submission to resolution with immutable timestamp logs.', icon: Activity, bg: 'transparent' },
+              { num: '03', title: 'Community Upvoting', desc: 'Democratize prioritization. Allow citizens to validate and escalate issues affecting their immediate neighborhood.', icon: Users, bg: '#FFFFFF' },
+              { num: '04', title: 'Role-Based Access Control', desc: 'Secure segmented views for citizens, municipal workers, and administrative oversight committees.', icon: ShieldCheck, bg: 'transparent' },
+              { num: '05', title: 'Rich Media Attachments', desc: 'Provide irrefutable context by appending high-resolution imagery and documentation to civic tickets.', icon: Database, bg: '#FFFFFF' }
+            ].map((item, idx) => (
+              <motion.div 
+                key={item.num}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                style={{ background: item.bg, padding: '48px 40px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', fontWeight: 600, color: '#6b7280', letterSpacing: '0.05em' }}>{item.num}</span>
+                  <item.icon size={15} color="#D05A44" strokeWidth={2} />
+                </div>
+                <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', fontWeight: 700, color: '#1C1C1A', margin: '0 0 16px 0' }}>
+                  {item.title}
+                </h3>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#555', lineHeight: 1.6, margin: 0 }}>
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
+
+          </div>
+
+          {/* Card 06 - Full Width Bottom */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="col-span-12"
+            style={{ background: '#FFFFFF', marginTop: '24px' }}
+          >
+            <div className="flex flex-col lg:flex-row items-stretch">
+              <div style={{ padding: '64px 48px', flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                  <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '18px', color: '#1C1C1A', fontStyle: 'italic' }}>06</span>
+                  <LayoutDashboard size={16} color="#D05A44" strokeWidth={2.5} />
+                </div>
+                <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '28px', fontWeight: 700, color: '#1C1C1A', margin: '0 0 16px 0', lineHeight: 1.2 }}>
+                  Analytics Dashboard
+                </h3>
+                <p style={{ fontSize: '15px', color: '#555', lineHeight: 1.7, margin: 0, maxWidth: '400px' }}>
+                  Transform civic data into actionable intelligence. Analyze response times, identify systemic infrastructural weaknesses, and allocate municipal resources based on empirical evidence rather than intuition.
+                </p>
+              </div>
+              <div style={{ flex: '1.2', background: '#f8f8f8', padding: '40px', display: 'flex', alignItems: 'center' }}>
+                <img src="/analytics_dashboard_ui.jpg" alt="Analytics Dashboard" style={{ width: '100%', border: '1px solid #eaeaea', borderRadius: '4px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }} />
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
+      </div>
+
+      {/* Footer CTA Section */}
+      <div style={{ background: '#1A1A1A', padding: '100px 24px', color: '#FFFFFF' }}>
+        <div 
+          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
+          style={{ maxWidth: '1000px', margin: '0 auto' }}
+        >
+          <div style={{ flex: 1, maxWidth: '600px' }}>
+            <h2 style={{ 
+              fontFamily: 'Playfair Display, serif', 
+              fontSize: '48px', 
+              fontWeight: 700, 
+              margin: '0 0 16px 0', 
+              lineHeight: 1.1, 
+              letterSpacing: '-0.02em',
+              color: '#FFFFFF'
+            }}>
+              Ready to improve <br /> your neighborhood?
+            </h2>
+            <p style={{ 
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '16px', 
+              color: '#D4D4D8', 
+              lineHeight: 1.6, 
+              margin: 0,
+              maxWidth: '500px'
+            }}>
+              Implement our tools to establish a transparent, responsive, and data-driven relationship with your local government.
+            </p>
+          </div>
+          <div>
+            <Link 
+              to="/register" 
+              style={{
+                display: 'inline-block',
+                background: '#C25E46', // Matched exact terracotta color
+                color: '#FFFFFF',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                padding: '16px 32px',
+                textDecoration: 'none',
+                transition: 'background 0.2s',
+                border: 'none',
+                borderRadius: '0', // Sharp corners
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = '#a84e38'}
+              onMouseLeave={e => e.currentTarget.style.background = '#C25E46'}
+            >
+              JOIN THE MOVEMENT
+            </Link>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };

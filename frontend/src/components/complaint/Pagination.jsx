@@ -1,5 +1,4 @@
 import React from 'react';
-import './pagination.css';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   if (totalPages <= 1) return null;
@@ -24,46 +23,39 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <nav className="pagination-container" aria-label="Pagination">
-      <ul className="pagination-list">
-        <li>
-          <button
-            className="pagination-button"
-            onClick={() => onPageChange(currentPage - 1)}
-            disabled={currentPage === 0}
-            aria-label="Previous page"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-        </li>
-        
-        {generatePageNumbers().map(page => (
-          <li key={page}>
-            <button
-              className={`pagination-button ${currentPage === page ? 'active' : ''}`}
-              onClick={() => onPageChange(page)}
-              aria-current={currentPage === page ? 'page' : undefined}
-            >
-              {page + 1}
-            </button>
-          </li>
-        ))}
+    <nav className="editorial-pagination" aria-label="Pagination">
+      <button
+        className="editorial-page-btn"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 0}
+        aria-label="Previous page"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      
+      {generatePageNumbers().map(page => (
+        <button
+          key={page}
+          className={`editorial-page-btn ${currentPage === page ? 'active' : ''}`}
+          onClick={() => onPageChange(page)}
+          aria-current={currentPage === page ? 'page' : undefined}
+        >
+          {page + 1}
+        </button>
+      ))}
 
-        <li>
-          <button
-            className="pagination-button"
-            onClick={() => onPageChange(currentPage + 1)}
-            disabled={currentPage >= totalPages - 1}
-            aria-label="Next page"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </button>
-        </li>
-      </ul>
+      <button
+        className="editorial-page-btn"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage >= totalPages - 1}
+        aria-label="Next page"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
     </nav>
   );
 };

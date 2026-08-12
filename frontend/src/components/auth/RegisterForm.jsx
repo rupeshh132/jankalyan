@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { useRegister } from '../../hooks/useRegister';
 import { useGoogleLoginHook } from '../../hooks/useLogin';
 import { Link } from 'react-router-dom';
-import { UserPlus, Loader2 } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { Card, CardContent, CardFooter } from '../ui/card';
+import { Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '../ui/alert';
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -25,19 +21,11 @@ const RegisterForm = () => {
   const validate = () => {
     const errors = {};
     if (!userData.fullName) errors.fullName = 'Full Name is required';
-    else if (userData.fullName.length > 100) errors.fullName = 'Max 100 characters';
-    
     if (!userData.email) errors.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(userData.email)) errors.email = 'Email is invalid';
-
     if (!userData.phone) errors.phone = 'Phone is required';
-    else if (!/^[6-9]\d{9}$/.test(userData.phone)) errors.phone = 'Invalid phone number format';
-
     if (!userData.password) errors.password = 'Password is required';
     else if (userData.password.length < 8) errors.password = 'Minimum 8 characters';
-    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/.test(userData.password)) {
-      errors.password = 'Must contain uppercase, lowercase, number, and special character';
-    }
     
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -65,125 +53,164 @@ const RegisterForm = () => {
 
   const isAnyPending = isPending || isGooglePending;
 
+  const inputStyle = {
+    width: '100%',
+    background: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid #d1d5db',
+    borderRadius: '0',
+    padding: '8px 0',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '15px',
+    color: '#111827',
+    outline: 'none',
+    transition: 'border-color 0.2s ease',
+  };
+
+  const labelStyle = {
+    display: 'block',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '10px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    color: '#6b7280',
+    marginBottom: '4px',
+  };
+
+  const wrapperStyle = {
+    marginBottom: '20px',
+  };
+
   return (
-    <Card className="w-full max-w-md mx-auto backdrop-blur-xl bg-card/60 shadow-2xl border-white/10">
-      <CardContent className="pt-6">
-        
-        <div className="flex justify-center mb-6">
+    <div style={{ width: '100%' }}>
+      {getErrorMessage() && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{getErrorMessage()}</AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={handleSubmit}>
+        <div style={wrapperStyle}>
+          <label htmlFor="fullName" style={labelStyle}>Full Name</label>
+          <input
+            id="fullName"
+            type="text"
+            name="fullName"
+            value={userData.fullName}
+            onChange={handleChange}
+            disabled={isAnyPending}
+            style={{ ...inputStyle, borderBottomColor: validationErrors.fullName ? '#ef4444' : '#d1d5db' }}
+            onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+            onBlur={(e) => e.target.style.borderBottomColor = validationErrors.fullName ? '#ef4444' : '#d1d5db'}
+          />
+          {validationErrors.fullName && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.fullName}</p>}
+        </div>
+
+        <div style={wrapperStyle}>
+          <label htmlFor="email" style={labelStyle}>Email Address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+            disabled={isAnyPending}
+            style={{ ...inputStyle, borderBottomColor: validationErrors.email ? '#ef4444' : '#d1d5db' }}
+            onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+            onBlur={(e) => e.target.style.borderBottomColor = validationErrors.email ? '#ef4444' : '#d1d5db'}
+          />
+          {validationErrors.email && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.email}</p>}
+        </div>
+
+        <div style={wrapperStyle}>
+          <label htmlFor="phone" style={labelStyle}>Phone Number</label>
+          <input
+            id="phone"
+            type="text"
+            name="phone"
+            value={userData.phone}
+            onChange={handleChange}
+            disabled={isAnyPending}
+            style={{ ...inputStyle, borderBottomColor: validationErrors.phone ? '#ef4444' : '#d1d5db' }}
+            onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+            onBlur={(e) => e.target.style.borderBottomColor = validationErrors.phone ? '#ef4444' : '#d1d5db'}
+          />
+          {validationErrors.phone && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.phone}</p>}
+        </div>
+
+        <div style={wrapperStyle}>
+          <label htmlFor="password" style={labelStyle}>Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            value={userData.password}
+            onChange={handleChange}
+            disabled={isAnyPending}
+            style={{ ...inputStyle, borderBottomColor: validationErrors.password ? '#ef4444' : '#d1d5db' }}
+            onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+            onBlur={(e) => e.target.style.borderBottomColor = validationErrors.password ? '#ef4444' : '#d1d5db'}
+          />
+          {validationErrors.password && <p style={{ fontSize: '11px', color: '#ef4444', margin: '4px 0 0 0' }}>{validationErrors.password}</p>}
+        </div>
+
+        <button 
+          type="submit" 
+          disabled={isAnyPending}
+          style={{
+            width: '100%',
+            padding: '12px',
+            background: '#111827',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '12px',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            cursor: isAnyPending ? 'not-allowed' : 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '24px',
+            transition: 'background 0.5s ease',
+          }}
+          onMouseEnter={e => e.target.style.background = '#2563eb'}
+          onMouseLeave={e => e.target.style.background = '#111827'}
+        >
+          {isPending ? <Loader2 className="animate-spin" size={16} /> : 'Create Account'}
+        </button>
+      </form>
+
+      <div style={{ marginTop: '16px', position: 'relative' }}>
+        {/* We use a wrapper that mimics the custom button, and hide the iframe opacity slightly, or just use the outline theme which is close to minimal */}
+        <div style={{ 
+          display: 'flex', justifyContent: 'center', overflow: 'hidden', borderRadius: '4px', 
+          border: '1px solid #e5e7eb', background: 'transparent' 
+        }}>
           <GoogleLogin
             onSuccess={credentialResponse => {
               googleLogin({ idToken: credentialResponse.credential });
             }}
-            onError={() => {
-              console.log('Login Failed');
-            }}
+            onError={() => {}}
+            theme="outline"
+            size="large"
             text="signup_with"
+            shape="rectangular"
+            width="100%"
           />
         </div>
-        
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-border/50" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">Or register with email</span>
-          </div>
-        </div>
+      </div>
 
-        {getErrorMessage() && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertDescription>{getErrorMessage()}</AlertDescription>
-          </Alert>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
-            <Input
-              id="fullName"
-              type="text"
-              name="fullName"
-              placeholder="John Doe"
-              value={userData.fullName}
-              onChange={handleChange}
-              disabled={isAnyPending}
-              className={`bg-background/50 ${validationErrors.fullName ? 'border-destructive' : ''}`}
-            />
-            {validationErrors.fullName && (
-              <p className="text-sm text-destructive">{validationErrors.fullName}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="john@example.com"
-              value={userData.email}
-              onChange={handleChange}
-              disabled={isAnyPending}
-              className={`bg-background/50 ${validationErrors.email ? 'border-destructive' : ''}`}
-            />
-            {validationErrors.email && (
-              <p className="text-sm text-destructive">{validationErrors.email}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
-              type="text"
-              name="phone"
-              placeholder="9876543210"
-              value={userData.phone}
-              onChange={handleChange}
-              disabled={isAnyPending}
-              className={`bg-background/50 ${validationErrors.phone ? 'border-destructive' : ''}`}
-            />
-            {validationErrors.phone && (
-              <p className="text-sm text-destructive">{validationErrors.phone}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Strong password"
-              value={userData.password}
-              onChange={handleChange}
-              disabled={isAnyPending}
-              className={`bg-background/50 ${validationErrors.password ? 'border-destructive' : ''}`}
-            />
-            {validationErrors.password && (
-              <p className="text-sm text-destructive">{validationErrors.password}</p>
-            )}
-          </div>
-
-          <Button type="submit" className="w-full mt-6" disabled={isAnyPending}>
-            {isPending ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <UserPlus className="mr-2 h-4 w-4" />
-            )}
-            {isPending ? 'Creating Account...' : 'Create Account'}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-center border-t border-border/50 pt-4">
-        <p className="text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <Link to="/login" className="font-semibold text-primary hover:underline">
-            Sign in
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+      <p style={{ marginTop: '32px', fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#6b7280', textAlign: 'center' }}>
+        Already have an account?{' '}
+        <Link to="/login" style={{ color: '#111827', fontWeight: 600, textDecoration: 'none' }}>
+          Log in &rarr;
+        </Link>
+      </p>
+    </div>
   );
 };
 

@@ -7,6 +7,7 @@ import {
   ChevronDown, AlertCircle, CheckCircle2, MapPin
 } from 'lucide-react';
 import { usePublicStatistics } from '../../hooks/useStatistics';
+import { HeroBackground } from '../ui/HeroBackground';
 import './Hero.css';
 
 const HeroSection = () => {
@@ -28,6 +29,7 @@ const HeroSection = () => {
 
   return (
     <section className="hero-wrapper" onMouseMove={handleMouseMove}>
+      <HeroBackground />
       {/* Point 2: Subtle Background Mesh Glow */}
       <div className="mesh-glow" />
 
@@ -42,7 +44,7 @@ const HeroSection = () => {
             transition: { staggerChildren: 0.15 }
           }
         }}
-        style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 10 }}
       >
         <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-badge">
           <ShieldCheck size={14} color="var(--accent)" />
@@ -51,22 +53,26 @@ const HeroSection = () => {
         
         <motion.h1 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-headline">
           Report Issues.
-          <span>Track Progress.</span>
+          <span style={{ display: 'block', fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 500, color: '#e5e5e5' }}>Track Progress.</span>
           {/* Point 1: Text Gradient Shimmer */}
           <span className="text-gradient-shimmer">Improve Your City.</span>
         </motion.h1>
         
         <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-desc">
-          The infrastructure for modern municipalities. Connect citizens with local government through real-time tracking, transparent resolutions, and actionable analytics.
+          Your city's problems shouldn't be ignored. JanKalyan connects you directly with local authorities to track, update, and fix neighborhood issues together.
         </motion.p>
         
         <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-cta-group">
-          <Link to="/dashboard/report" className="btn-hero-primary">
-            Report an Issue
-          </Link>
-          <Link to="/dashboard" className="btn-hero-secondary">
-            Explore Complaints
-          </Link>
+          <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+            <Link to="/dashboard/report" className="btn-hero-primary" style={{ display: 'block' }}>
+              Report an Issue
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+            <Link to="/dashboard" className="btn-hero-secondary" style={{ display: 'block' }}>
+              Explore Complaints
+            </Link>
+          </motion.div>
         </motion.div>
         
         <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }} className="hero-trust">

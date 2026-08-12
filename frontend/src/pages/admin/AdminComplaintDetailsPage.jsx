@@ -61,7 +61,7 @@ const AdminComplaintDetailsPage = () => {
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button 
             className="auth-button" 
-            style={{ width: 'auto', background: 'rgba(255, 255, 255, 0.1)', color: 'var(--text-primary)', border: '1px solid rgba(255, 255, 255, 0.2)' }} 
+            style={{ width: 'auto', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)' }} 
             onClick={() => setIsStatusModalOpen(true)}
           >
             <Edit2 size={16} style={{ marginRight: '8px' }} /> Update Status
@@ -111,7 +111,7 @@ const AdminComplaintDetailsPage = () => {
           </div>
         )}
 
-        <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '2rem', borderRadius: 'var(--radius)', border: '1px solid rgba(128, 128, 128, 0.2)' }}>
+        <div style={{ background: 'var(--bg-card)', padding: '2rem', borderRadius: 'var(--radius)', border: '1px solid var(--border-light)' }}>
           <h3 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.2rem', color: 'var(--primary)' }}>Description</h3>
           <p style={{ margin: 0, lineHeight: 1.7, whiteSpace: 'pre-wrap', color: 'var(--text-primary)', fontSize: '1.05rem' }}>
             {complaint.description}
@@ -119,7 +119,7 @@ const AdminComplaintDetailsPage = () => {
         </div>
         
         {complaint.address && (
-          <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(255,255,255,0.01)', borderRadius: 'var(--radius)', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius)', border: '1px solid var(--border-light)' }}>
              <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-secondary)' }}>Location</h4>
              <p style={{ margin: 0, color: 'var(--text-primary)' }}>{complaint.address}, {complaint.ward && `${complaint.ward}, `} {complaint.state}</p>
           </div>
@@ -133,7 +133,7 @@ const AdminComplaintDetailsPage = () => {
              </h3>
              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                {complaint.statusHistory.map((history, idx) => (
-                 <div key={idx} style={{ padding: '1.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius)', borderLeft: '4px solid var(--primary)' }}>
+                 <div key={idx} style={{ padding: '1.5rem', background: 'var(--bg-primary)', borderRadius: 'var(--radius)', borderLeft: '4px solid var(--primary)' }}>
                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                      <div>
                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{history.oldStatus}</span>
@@ -148,7 +148,7 @@ const AdminComplaintDetailsPage = () => {
                      Changed by: {history.changedBy}
                    </div>
                    {history.remarks && (
-                     <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: '4px', fontSize: '0.95rem', color: 'var(--text-primary)', marginTop: '0.5rem' }}>
+                     <div style={{ background: 'var(--bg-card)', padding: '0.75rem', borderRadius: '4px', fontSize: '0.95rem', color: 'var(--text-primary)', marginTop: '0.5rem' }}>
                        <strong>Remarks:</strong> {history.remarks}
                      </div>
                    )}

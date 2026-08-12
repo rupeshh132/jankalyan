@@ -212,7 +212,7 @@ const ComplaintForm = ({ initialData = null, isEditMode = false }) => {
           
           <button 
             className="auth-button" 
-            style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'var(--text-primary)' }}
+            style={{ background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)' }}
             onClick={() => navigate('/dashboard/complaints')}
             disabled={isUploading}
           >
@@ -252,8 +252,45 @@ const ComplaintForm = ({ initialData = null, isEditMode = false }) => {
           </div>
         </Card>
       ) : (
-        <div className="bg-card rounded-xl border shadow-sm">
-          <div className="p-6">
+        <div style={{
+          background: '#FAFAFF', 
+          border: '1px solid #e5e7eb', 
+          borderRadius: '16px',
+          position: 'relative',
+          overflow: 'hidden',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+        }}>
+          {/* Local Styles for Blob Animation */}
+          <style>{`
+            @keyframes cta-blob-1 {
+              0%, 100% { transform: translate(0, 0) scale(1); }
+              33% { transform: translate(15%, -10%) scale(1.05); }
+              66% { transform: translate(-10%, 15%) scale(0.95); }
+            }
+            @keyframes cta-blob-2 {
+              0%, 100% { transform: translate(0, 0) scale(1); }
+              33% { transform: translate(-15%, 10%) scale(1.05); }
+              66% { transform: translate(10%, -15%) scale(0.95); }
+            }
+            @keyframes cta-blob-3 {
+              0%, 100% { transform: translate(0, 0) scale(1); }
+              33% { transform: translate(10%, 15%) scale(0.95); }
+              66% { transform: translate(-15%, -10%) scale(1.05); }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .mesh-blob { animation: none !important; }
+            }
+          `}</style>
+
+          {/* Background Gradient Mesh */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: 'none' }}>
+            <div className="mesh-blob" style={{ position: 'absolute', top: '-20%', left: '-20%', width: '70%', height: '70%', background: 'radial-gradient(circle, rgba(162, 233, 255, 0.5) 0%, rgba(162, 233, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(80px)', animation: 'cta-blob-1 20s ease-in-out infinite' }} />
+            <div className="mesh-blob" style={{ position: 'absolute', top: '-10%', right: '-20%', width: '70%', height: '80%', background: 'radial-gradient(circle, rgba(239, 204, 255, 0.5) 0%, rgba(239, 204, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(80px)', animation: 'cta-blob-2 25s ease-in-out infinite', animationDelay: '5s' }} />
+            <div className="mesh-blob" style={{ position: 'absolute', bottom: '-30%', left: '-10%', width: '80%', height: '80%', background: 'radial-gradient(circle, rgba(193, 232, 255, 0.5) 0%, rgba(193, 232, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(80px)', animation: 'cta-blob-3 22s ease-in-out infinite', animationDelay: '2s' }} />
+            <div className="mesh-blob" style={{ position: 'absolute', bottom: '-20%', right: '-10%', width: '80%', height: '80%', background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(60px)', animation: 'cta-blob-1 28s ease-in-out infinite reverse' }} />
+          </div>
+
+          <div className="p-8 relative z-10">
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Left Column */}
@@ -467,11 +504,29 @@ const ComplaintForm = ({ initialData = null, isEditMode = false }) => {
               <div className="pt-4 border-t border-border flex justify-end">
                 <button 
                   type="submit" 
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8" 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#111827',
+                    color: '#ffffff',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    padding: '0 32px',
+                    height: '40px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    cursor: isPending ? 'not-allowed' : 'pointer',
+                    transition: 'background 0.5s ease',
+                    opacity: isPending ? 0.7 : 1
+                  }}
+                  onMouseEnter={e => { if (!isPending) e.currentTarget.style.background = '#2563eb'; }}
+                  onMouseLeave={e => { if (!isPending) e.currentTarget.style.background = '#111827'; }}
                   disabled={isPending}
                 >
                   {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-                  {isSubmitting ? 'Creating Complaint...' : isUpdating ? 'Updating Complaint...' : isUploading ? 'Uploading Images...' : isDeletingImage ? 'Deleting Image...' : isEditMode ? 'Save Changes' : 'Submit Complaint'}
+                  {isSubmitting ? 'Creating...' : isUpdating ? 'Updating...' : isUploading ? 'Uploading...' : isDeletingImage ? 'Deleting...' : isEditMode ? 'Save Changes' : 'Submit Complaint'}
                 </button>
               </div>
             </form>

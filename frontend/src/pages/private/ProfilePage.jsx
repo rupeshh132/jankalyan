@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useProfile, useUpdateProfile, useUploadProfilePhoto } from '../../hooks/useProfile';
-import { User, Mail, Phone, MapPin, Loader2, Save, LogOut, Camera } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Loader2, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { data: profileData, isLoading: isProfileLoading, isError } = useProfile();
   const updateProfileMutation = useUpdateProfile();
   const uploadPhotoMutation = useUploadProfilePhoto();
@@ -20,7 +20,8 @@ const ProfilePage = () => {
     address: '',
   });
 
-  // Update form data when profile data is loaded
+  const [validationErrors, setValidationErrors] = useState({});
+
   React.useEffect(() => {
     if (profile) {
       setFormData({
@@ -39,12 +40,10 @@ const ProfilePage = () => {
   const handlePhotoUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check file type
       if (!file.type.startsWith('image/')) {
         toast.error('Please upload an image file (JPEG, PNG, etc.)');
         return;
       }
-      // Check file size (e.g. max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error('Image size should be less than 5MB');
         return;
@@ -78,25 +77,55 @@ const ProfilePage = () => {
     );
   }
 
+  const inputStyle = {
+    width: '100%',
+    background: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid #d1d5db',
+    borderRadius: '0',
+    padding: '8px 0',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '15px',
+    color: '#111827',
+    outline: 'none',
+    transition: 'border-color 0.2s ease',
+  };
+
+  const labelStyle = {
+    display: 'block',
+    fontFamily: 'Inter, sans-serif',
+    fontSize: '10px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    color: '#6b7280',
+    marginBottom: '4px',
+  };
+
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Profile Settings</h1>
+    <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+      <div>
+        <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '32px', fontWeight: 700, color: '#111827', margin: '0 0 8px 0', letterSpacing: '-0.02em' }}>
+          Your Profile
+        </h1>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#6b7280', margin: 0 }}>
+          Keep your contact details up to date.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left Column: Avatar & Basic Info */}
-        <div className="col-span-1 space-y-6">
-          <div className="bg-card rounded-xl border shadow-sm p-6 flex flex-col items-center text-center">
+        <div className="col-span-1">
+          <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '40px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)' }}>
             <div 
-              className="relative mb-4 group cursor-pointer"
+              className="relative mb-6 group cursor-pointer"
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="w-32 h-32 rounded-full bg-primary/10 border-4 border-background shadow-lg overflow-hidden flex items-center justify-center">
+              <div className="w-[120px] h-[120px] rounded-full bg-primary/5 overflow-hidden flex items-center justify-center border border-gray-100">
                 {profile.profileImage ? (
                   <img src={profile.profileImage} alt={profile.fullName} className="w-full h-full object-cover" />
                 ) : (
-                  <User size={64} className="text-primary/40" />
+                  <User size={48} className="text-primary/40" />
                 )}
               </div>
               <div className="absolute inset-0 bg-black/40 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -117,102 +146,142 @@ const ProfilePage = () => {
               accept="image/*"
               onChange={handlePhotoUpload}
             />
-            <h2 className="text-xl font-bold text-foreground">{formData.fullName || profile.fullName}</h2>
-            <p className="text-sm text-muted-foreground">{formData.email}</p>
+            <h2 style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', fontWeight: 700, color: '#0f172a', margin: '0 0 4px 0' }}>{formData.fullName || profile.fullName}</h2>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#64748b', margin: 0 }}>{formData.email}</p>
             
-            <div className="mt-6 w-full flex items-center justify-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-primary/10 text-primary">
-              Role: {user?.role || 'Citizen'}
+            <div style={{ marginTop: '20px', fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '6px 14px', borderRadius: '999px', background: '#f8fafc', color: '#0f172a', border: '1px solid #e2e8f0' }}>
+              {user?.role || 'Citizen'}
             </div>
           </div>
         </div>
 
         {/* Right Column: Form */}
         <div className="col-span-1 md:col-span-2">
-          <div className="bg-card rounded-xl border shadow-sm">
-            <div className="p-6 border-b border-border">
-              <h3 className="text-lg font-semibold text-foreground">Personal Information</h3>
-              <p className="text-sm text-muted-foreground">Update your photo and personal details here.</p>
+          <div style={{
+            background: '#FAFAFF', 
+            border: '1px solid #e5e7eb', 
+            borderRadius: '16px',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+          }}>
+            {/* Local Styles for Blob Animation */}
+            <style>{`
+              @keyframes profile-blob-1 {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(15%, -10%) scale(1.05); }
+                66% { transform: translate(-10%, 15%) scale(0.95); }
+              }
+              @keyframes profile-blob-2 {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(-15%, 10%) scale(1.05); }
+                66% { transform: translate(10%, -15%) scale(0.95); }
+              }
+              @keyframes profile-blob-3 {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(10%, 15%) scale(0.95); }
+                66% { transform: translate(-15%, -10%) scale(1.05); }
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .profile-mesh-blob { animation: none !important; }
+              }
+            `}</style>
+
+            {/* Background Gradient Mesh */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: 'none' }}>
+              <div className="profile-mesh-blob" style={{ position: 'absolute', top: '-20%', left: '-20%', width: '70%', height: '70%', background: 'radial-gradient(circle, rgba(162, 233, 255, 0.4) 0%, rgba(162, 233, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(80px)', animation: 'profile-blob-1 20s ease-in-out infinite' }} />
+              <div className="profile-mesh-blob" style={{ position: 'absolute', top: '-10%', right: '-20%', width: '70%', height: '80%', background: 'radial-gradient(circle, rgba(239, 204, 255, 0.4) 0%, rgba(239, 204, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(80px)', animation: 'profile-blob-2 25s ease-in-out infinite', animationDelay: '5s' }} />
+              <div className="profile-mesh-blob" style={{ position: 'absolute', bottom: '-30%', left: '-10%', width: '80%', height: '80%', background: 'radial-gradient(circle, rgba(193, 232, 255, 0.4) 0%, rgba(193, 232, 255, 0) 70%)', borderRadius: '50%', filter: 'blur(80px)', animation: 'profile-blob-3 22s ease-in-out infinite', animationDelay: '2s' }} />
             </div>
-            
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium leading-none">Full Name</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+
+            <div className="relative z-10 p-8">
+              <div style={{ marginBottom: '32px' }}>
+                <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '24px', fontWeight: 700, color: '#111827', margin: 0 }}>Personal Information</h3>
+              </div>
+              
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <label style={labelStyle}>Full Name</label>
                     <input 
                       type="text" 
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      style={inputStyle}
+                      onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+                      onBlur={(e) => e.target.style.borderBottomColor = '#d1d5db'}
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium leading-none">Email Address</label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <label style={labelStyle}>Email Address</label>
                     <input 
                       type="email" 
                       name="email"
                       value={formData.email}
                       disabled
-                      className="flex h-10 w-full rounded-md border border-input bg-muted pl-10 pr-3 py-2 text-sm ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
+                      style={{ ...inputStyle, color: '#9ca3af', borderBottomStyle: 'dashed' }}
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground">Email address cannot be changed.</p>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium leading-none">Phone Number</label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <label style={labelStyle}>Phone Number</label>
                     <input 
                       type="tel" 
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      style={inputStyle}
+                      onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+                      onBlur={(e) => e.target.style.borderBottomColor = '#d1d5db'}
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium leading-none">Address</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <label style={labelStyle}>Address</label>
                     <input 
                       type="text" 
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
-                      className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      style={inputStyle}
+                      onFocus={(e) => e.target.style.borderBottomColor = '#111827'}
+                      onBlur={(e) => e.target.style.borderBottomColor = '#d1d5db'}
                     />
                   </div>
                 </div>
-              </div>
 
-              <div className="flex justify-end pt-4 border-t border-border gap-4">
-                <button 
-                  type="button" 
-                  onClick={() => logout()}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-destructive text-destructive hover:bg-destructive/10 h-10 px-8 md:hidden"
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
-                </button>
-                <button 
-                  type="submit" 
-                  disabled={updateProfileMutation.isPending}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8 flex-1 md:flex-none"
-                >
-                  {updateProfileMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-                  {updateProfileMutation.isPending ? 'Saving...' : 'Save Changes'}
-                </button>
-              </div>
-            </form>
+                <div className="flex justify-end pt-4">
+                  <button 
+                    type="submit" 
+                    disabled={updateProfileMutation.isPending}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: '#111827',
+                      color: '#ffffff',
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      padding: '0 32px',
+                      height: '40px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      cursor: updateProfileMutation.isPending ? 'not-allowed' : 'pointer',
+                      transition: 'background 0.5s ease',
+                      opacity: updateProfileMutation.isPending ? 0.7 : 1
+                    }}
+                    onMouseEnter={e => { if (!updateProfileMutation.isPending) e.currentTarget.style.background = '#2563eb'; }}
+                    onMouseLeave={e => { if (!updateProfileMutation.isPending) e.currentTarget.style.background = '#111827'; }}
+                  >
+                    {updateProfileMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                    {updateProfileMutation.isPending ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

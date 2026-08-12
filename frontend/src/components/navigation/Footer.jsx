@@ -1,51 +1,121 @@
-import React from 'react';
-import { ShieldCheck } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ShieldCheck } from "lucide-react";
+
+const footerCols = [
+  {
+    heading: "Platform",
+    links: [
+      { label: "How It Works", to: "/how-it-works" },
+      { label: "Features", to: "/features" },
+      { label: "Public Board", to: "/complaints" },
+      { label: "Report Issue", to: "/dashboard/report" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About Us", to: "/about" },
+      { label: "Contact", to: "/contact" },
+      { label: "Help Center", to: "/help" },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { label: "Terms & Conditions", to: "#" },
+      { label: "Privacy Policy", to: "#" },
+    ],
+  },
+];
 
 const Footer = () => {
   return (
-    <footer className="border-t bg-background py-8 md:py-12">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="flex flex-col space-y-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <ShieldCheck className="h-6 w-6 text-primary" />
-              <span className="font-bold tracking-tight">JanKalyan</span>
-            </Link>
-            <p className="text-sm text-muted-foreground">
-              A premium enterprise SaaS platform for public grievance redressal and transparent governance.
+    <footer style={{
+      background: "#111827",
+      padding: "64px 24px 40px",
+    }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+
+        {/* Top row — Brand + nav columns */}
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "48px",
+          justifyContent: "space-between",
+          paddingBottom: "48px",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}>
+
+          {/* Brand block */}
+          <div style={{ maxWidth: "320px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+              <ShieldCheck size={22} style={{ color: "#2563eb" }} />
+              <span style={{ fontFamily: "Inter, sans-serif", fontSize: "17px", fontWeight: 700, color: "#ffffff", letterSpacing: "-0.01em" }}>
+                JanKalyan
+              </span>
+            </div>
+            <p style={{ fontFamily: "Inter, sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: 0 }}>
+              Empowering citizens to report, track, and resolve civic issues — transparently and collectively.
             </p>
           </div>
-          
-          <div>
-            <h3 className="mb-4 text-sm font-semibold text-foreground">Platform</h3>
-            <ul className="space-y-3">
-              <li><Link to="/how-it-works" className="hover:text-primary transition-colors">How it works</Link></li>
-              <li><Link to="/features" className="hover:text-primary transition-colors">Features</Link></li>
-              <li><Link to="/complaints" className="hover:text-primary transition-colors">Public Board</Link></li>
-              <li><Link to="/dashboard/report" className="hover:text-primary transition-colors">Report Issue</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4 text-foreground">Company</h4>
-            <ul className="space-y-3">
-              <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-              <li><Link to="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
-            </ul>
-          </div>
 
-          <div>
-            <h3 className="mb-4 text-sm font-semibold text-foreground">Legal</h3>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link to="#" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link to="#" className="hover:text-primary transition-colors">Terms of Service</Link></li>
-            </ul>
+          {/* Nav link columns */}
+          <div style={{ display: "flex", gap: "60px", flexWrap: "wrap" }}>
+            {footerCols.map((col) => (
+              <div key={col.heading}>
+                <h4 style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  color: "rgba(255,255,255,0.35)",
+                  marginBottom: "16px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  margin: "0 0 16px 0",
+                }}>
+                  {col.heading}
+                </h4>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        to={link.to}
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: "14px",
+                          color: "rgba(255,255,255,0.55)",
+                          textDecoration: "none",
+                          transition: "color 0.2s",
+                        }}
+                        onMouseEnter={(e) => (e.target.style.color = "#ffffff")}
+                        onMouseLeave={(e) => (e.target.style.color = "rgba(255,255,255,0.55)")}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
-        
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} JanKalyan Platform. All rights reserved.</p>
+
+        {/* Bottom row — copyright */}
+        <div style={{
+          paddingTop: "32px",
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "16px",
+        }}>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "rgba(255,255,255,0.3)", margin: 0 }}>
+            © {new Date().getFullYear()} JanKalyan. All rights reserved.
+          </p>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "rgba(255,255,255,0.25)", margin: 0 }}>
+            Civic Platform v2.0
+          </p>
         </div>
       </div>
     </footer>
@@ -53,3 +123,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

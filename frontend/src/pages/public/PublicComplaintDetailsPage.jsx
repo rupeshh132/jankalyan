@@ -124,7 +124,7 @@ const PublicComplaintDetailsPage = () => {
             <Link 
               to={`/dashboard/complaints/${complaint.id}/edit`}
               className="auth-button" 
-              style={{ width: 'auto', background: 'rgba(255, 255, 255, 0.1)', color: 'var(--text-primary)', border: '1px solid rgba(255, 255, 255, 0.2)', textDecoration: 'none' }} 
+              style={{ width: 'auto', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)', textDecoration: 'none' }} 
             >
               Edit
             </Link>
@@ -171,7 +171,7 @@ const PublicComplaintDetailsPage = () => {
           </div>
         )}
 
-        <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '2rem', borderRadius: 'var(--radius)', border: '1px solid rgba(128, 128, 128, 0.2)' }}>
+        <div style={{ background: 'var(--bg-card)', padding: '2rem', borderRadius: 'var(--radius)', border: '1px solid var(--border-light)' }}>
           <h3 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.2rem', color: 'var(--primary)' }}>Description</h3>
           <p style={{ margin: 0, lineHeight: 1.7, whiteSpace: 'pre-wrap', color: 'var(--text-primary)', fontSize: '1.05rem' }}>
             {complaint.description}
@@ -179,7 +179,7 @@ const PublicComplaintDetailsPage = () => {
         </div>
         
         {complaint.address && (
-          <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(255,255,255,0.01)', borderRadius: 'var(--radius)', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius)', border: '1px solid var(--border-light)' }}>
              <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-secondary)' }}>Location</h4>
              <p style={{ margin: 0, color: 'var(--text-primary)' }}>{complaint.address}, {complaint.ward && `${complaint.ward}, `} {complaint.state}</p>
           </div>
@@ -192,12 +192,12 @@ const PublicComplaintDetailsPage = () => {
                display: 'flex', 
                alignItems: 'center', 
                gap: '0.5rem', 
-               background: optimisticUpvoted ? 'rgba(239, 68, 68, 0.1)' : 'rgba(255, 255, 255, 0.05)', 
-               color: optimisticUpvoted ? '#ef4444' : 'var(--text-secondary)', 
+               background: optimisticUpvoted ? 'rgba(239, 68, 68, 0.1)' : 'var(--bg-card)', 
+               color: optimisticUpvoted ? '#ef4444' : 'var(--text-primary)', 
                padding: '0.5rem 1rem', 
                borderRadius: '20px', 
                fontWeight: 'bold', 
-               border: optimisticUpvoted ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)', 
+               border: optimisticUpvoted ? '1px solid #ef4444' : '1px solid var(--border-light)', 
                cursor: 'pointer', 
                transition: 'all 0.2s',
                transform: isAnimating ? 'scale(0.95)' : 'scale(1)'

@@ -24,7 +24,7 @@ const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, isPending, title }) =>
         <div className="modal-actions" style={{ display: 'flex', gap: '1rem' }}>
           <button 
             className="auth-button" 
-            style={{ background: 'rgba(255, 255, 255, 0.1)', color: '#fff' }} 
+            style={{ background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-light)' }} 
             onClick={onClose} 
             disabled={isPending}
           >

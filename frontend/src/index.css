@@ -1,6 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&display=swap');
 
 :root {
+  /* Shadcn Standard HSL Variables (Light Mode) */
+  --background: 210 40% 98%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --radius: 0.5rem;
   /* Premium Light Theme */
   --bg-primary: #f8fafc;
   --bg-card: #ffffff;
@@ -116,3 +140,59 @@ main {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* --- Dark Theme (Shader Spec) --- */
+.dark {
+  /* New Shader Spec Tokens */
+  --bg-dark: #0a0a0f;
+  --blob-warm-1: #ffb703;
+  --blob-warm-2: #fb8500;
+  --blob-cool-1: #38d9d0;
+  --blob-cool-2: #0891b2;
+  --text-white: #ffffff;
+  --text-muted: #a3a3ad;
+  --text-gray-serif: #e5e5e5;
+
+  /* Override Shadcn HSL variables for Dark Mode */
+  --background: 240 20% 5%; /* #0a0a0f */
+  --foreground: 0 0% 100%; /* #ffffff */
+  --card: 240 10% 7%;
+  --card-foreground: 0 0% 100%;
+  --popover: 240 10% 7%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 177 69% 53%; /* #38d9d0 (Teal cool blob 1) */
+  --primary-foreground: 240 20% 5%;
+  --secondary: 240 4% 16%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 240 4% 16%;
+  --muted-foreground: 240 5% 65%; /* #a3a3ad */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 4% 16%;
+  --input: 240 4% 16%;
+  --ring: 177 69% 53%;
+
+  /* Override Custom Legacy Vars for Dark Mode */
+  --bg-primary: var(--bg-dark);
+  --bg-card: #121217;
+  --text-primary: var(--text-white);
+  --text-secondary: var(--text-gray-serif);
+  --accent: #38d9d0;
+  --accent-hover: #0891b2;
+  --accent-light: rgba(56, 217, 208, 0.1);
+  --border-light: rgba(255,255,255,0.12);
+  --border-subtle: rgba(255,255,255,0.06);
+}
+
+.dark .font-shader {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
+  color: var(--text-gray-serif) !important;
+}
+
+/* Brutalist Footer Animations */
+@keyframes float-slow { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+@keyframes float-medium { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(-10deg); } }
+@keyframes float-fast { 0%, 100% { transform: translateY(0) rotate(0deg) scale(1); } 50% { transform: translateY(-40px) rotate(15deg) scale(1.05); } }

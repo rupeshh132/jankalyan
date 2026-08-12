@@ -10,7 +10,7 @@ const MyComplaintsPage = () => {
   const { data, isLoading, isError, error, refetch } = useMyComplaints(page, 10);
 
   return (
-    <div className="page-container">
+    <div className="page-container max-w-7xl mx-auto px-4 md:px-6 py-6">
       <div className="page-header">
         <h1 className="page-title">My Complaints</h1>
         <Link to="/dashboard/report" className="auth-button" style={{ width: 'auto', marginTop: 0 }}>
