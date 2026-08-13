@@ -23,26 +23,26 @@ const AboutPage = () => {
 
   const values = [
     {
-      title: "Transparency First",
-      description: "We believe citizens have the right to know exactly what is happening in their neighborhoods and how their local government is responding.",
+      title: "Out in the Open",
+      description: "No more black holes where complaints go to die. Every report is public, so everyone can see exactly what's broken and who is working on fixing it.",
       icon: <Globe size={24} />,
       color: "var(--info-text)"
     },
     {
-      title: "Community Empowerment",
-      description: "A city is only as strong as its community. We provide the tools for neighbors to collaborate and raise their voices together.",
+      title: "Neighbors First",
+      description: "Change happens when people come together. We're just giving you the megaphone so your local council actually has to listen.",
       icon: <Users size={24} />,
       color: "var(--primary)"
     },
     {
-      title: "Accountable Governance",
-      description: "By providing data-driven insights and public tracking, we help municipal authorities stay accountable and deliver better civic services.",
+      title: "Getting Things Done",
+      description: "We don't just want to complain—we want things fixed. We help city workers track issues clearly so they can get out there and do their jobs.",
       icon: <Shield size={24} />,
       color: "var(--success-text)"
     },
     {
-      title: "Tech for Good",
-      description: "We leverage modern web technologies not just to build software, but to bridge the gap between people and policy, creating real-world impact.",
+      title: "Simple, Honest Tech",
+      description: "We're not here to sell you on fancy civic-tech buzzwords. We just built a simple tool that actually works, made by people who care about their streets.",
       icon: <Heart size={24} />,
       color: "var(--danger-text)"
     }
@@ -68,7 +68,7 @@ const AboutPage = () => {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
             className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6"
           >
-            Building the foundation for <br className="hidden md:block"/> smarter, responsive cities.
+            Because your neighborhood <br className="hidden md:block"/> shouldn't be a struggle.
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -76,7 +76,7 @@ const AboutPage = () => {
             transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
             className="text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            JanKalyan (Public Welfare) is a modern civic-tech initiative designed to streamline communication between citizens and municipal bodies. We replace archaic complaint systems with transparent, real-time public boards.
+            We started JanKalyan because we were tired of complaining about the same broken streetlight for months. We realized that cities don't need more paperwork—they need a simple, clear way for neighbors to speak up and for workers to get things done.
           </motion.p>
         </div>
 
@@ -87,17 +87,17 @@ const AboutPage = () => {
           transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
           className="bg-card border border-border rounded-3xl p-8 md:p-12 shadow-sm text-center mb-20"
         >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Our Mission</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-4">Why we are here</h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto font-medium">
-            "To democratize city infrastructure management by empowering every citizen with a voice, and equipping every municipality with the tools to listen, act, and resolve."
+            "To make fixing your city as easy as sending a text message. No red tape, no lost files—just real people solving real problems in their communities."
           </p>
         </motion.div>
 
         {/* Core Values */}
         <div className="mb-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Core Values</h2>
-            <p className="text-muted-foreground">The principles that guide our platform development.</p>
+            <h2 className="text-3xl font-bold text-foreground mb-4">What we believe in</h2>
+            <p className="text-muted-foreground">The ideas that keep us building this platform.</p>
           </div>
           
           <motion.div 
@@ -134,16 +134,16 @@ const AboutPage = () => {
           transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
           className="mt-12 bg-primary text-primary-foreground rounded-3xl p-10 text-center shadow-lg"
         >
-          <h2 className="text-2xl font-bold mb-4">Be a part of the change</h2>
+          <h2 className="text-2xl font-bold mb-4">Let's fix things together</h2>
           <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-            Whether you are a concerned citizen or a proactive government official, JanKalyan is built for you. Start using the platform today.
+            Stop waiting for someone else to report that massive pothole on your corner. Take 30 seconds and put it on the map.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link to="/register" className="px-8 py-3 bg-background text-primary font-medium rounded-lg hover:bg-background/90 transition-colors shadow-sm w-full sm:w-auto text-center">
-              Join as Citizen
+              Report an Issue
             </Link>
             <Link to="/how-it-works" className="px-8 py-3 bg-primary-foreground/10 text-primary-foreground border border-primary-foreground/20 font-medium rounded-lg hover:bg-primary-foreground/20 transition-colors shadow-sm w-full sm:w-auto text-center">
-              Learn more
+              See how it works
             </Link>
           </div>
         </motion.div>
