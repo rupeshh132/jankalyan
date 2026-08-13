@@ -54,7 +54,7 @@ const features = [
       "Role-based access control",
     ],
     bulletColor: "#d97706",
-    screenshot: "/ss4.png",
+    screenshot: "/admin-dashboard.png",
     bg: "#ffffff",
     reverse: false,
   },
