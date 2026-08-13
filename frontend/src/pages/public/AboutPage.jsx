@@ -132,19 +132,27 @@ const AboutPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
-          className="mt-12 bg-primary text-primary-foreground rounded-3xl p-10 text-center shadow-lg"
+          className="mt-12 text-white rounded-3xl p-10 text-center shadow-lg relative overflow-hidden"
+          style={{
+            backgroundImage: "url('/cta-bg.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
         >
-          <h2 className="text-2xl font-bold mb-4">Let's fix things together</h2>
-          <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-            Stop waiting for someone else to report that massive pothole on your corner. Take 30 seconds and put it on the map.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/register" className="px-8 py-3 bg-background text-primary font-medium rounded-lg hover:bg-background/90 transition-colors shadow-sm w-full sm:w-auto text-center">
-              Report an Issue
-            </Link>
-            <Link to="/how-it-works" className="px-8 py-3 bg-primary-foreground/10 text-primary-foreground border border-primary-foreground/20 font-medium rounded-lg hover:bg-primary-foreground/20 transition-colors shadow-sm w-full sm:w-auto text-center">
-              See how it works
-            </Link>
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="relative z-10">
+            <h2 className="text-3xl font-bold mb-4">Let's fix things together</h2>
+            <p className="text-white/90 mb-8 max-w-xl mx-auto text-lg">
+              Stop waiting for someone else to report that massive pothole on your corner. Take 30 seconds and put it on the map.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/register" className="px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-sm w-full sm:w-auto text-center">
+                Report an Issue
+              </Link>
+              <Link to="/how-it-works" className="px-8 py-3 bg-white/20 text-white border border-white/30 font-semibold rounded-lg hover:bg-white/30 transition-colors shadow-sm w-full sm:w-auto text-center backdrop-blur-sm">
+                See how it works
+              </Link>
+            </div>
           </div>
         </motion.div>
         
