@@ -134,7 +134,7 @@ const AboutPage = () => {
           transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
           className="mt-12 text-white rounded-3xl p-10 text-center shadow-lg relative overflow-hidden"
           style={{
-            backgroundImage: "url('/cta-bg.png')",
+            backgroundImage: "url('/cta-bg-clean.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}

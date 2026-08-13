@@ -118,7 +118,7 @@ const ContactPage = () => {
           transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
           className="mt-16 text-white rounded-3xl p-8 md:p-12 text-center shadow-lg relative overflow-hidden"
           style={{
-            backgroundImage: "url('/cta-bg.png')",
+            backgroundImage: "url('/cta-bg-clean.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}

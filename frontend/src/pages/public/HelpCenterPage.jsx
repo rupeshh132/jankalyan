@@ -131,13 +131,21 @@ const HelpCenterPage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
-          className="mt-16 bg-muted/50 border border-border rounded-3xl p-8 text-center"
+          className="mt-16 text-white rounded-3xl p-8 text-center shadow-lg relative overflow-hidden"
+          style={{
+            backgroundImage: "url('/cta-bg-clean.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
         >
-          <h2 className="text-xl font-bold text-foreground mb-2">Still need help?</h2>
-          <p className="text-muted-foreground mb-6">If you couldn't find the answer to your question, we're here to help.</p>
-          <a href="/contact" className="inline-flex items-center justify-center px-6 py-2.5 bg-background border border-border text-foreground font-medium rounded-lg hover:bg-muted transition-colors shadow-sm">
-            Contact Support
-          </a>
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="relative z-10">
+            <h2 className="text-3xl font-bold mb-2">Still need help?</h2>
+            <p className="text-white/90 mb-6 text-lg">If you couldn't find the answer to your question, we're here to help.</p>
+            <a href="/contact" className="inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-colors shadow-sm">
+              Contact Support
+            </a>
+          </div>
         </motion.div>
         
       </div>
