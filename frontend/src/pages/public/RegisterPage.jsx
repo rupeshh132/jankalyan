@@ -6,15 +6,12 @@ const RegisterPage = () => {
     <div style={{ minHeight: '100vh', background: '#F7F6F2' }} className="flex flex-col lg:flex-row">
 
       {/* Mobile-only compact dark banner */}
-      <div className="lg:hidden" style={{
+      <div className="flex flex-col justify-center lg:hidden" style={{
         background: '#0a0a0a',
         padding: '28px 24px',
         position: 'relative',
         overflow: 'hidden',
         minHeight: '120px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
       }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.4 }}>
           <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '120%', height: '120%', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.05)' }} />
