@@ -36,7 +36,7 @@ const features = [
       "Full history & timeline",
     ],
     bulletColor: "#2563eb",
-    screenshot: "/ss2.png",
+    screenshot: "/real-time-tracking.png",
     bg: "#f8fafc",
     reverse: true,
   },
