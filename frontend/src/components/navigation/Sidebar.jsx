@@ -52,12 +52,6 @@ const SidebarContent = ({ navItems, closeMobile }) => {
         })}
       </nav>
 
-      {/* Subtle footer inside sidebar */}
-      <div style={{ padding: '1.5rem', marginTop: 'auto', borderTop: '1px solid #f1f5f9' }}>
-        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#94a3b8', margin: 0, textAlign: 'center' }}>
-          Civic Platform v2.0
-        </p>
-      </div>
     </div>
   );
 };

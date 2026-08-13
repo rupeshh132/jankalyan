@@ -265,9 +265,6 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
               >
                 Log Out
               </button>
-              <p style={{ textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#94a3b8", marginTop: "12px", marginBottom: 0 }}>
-                Civic Platform v2.0
-              </p>
             </div>
           </div>
         </div>

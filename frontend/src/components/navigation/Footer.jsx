@@ -113,9 +113,6 @@ const Footer = () => {
           <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "rgba(255,255,255,0.3)", margin: 0 }}>
             © {new Date().getFullYear()} JanKalyan. All rights reserved.
           </p>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", color: "rgba(255,255,255,0.25)", margin: 0 }}>
-            Civic Platform v2.0
-          </p>
         </div>
       </div>
     </footer>
