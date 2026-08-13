@@ -33,9 +33,9 @@ const Footer = () => {
   return (
     <footer style={{
       background: "#111827",
-      padding: "64px 24px 40px",
+      padding: "64px clamp(24px, 4vw, 48px) 40px",
     }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "100%", margin: "0 auto" }}>
 
         {/* Top row — Brand + nav columns */}
         <div style={{

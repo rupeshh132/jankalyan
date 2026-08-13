@@ -70,9 +70,9 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     <>
       <header style={headerStyle}>
         <div style={{
-          maxWidth: "1280px",
+          maxWidth: "100%",
           margin: "0 auto",
-          padding: "0 20px",
+          padding: "0 clamp(24px, 4vw, 48px)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
