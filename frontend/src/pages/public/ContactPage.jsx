@@ -116,18 +116,26 @@ const ContactPage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
-          className="mt-16 bg-primary/5 border border-primary/10 rounded-3xl p-8 md:p-12 text-center"
+          className="mt-16 text-white rounded-3xl p-8 md:p-12 text-center shadow-lg relative overflow-hidden"
+          style={{
+            backgroundImage: "url('/cta-bg.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
         >
-          <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
-            <MessageSquare size={32} />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="relative z-10">
+            <div className="w-16 h-16 bg-white/20 text-white rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/30">
+              <MessageSquare size={32} />
+            </div>
+            <h2 className="text-3xl font-bold mb-4">Fastest way to reach me</h2>
+            <p className="text-white/90 max-w-xl mx-auto mb-8 text-lg">
+              For the quickest response, feel free to drop a message on WhatsApp or connect with me on LinkedIn. I try my best to respond within 24 hours.
+            </p>
+            <a href="https://wa.me/918090683207" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-colors shadow-sm">
+              Message on WhatsApp
+            </a>
           </div>
-          <h2 className="text-2xl font-bold text-foreground mb-4">Fastest way to reach me</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-            For the quickest response, feel free to drop a message on WhatsApp or connect with me on LinkedIn. I try my best to respond within 24 hours.
-          </p>
-          <a href="https://wa.me/918090683207" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:bg-primary/90 transition-colors shadow-sm">
-            Message on WhatsApp
-          </a>
         </motion.div>
         
       </div>
