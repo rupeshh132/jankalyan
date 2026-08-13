@@ -18,7 +18,7 @@ const features = [
       "Auto-populated ward & zone",
     ],
     bulletColor: "#10b981",
-    screenshot: "/ss3.png",
+    screenshot: "/location-tracking.jpg",
     bg: "#ffffff",
     reverse: false,
   },
